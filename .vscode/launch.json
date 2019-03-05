@@ -12,7 +12,8 @@
       "sourceMapPathOverrides": {
         "webpack:///src/*": "${webRoot}/*"
       },
-      "url": "http://localhost:8080"
+      "port": 9222,
+      "url": "http://localhost:8080/#/"
     },
     {
       "type": "node",
@@ -21,7 +22,7 @@
       "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
       "runtimeArgs": [
         "${workspaceFolder}/dist_electron/index.js",
-        "--remote-debugging-port=9229"
+        "--remote-debugging-port=9222"
       ]
     }
   ],

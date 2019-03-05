@@ -1,0 +1,34 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "chrome",
+      "request": "attach",
+      "name": "Renderer",
+      "webRoot": "${workspaceFolder}/src",
+      "sourceMapPathOverrides": {
+        "webpack:///src/*": "${webRoot}/*"
+      },
+      "url": "http://localhost:8080"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Main",
+      "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
+      "runtimeArgs": [
+        "${workspaceFolder}/dist_electron/index.js",
+        "--remote-debugging-port=9229"
+      ]
+    }
+  ],
+  "compounds": [
+    {
+      "name": "All",
+      "configurations": ["Main", "Renderer"]
+    }
+  ]
+}

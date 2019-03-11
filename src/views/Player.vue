@@ -1,7 +1,7 @@
 <template>
-  <div class="home">
-    <Tunes/>
-  </div>
+  <v-container>
+    <h1>PLAYER</h1>
+  </v-container>
 </template>
 
 <script lang="ts">
@@ -13,5 +13,5 @@ import Tunes from "@/components/Tunes.vue"; // @ is an alias to /src
     Tunes
   }
 })
-export default class Home extends Vue {}
+export default class Player extends Vue {}
 </script>

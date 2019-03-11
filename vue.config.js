@@ -1,5 +1,5 @@
-module.exports = {
+module.export = {
   configureWebpack: {
-    devtool: "source-map"
+    devtool: 'source-map'
   }
 };

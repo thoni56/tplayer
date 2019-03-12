@@ -25,18 +25,16 @@
   </v-app>
 </template>
 
-<script>
-export default {
-  data: () => ({
-    drawer: null,
-    links: [
-      { icon: "play_arrow", text: "Player", route: "/" },
-      { icon: "filter_list", text: "Filter", route: "/filtering" },
-      { icon: "settings", text: "Settings", route: "/settings" }
-    ]
-  }),
-  props: {
-    source: String
-  }
-};
+<script lang="ts">
+import { Component, Vue } from "vue-property-decorator";
+
+@Component
+export default class App extends Vue {
+  public drawer = false;
+  public links = [
+    { icon: "play_arrow", text: "Player", route: "/" },
+    { icon: "filter_list", text: "Filter", route: "/filtering" },
+    { icon: "settings", text: "Settings", route: "/settings" }
+  ];
+}
 </script>

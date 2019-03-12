@@ -6,12 +6,8 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import Tunes from "@/components/Tunes.vue"; // @ is an alias to /src
+import Tunes from "@/components/Tunes.vue";
 
-@Component({
-  components: {
-    Tunes
-  }
-})
+@Component
 export default class Player extends Vue {}
 </script>

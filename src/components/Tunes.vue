@@ -1,16 +1,22 @@
 <template>
-  <div>
-    <h1>Tunes</h1>
-    <ul>
-      <li v-for="tune in tunes" :key="tune.title">
-        <span>{{ tune.title }}</span>
-        <span>{{ tune.artist }}</span>
-        <span>{{ tune.album }}</span>
-        <span>{{ tune.genre }}</span>
-        <span>{{ tune.bpm }}</span>
-      </li>
-    </ul>
-  </div>
+  <v-layout row>
+    <v-flex xs12>
+      <v-list two-line>
+        <template v-for="(tune, index) in tunes">
+          <v-list-tile :key="index" avatar>
+            <v-list-tile-avatar>
+              <img :src="tune.art">
+            </v-list-tile-avatar>
+
+            <v-list-tile-content>
+              <v-list-tile-title>{{ tune.title }}</v-list-tile-title>
+              <v-list-tile-sub-title>{{ tune.artist + " - " + tune.album }}</v-list-tile-sub-title>
+            </v-list-tile-content>
+          </v-list-tile>
+        </template>
+      </v-list>
+    </v-flex>
+  </v-layout>
 </template>
 
 <script lang="ts">

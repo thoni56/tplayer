@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Player from './views/Player.vue';
-import Filter from './views/Filter.vue';
+import Filtering from './views/Filtering.vue';
 import Settings from './views/Settings.vue';
 
 Vue.use(Router);
@@ -14,9 +14,9 @@ export default new Router({
       component: Player
     },
     {
-      path: '/filter',
-      name: 'filter',
-      component: Filter
+      path: '/filtering',
+      name: 'filtering',
+      component: Filtering
     },
     {
       path: '/settings',

@@ -25,7 +25,7 @@ import { TuneInfo } from "@/models/TuneInfo";
 
 @Component
 export default class Tunes extends Vue {
-  @Prop({default: []})
+  @Prop({ default: [] })
   public tunes!: TuneInfo[];
 }
 </script>

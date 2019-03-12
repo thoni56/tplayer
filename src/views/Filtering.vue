@@ -11,7 +11,7 @@
         </v-btn-toggle>
       </v-flex>
     </v-layout>
-    <Tunes />
+    <Tunes :tunes="tunes"/>
   </v-container>
 </template>
 
@@ -19,7 +19,7 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import Tunes from "@/components/Tunes.vue";
-import { TuneInfo } from '@/models/TuneInfo';
+import { TuneInfo } from "@/models/TuneInfo";
 
 @Component({
   components: {
@@ -27,11 +27,15 @@ import { TuneInfo } from '@/models/TuneInfo';
   }
 })
 export default class Filtering extends Vue {
-  public data () {
-      return {
-        genre_selected: [],  // Nothing selected
-        tunes: [new TuneInfo("Hello Dolly"), new TuneInfo("Big Wheel")]
-      }
-    }
+  public tunes: TuneInfo[] = [
+    new TuneInfo("Hello Dolly"),
+    new TuneInfo("Big Wheel")
+  ];
+
+  public data() {
+    return {
+      genre_selected: [] // Nothing selected
+    };
+  }
 }
 </script>

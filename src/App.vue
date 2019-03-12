@@ -17,12 +17,8 @@
       <v-toolbar-title>tplayer</v-toolbar-title>
     </v-toolbar>
     <v-content>
-      <v-container fluid fill-height>
-        <v-layout justify-center align-center>
-          <v-flex shrink>
-            <router-view/>
-          </v-flex>
-        </v-layout>
+      <v-container>
+        <router-view/>
       </v-container>
     </v-content>
     <v-footer app fixed></v-footer>
@@ -35,7 +31,7 @@ export default {
     drawer: null,
     links: [
       { icon: "play_arrow", text: "Player", route: "/" },
-      { icon: "filter_list", text: "Filter", route: "/filter" },
+      { icon: "filter_list", text: "Filter", route: "/filtering" },
       { icon: "settings", text: "Settings", route: "/settings" }
     ]
   }),

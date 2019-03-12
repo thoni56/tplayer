@@ -25,12 +25,8 @@ import { TuneInfo } from "@/models/TuneInfo";
 
 @Component
 export default class Tunes extends Vue {
-  public tunes: TuneInfo[];
-
-  constructor() {
-    super();
-    this.tunes = [new TuneInfo("Hello Dolly"), new TuneInfo("Big Wheel")];
-  }
+  @Prop({default: []})
+  public tunes!: TuneInfo[];
 }
 </script>
 

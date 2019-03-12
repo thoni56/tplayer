@@ -1,6 +1,7 @@
 <template>
   <v-container>
     <h1>PLAYER</h1>
+    <router-link to="/settings">Settings</router-link>
   </v-container>
 </template>
 

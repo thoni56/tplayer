@@ -27,15 +27,30 @@ import { TuneInfo } from "@/models/TuneInfo";
   }
 })
 export default class Filtering extends Vue {
-  public tunes: TuneInfo[] = [
-    new TuneInfo("Hello Dolly"),
-    new TuneInfo("Big Wheel")
-  ];
+  public tunes!: TuneInfo[];
 
   public data() {
     return {
-      genre_selected: [] // Nothing selected
+      genre_selected: [], // Nothing selected
+      tunes: []
     };
+  }
+
+  public mounted() {
+    setTimeout(() => {
+      this.discoverTunes1();
+    }, 2000);
+    setTimeout(() => {
+      this.discoverTunes2();
+    }, 5000);
+  }
+
+  public discoverTunes1() {
+    this.tunes.push(new TuneInfo("Hello Dolly", "Nina Simone"));
+  }
+
+  public discoverTunes2() {
+    this.tunes.push(new TuneInfo("Big Wheels Keep On Turning", "Joe Turner"));
   }
 }
 </script>

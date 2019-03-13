@@ -39,6 +39,8 @@ export default class App extends Vue {
     { icon: "settings", text: "Settings", route: "/settings" }
   ];
 
+  private tunes: TuneInfo[] = [];
+
   public addOneTune(tune: TuneInfo) {
     this.tunes.push(tune);
   }
@@ -48,6 +50,5 @@ export default class App extends Vue {
       this.addOneTune(tune);
     });
   }
-  private tunes: TuneInfo[] = [];
 }
 </script>

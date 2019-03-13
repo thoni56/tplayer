@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h1>Filter</h1>
+    <h1>Filter ({{ tunes.length }})</h1>
     <v-layout row wrap justify-center>
       <v-flex xs12 sm6 class="py-2">
         <v-btn-toggle v-model="genre_selected" multiple>
@@ -17,7 +17,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import Component from "vue-class-component";
+import { Component, Prop, Emit } from "vue-property-decorator";
 import Tunes from "@/components/Tunes.vue";
 import { TuneInfo } from "@/models/TuneInfo";
 
@@ -27,30 +27,26 @@ import { TuneInfo } from "@/models/TuneInfo";
   }
 })
 export default class Filtering extends Vue {
-  public tunes!: TuneInfo[];
+  @Prop() public tunes!: TuneInfo[];
 
   public data() {
     return {
-      genre_selected: [], // Nothing selected
-      tunes: []
+      genre_selected: [] // Nothing selected
     };
   }
 
   public mounted() {
     setTimeout(() => {
-      this.discoverTunes1();
+      this.addTune(new TuneInfo("Hello Dolly", "Nina Simone"));
     }, 2000);
     setTimeout(() => {
-      this.discoverTunes2();
+      this.addTune(new TuneInfo("Big Wheels Keep On Turning", "Joe Turner"));
     }, 5000);
   }
 
-  public discoverTunes1() {
-    this.tunes.push(new TuneInfo("Hello Dolly", "Nina Simone"));
-  }
-
-  public discoverTunes2() {
-    this.tunes.push(new TuneInfo("Big Wheels Keep On Turning", "Joe Turner"));
+  @Emit("addTune")
+  public addTune(tune: TuneInfo) {
+    return tune;
   }
 }
 </script>

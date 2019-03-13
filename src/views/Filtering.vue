@@ -36,6 +36,7 @@ export default class Filtering extends Vue {
   }
 
   public mounted() {
+    console.log(this.tunes);
     setTimeout(() => {
       this.addTune(new TuneInfo("Hello Dolly", "Nina Simone"));
     }, 2000);

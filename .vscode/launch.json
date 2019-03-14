@@ -9,6 +9,7 @@
       "request": "attach",
       "name": "Renderer",
       "webRoot": "${workspaceFolder}/src",
+      "sourceMaps": true,
       "sourceMapPathOverrides": {
         "webpack:///src/*": "${webRoot}/*"
       },
@@ -29,7 +30,10 @@
   "compounds": [
     {
       "name": "All",
-      "configurations": ["Main", "Renderer"]
+      "configurations": [
+        "Main",
+        "Renderer"
+      ]
     }
   ]
 }

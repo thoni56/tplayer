@@ -91,6 +91,3 @@ const emitter = walk('C:/Users/Thomas/Music/iTunes/iTunes Media/Music');
 emitter.on('file', (path, stat) => {
   tunes.push(path);
 });
-emitter.on('end', (path, stat) => {
-  console.log("Done ", tunes.length);
-})

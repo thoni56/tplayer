@@ -18,7 +18,7 @@
     </v-toolbar>
     <v-content>
       <v-container>
-        <router-view :tunes="tunes"/>
+        <router-view :tunes="current_tunes"/>
       </v-container>
     </v-content>
     <v-footer app fixed></v-footer>
@@ -26,12 +26,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Prop } from "vue-property-decorator";
 import { TuneInfo } from "@/models/TuneInfo";
-import TuneFinder from "@/models/TuneFinder";
 import { EventBus } from "@/EventBus";
-
-const finder = new TuneFinder();
 
 @Component
 export default class App extends Vue {
@@ -42,18 +39,12 @@ export default class App extends Vue {
     { icon: "settings", text: "Settings", route: "/settings" }
   ];
 
-  private tunes: TuneInfo[] = [];
+  @Prop() private tunes!: TuneInfo[];
 
-  public addOneTune(tune: TuneInfo) {
-    this.tunes.push(tune);
-  }
-
-  public mounted() {
-    finder.findTunesFrom(".");
-
-    EventBus.$on("addTune", (tune: TuneInfo) => {
-      this.addOneTune(tune);
-    });
+  public data() {
+    return {
+      current_tunes: []
+    }
   }
 }
 </script>

@@ -11,7 +11,7 @@
         </v-btn-toggle>
       </v-flex>
     </v-layout>
-    <Tunes :tunes="tunes"/>
+    <Tunes :tunes="current_tunes"/>
   </v-container>
 </template>
 
@@ -31,22 +31,9 @@ export default class Filtering extends Vue {
 
   public data() {
     return {
-      genre_selected: [] // Nothing selected
+      genre_selected: [], // Nothing selected
+      current_tunes: this.tunes
     };
-  }
-
-  public mounted() {
-    setTimeout(() => {
-      this.addTune(new TuneInfo("Hello Dolly", "Nina Simone"));
-    }, 2000);
-    setTimeout(() => {
-      this.addTune(new TuneInfo("Big Wheels Keep On Turning", "Joe Turner"));
-    }, 5000);
-  }
-
-  @Emit("addTune")
-  public addTune(tune: TuneInfo) {
-    return tune;
   }
 }
 </script>

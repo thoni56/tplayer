@@ -7,19 +7,33 @@
     {
       "type": "chrome",
       "request": "attach",
-      "name": "Renderer",
+      "name": "renderer : attach",
       "webRoot": "${workspaceFolder}/src",
       "sourceMaps": true,
       "sourceMapPathOverrides": {
         "webpack:///src/*": "${webRoot}/*"
       },
       "port": 9222,
-      "url": "http://localhost:8080/#/"
+      "url": "http://localhost:8080/#/",
+      "timeout": 20000
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "renderer : launch",
+      "webRoot": "${workspaceFolder}/src",
+      "sourceMaps": true,
+      "sourceMapPathOverrides": {
+        "webpack:///src/*": "${webRoot}/*"
+      },
+      "port": 9222,
+      "url": "http://localhost:8080/#/",
+      "timeout": 20000
     },
     {
       "type": "node",
       "request": "launch",
-      "name": "Main",
+      "name": "main",
       "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
       "runtimeArgs": [
         "${workspaceFolder}/dist_electron/index.js",
@@ -31,8 +45,8 @@
     {
       "name": "All",
       "configurations": [
-        "Main",
-        "Renderer"
+        "main",
+        "renderer : attach"
       ]
     }
   ]

@@ -28,7 +28,10 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { TuneInfo } from "@/models/TuneInfo";
+import TuneFinder from "@/models/TuneFinder";
 import { EventBus } from "@/EventBus";
+
+const finder = new TuneFinder();
 
 @Component
 export default class App extends Vue {
@@ -46,6 +49,8 @@ export default class App extends Vue {
   }
 
   public mounted() {
+    finder.findTunesFrom(".");
+
     EventBus.$on("addTune", (tune: TuneInfo) => {
       this.addOneTune(tune);
     });

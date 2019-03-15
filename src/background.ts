@@ -5,8 +5,6 @@ import {
   createProtocol,
   installVueDevtools
 } from 'vue-cli-plugin-electron-builder/lib';
-import { TuneInfo } from '@/models/TuneInfo';
-import walk from 'walkdir';
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
@@ -84,10 +82,3 @@ if (isDevelopment) {
     });
   }
 }
-
-const tunes: string[] = [];
-// Load all music files
-const emitter = walk('C:/Users/Thomas/Music/iTunes/iTunes Media/Music');
-emitter.on('file', (path, stat) => {
-  tunes.push(path);
-});

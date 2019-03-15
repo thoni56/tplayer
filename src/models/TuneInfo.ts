@@ -1,12 +1,16 @@
 import { IPicture } from 'music-metadata/lib/type';
 
+function pictureToHTML(picture: IPicture) {
+  return "data:" + picture.format + ";base64," + picture.data.toString('base64');
+}
+
 export class TuneInfo {
   public title: string;
   public artist: string;
   public album: string;
   public genre: string;
   public bpm: number;
-  public cover: IPicture | undefined;
+  public cover: string;
 
   constructor(
     title: string,
@@ -14,13 +18,14 @@ export class TuneInfo {
     album: string = 'unknown',
     genre: string = 'unknown',
     bpm: number = 0,
-    cover: IPicture | undefined  // TODO: Perhaps load a pic from 'https://picsum.photos
+    cover: IPicture | undefined
   ) {
     this.title = title;
     this.artist = artist;
     this.album = album;
     this.genre = genre;
     this.bpm = bpm;
-    this.cover = cover ? cover : undefined;
+    this.cover = cover ? pictureToHTML(cover) : "";  // TODO: Perhaps pre-load a pic from 'https://picsum.photos
   }
+
 }

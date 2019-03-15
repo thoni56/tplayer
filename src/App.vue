@@ -1,5 +1,5 @@
 <template>
-  <v-app id="inspire" dark>
+  <v-app id="Application" dark>
     <v-navigation-drawer v-model="drawer" clipped fixed app>
       <v-list dense>
         <v-list-tile v-for="link in links" :key="link.text" router :to="link.route">

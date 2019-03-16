@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h1>Filter ({{ tunes.length }})</h1>
+    <h1>Filter (total: {{ tunes.length }}, filtered: {{ current_tunes.length}})</h1>
     <v-layout row wrap justify-center>
       <v-flex xs12 sm6 class="py-2">
         <v-btn-toggle v-model="genre_selected" multiple>

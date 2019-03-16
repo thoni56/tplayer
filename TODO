@@ -2,3 +2,4 @@
 ☐ Let the genre toggle buttons in filtering be activated initially, and push to filter
 ☐ Add image for tunes not having embedded cover art
 ☐ Let found genres in the tunes create toggle buttons in filtering
+☐ Switch to node-walk when finding tunes since it should be more standard (don't need the speed of 'walkdir')

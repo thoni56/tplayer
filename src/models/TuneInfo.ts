@@ -1,4 +1,5 @@
 import { IPicture } from 'music-metadata/lib/type';
+import { ICommonTagsResult } from 'music-metadata';
 import '../../public/vinyl.png';
 
 function pictureToHTML(picture: IPicture) {
@@ -8,27 +9,39 @@ function pictureToHTML(picture: IPicture) {
 const defaultCover: string = "/vinyl.png";
 
 export class TuneInfo {
-  public title: string;
-  public artist: string;
-  public album: string;
-  public genre: string;
-  public bpm: number | undefined;
-  public cover: string;
+  public title?: string;
+  public artist?: string;
+  public album?: string;
+  public genre?: string;
+  public bpm?: number;
+  public cover?: string;
+  public file?: string;
 
+  constructor(file: string);
   constructor(
-    title: string,
-    artist: string = 'unknown',
-    album: string = 'unknown',
-    genre: string = '',         // TODO: allow more genres
-    bpm: number = 0,
-    cover: IPicture | undefined
+    file: string,
+    title?: string,
+    artist?: string,
+    album?: string,
+    genre?: string,         // TODO: allow more genres
+    bpm?: number,
+    cover?: IPicture
   ) {
-    this.title = title;
-    this.artist = artist;
-    this.album = album;
-    this.genre = genre;
+    this.file = file;
+    this.title = title && title || undefined;
+    this.artist = artist && artist || undefined;
+    this.album = album && album || undefined;
+    this.genre = genre && genre[0] || '';
     this.bpm = bpm ? Math.round(bpm) : undefined;
-    this.cover = cover ? pictureToHTML(cover) : defaultCover;  // TODO: Perhaps pre-load a pic from 'https://picsum.photos
+    this.cover = cover ? pictureToHTML(cover) : defaultCover;
+  }
+
+  public fillFromCommonTags(tags: ICommonTagsResult) {
+    this.title = tags.title;
+    this.album = tags.album;
+    this.artist = tags.artist;
+    this.bpm = tags.bpm ? Math.round(tags.bpm) : undefined;
+    this.genre = tags.genre ? tags.genre[0] : undefined;
   }
 
 }

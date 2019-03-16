@@ -21,14 +21,8 @@ async function readMetadataForAllFiles() {
     if (files.hasOwnProperty(index)) {
       // See https://stackoverflow.com/questions/40770425/tslint-codelyzer-ng-lint-error-for-in-statements-must-be-filtere
       const metadata = await mm.parseFile(files[index]);
-      all[index] = new TuneInfo(
-        info(metadata.common.title),
-        info(metadata.common.artist),
-        info(metadata.common.album),
-        info(metadata.common.genre),
-        metadata.common.bpm,
-        metadata.common.picture ? metadata.common.picture[0] : undefined
-      );
+      all[index] = new TuneInfo(files[index]);
+      all[index].fillFromCommonTags(metadata.common);
     }
   }
   allTunes.push(...all);

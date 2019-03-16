@@ -12,7 +12,7 @@ export class TuneInfo {
   public artist: string;
   public album: string;
   public genre: string;
-  public bpm: number;
+  public bpm: number | undefined;
   public cover: string;
 
   constructor(
@@ -27,7 +27,7 @@ export class TuneInfo {
     this.artist = artist;
     this.album = album;
     this.genre = genre;
-    this.bpm = bpm;
+    this.bpm = bpm ? Math.round(bpm) : undefined;
     this.cover = cover ? pictureToHTML(cover) : defaultCover;  // TODO: Perhaps pre-load a pic from 'https://picsum.photos
   }
 

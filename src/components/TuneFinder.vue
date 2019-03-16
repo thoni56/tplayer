@@ -26,7 +26,7 @@ async function readMetadataForAllFiles() {
         info(metadata.common.artist),
         info(metadata.common.album),
         info(metadata.common.genre),
-        info(metadata.common.bpm),
+        metadata.common.bpm,
         metadata.common.picture ? metadata.common.picture[0] : undefined
       );
     }

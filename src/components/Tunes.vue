@@ -1,7 +1,7 @@
 <template>
   <v-layout row scrollable>
     <v-flex xs12>
-      <v-list two-line dense>
+      <v-list two-line>
         <template v-for="(tune, index) in tunes">
           <v-list-tile :key="index" avatar>
             <v-list-tile-avatar tile>
@@ -12,6 +12,9 @@
               <v-list-tile-title>{{ tune.title }}</v-list-tile-title>
               <v-list-tile-sub-title>{{ tune.artist + " - " + tune.album }}</v-list-tile-sub-title>
             </v-list-tile-content>
+            <v-list-tile-action>
+              <v-chip small>{{ tune.bpm }}</v-chip>
+            </v-list-tile-action>
           </v-list-tile>
         </template>
       </v-list>

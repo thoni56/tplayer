@@ -22,7 +22,7 @@ async function readMetadataForAllFiles() {
       // See https://stackoverflow.com/questions/40770425/tslint-codelyzer-ng-lint-error-for-in-statements-must-be-filtere
       const metadata = await mm.parseFile(files[index]);
       all[index] = new TuneInfo(files[index]);
-      all[index].fillFromCommonTags(metadata.common);
+      all[index].fillFromCommonTags(metadata);
     }
   }
   allTunes.push(...all);

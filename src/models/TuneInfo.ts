@@ -1,5 +1,5 @@
 import { IPicture } from 'music-metadata/lib/type';
-import { ICommonTagsResult } from 'music-metadata';
+import { ICommonTagsResult, IAudioMetadata } from 'music-metadata';
 import '../../public/vinyl.png';
 
 function pictureToHTML(picture: IPicture) {
@@ -9,13 +9,14 @@ function pictureToHTML(picture: IPicture) {
 const defaultCover: string = "/vinyl.png";
 
 export class TuneInfo {
+  public file?: string;
   public title?: string;
   public artist?: string;
   public album?: string;
   public genre?: string;
   public bpm?: number;
+  public duration?: number;
   public cover?: string;
-  public file?: string;
 
   constructor(file: string);
   constructor(
@@ -36,12 +37,13 @@ export class TuneInfo {
     this.cover = cover ? pictureToHTML(cover) : defaultCover;
   }
 
-  public fillFromCommonTags(tags: ICommonTagsResult) {
-    this.title = tags.title;
-    this.album = tags.album;
-    this.artist = tags.artist;
-    this.bpm = tags.bpm ? Math.round(tags.bpm) : undefined;
-    this.genre = tags.genre ? tags.genre[0] : undefined;
+  public fillFromCommonTags(metadata: IAudioMetadata) {
+    this.title = metadata.common.title;
+    this.album = metadata.common.album;
+    this.artist = metadata.common.artist;
+    this.bpm = metadata.common.bpm ? Math.round(metadata.common.bpm) : undefined;
+    this.genre = metadata.common.genre ? metadata.common.genre[0] : undefined;
+    this.duration = metadata.format.duration ? Math.round(metadata.format.duration) : undefined;
   }
 
 }

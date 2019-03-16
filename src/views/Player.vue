@@ -10,10 +10,12 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 import TuneInfo from "TuneInfo.vue";
 import Tunes from "@/components/Tunes.vue";
+import PlayerControls from "@/components/PlayerControls.vue";
 
 @Component({
   components: {
-    Tunes
+    Tunes,
+    PlayerControls
   }
 })
 export default class Player extends Vue {

@@ -9,8 +9,13 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import TuneInfo from "TuneInfo.vue";
+import Tunes from "@/components/Tunes.vue";
 
-@Component
+@Component({
+  components: {
+    Tunes
+  }
+})
 export default class Player extends Vue {
   @Prop() tunes!: TuneInfo[];
   public play() {}

@@ -18,15 +18,18 @@ const files: string[] = [];
 async function readMetadataForAllFiles() {
   const all = new Array(files.length);
   for (const index in files) {
-    const metadata = await mm.parseFile(files[index]);
-    all[index] = new TuneInfo(
-      info(metadata.common.title),
-      info(metadata.common.artist),
-      info(metadata.common.album),
-      info(metadata.common.genre),
-      info(metadata.common.bpm),
-      metadata.common.picture ? metadata.common.picture[0] : undefined
-    );
+    if (files.hasOwnProperty(index)) {
+      // See https://stackoverflow.com/questions/40770425/tslint-codelyzer-ng-lint-error-for-in-statements-must-be-filtere
+      const metadata = await mm.parseFile(files[index]);
+      all[index] = new TuneInfo(
+        info(metadata.common.title),
+        info(metadata.common.artist),
+        info(metadata.common.album),
+        info(metadata.common.genre),
+        info(metadata.common.bpm),
+        metadata.common.picture ? metadata.common.picture[0] : undefined
+      );
+    }
   }
   allTunes.push(...all);
 }

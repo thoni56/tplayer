@@ -31,7 +31,7 @@ export default class Filtering extends Vue {
 
   public data() {
     return {
-      genre_selected: [], // Nothing selected
+      genre_selected: [0, 1, 2, 3], // Everything selected
       current_tunes: this.tunes
     };
   }

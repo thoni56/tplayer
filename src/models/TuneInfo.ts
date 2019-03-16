@@ -1,8 +1,11 @@
 import { IPicture } from 'music-metadata/lib/type';
+import '../../public/vinyl.png';
 
 function pictureToHTML(picture: IPicture) {
   return "data:" + picture.format + ";base64," + picture.data.toString('base64');
 }
+
+const defaultCover: string = "/vinyl.png";
 
 export class TuneInfo {
   public title: string;
@@ -25,7 +28,7 @@ export class TuneInfo {
     this.album = album;
     this.genre = genre;
     this.bpm = bpm;
-    this.cover = cover ? pictureToHTML(cover) : "";  // TODO: Perhaps pre-load a pic from 'https://picsum.photos
+    this.cover = cover ? pictureToHTML(cover) : defaultCover;  // TODO: Perhaps pre-load a pic from 'https://picsum.photos
   }
 
 }

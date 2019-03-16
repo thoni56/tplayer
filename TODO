@@ -1,6 +1,30 @@
-☐ Move tune-finding to separate class (like it was ;-)
-☐ Let the genre toggle buttons in filtering be activated initially, and push to filter
-☐ Add image for tunes not having embedded cover art
-☐ Let found genres in the tunes create toggle buttons in filtering
-☐ Switch to node-walk when finding tunes since it should be more standard (don't need the speed of 'walkdir')
-☐ Upgrade npm 'npm i -g npm'
+Filtering:
+    ✔ Move tune-finding to separate class (like it was ;-) @done(19-03-16 12:19)
+    Genres:
+        ☐ Let the genre toggle buttons in filtering be activated initially, and push to filter
+        ☐ Let found genres in the tunes create toggle buttons in filtering
+    BPM:
+        ☐ Filter on range of BPM
+    Sorting:
+        ☐ Sort BPM
+            ☐ Up
+            ☐ Down
+        Random:
+            ☐ Random (any)
+            Random groups:
+                ☐ Random genres - which should not be mathematically random
+                ☐ Random tempo ranges
+                ☐ Random count within groups
+
+
+
+Player:
+    ☐ Play button
+    ☐ Click to play
+
+Graphics:
+    ☐ Add image for tunes not having embedded cover art
+
+System:
+    ☐ Upgrade npm 'npm i -g npm'
+    ☐ Switch to node-walk when finding tunes since it should be more standard (don't need the speed of 'walkdir')

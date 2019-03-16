@@ -5,16 +5,10 @@
       <v-btn outline fab small color="light-blue" @click="previousTrack">
         <v-icon>skip_previous</v-icon>
       </v-btn>
-      <v-btn outline fab small color="light-blue" @click="stopTrack">
-        <v-icon>stop</v-icon>
+      <v-btn outline fab color="light-blue" @click="playTrack">
+        <v-icon large>{{ this.icon }}</v-icon>
       </v-btn>
-      <v-btn outline fab color="light-blue" @click="playTrack()">
-        <v-icon large>play_arrow</v-icon>
-      </v-btn>
-      <v-btn outline fab small color="light-blue" @click="pauseTrack">
-        <v-icon>pause</v-icon>
-      </v-btn>
-      <v-btn outline fab small color="light-blue" @click="nextTrack">
+      <v-btn outline fab small color="light-blue" @click="$emit('play-track')">
         <v-icon>skip_next</v-icon>
       </v-btn>
       <v-spacer></v-spacer>
@@ -22,27 +16,29 @@
   </div>
 </template>
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
+import { Vue, Component, Emit } from "vue-property-decorator";
 
 @Component
 export default class PlayerControls extends Vue {
-  public previousTrack() {
+  public playing = false;
+  public icon: string = "play_arrow";
+
+  @Emit() public previousTrack() {
     console.log("Previous");
   }
 
-  public stopTrack() {
-    console.log("Stop");
-  }
-
   public playTrack() {
-    console.log("Play");
+    if (this.playing) {
+      this.$emit("pause-track");
+      this.icon = "play_arrow";
+    } else {
+      this.$emit("play-track");
+      this.icon = "pause";
+    }
+    this.playing = !this.playing;
   }
 
-  public pauseTrack() {
-    console.log("Pause");
-  }
-
-  public nextTrack() {
+  @Emit() public nextTrack() {
     console.log("Next");
   }
 }

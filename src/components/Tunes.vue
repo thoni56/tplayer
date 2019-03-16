@@ -1,7 +1,7 @@
 <template>
-  <v-layout row>
+  <v-layout row scrollable>
     <v-flex xs12>
-      <v-list two-line>
+      <v-list two-line dense>
         <template v-for="(tune, index) in tunes">
           <v-list-tile :key="index" avatar>
             <v-list-tile-avatar tile>
@@ -31,4 +31,8 @@ export default class Tunes extends Vue {
 </script>
 
 <style>
+.scrollable {
+  overflow-y: scroll;
+  height: calc(100vh - 250px);
+}
 </style>

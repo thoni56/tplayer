@@ -8,11 +8,11 @@
       "type": "chrome",
       "request": "attach",
       "name": "renderer : attach",
-      "webRoot": "${workspaceFolder}/src",
+      "webRoot": "${workspaceFolder}",
       "sourceMaps": true,
       "sourceMapPathOverrides": {
-        "webpack:///./src/*": "${webRoot}/*",
-        "webpack:///src/*": "${webRoot}/*"
+        "webpack:///./src/components/*.vue": "${webRoot}/src/components/*.vue",
+        "webpack:///./src/*": "${webRoot}/src/*",
       },
       "port": 9222,
       "url": "http://localhost:8080/#/",

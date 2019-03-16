@@ -1,5 +1,6 @@
 Filtering:
     ✔ Move tune-finding to separate class (like it was ;-) @done(19-03-16 12:19)
+    ☐ Scrollable list, but keep filters on top
     Genres:
         ☐ Let the genre toggle buttons in filtering be activated initially, and push to filter
         ☐ Let found genres in the tunes create toggle buttons in filtering
@@ -15,12 +16,19 @@ Filtering:
                 ☐ Random genres - which should not be mathematically random
                 ☐ Random tempo ranges
                 ☐ Random count within groups
-
-
+Settings:
+    ☐ Select directory to (re-)load tunes from
+    ☐ Fade settings
+        ☐ Fade out on pause
+        ☐ Fade in on play
+        ☐ Fade over for next tune
 
 Player:
-    ☐ Play button
+    ☐ Play
+    ☐ Pause
     ☐ Click to play
+    ☐ Remote control
+        ☐ Play and pause using remote control
 
 Graphics:
     ☐ Add image for tunes not having embedded cover art

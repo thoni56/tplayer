@@ -12,6 +12,8 @@
               <v-list-tile-title>{{ tune.title }}</v-list-tile-title>
               <v-list-tile-sub-title>{{ tune.artist + " - " + tune.album }}</v-list-tile-sub-title>
             </v-list-tile-content>
+            <v-spacer></v-spacer>
+            {{ formatTime(tune.duration) }}
             <v-list-tile-action>
               <v-chip small>{{ tune.bpm }}</v-chip>
             </v-list-tile-action>
@@ -30,6 +32,24 @@ import { TuneInfo } from "@/models/TuneInfo";
 export default class Tunes extends Vue {
   @Prop({ default: [] })
   public tunes!: TuneInfo[];
+
+  public formatTime(seconds: number) {
+    // Hours, minutes and seconds
+    var hrs = ~~(seconds / 3600);
+    var mins = ~~((seconds % 3600) / 60);
+    var secs = ~~seconds % 60;
+
+    // Output like "1:01" or "4:03:59" or "123:03:59"
+    var ret = "";
+
+    if (hrs > 0) {
+      ret += "" + hrs + ":" + (mins < 10 ? "0" : "");
+    }
+
+    ret += "" + mins + ":" + (secs < 10 ? "0" : "");
+    ret += "" + secs;
+    return ret;
+  }
 }
 </script>
 

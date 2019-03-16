@@ -16,7 +16,7 @@ export class TuneInfo {
     title: string,
     artist: string = 'unknown',
     album: string = 'unknown',
-    genre: string = 'unknown',
+    genre: string = '',         // TODO: allow more genres
     bpm: number = 0,
     cover: IPicture | undefined
   ) {

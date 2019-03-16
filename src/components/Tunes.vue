@@ -4,7 +4,7 @@
       <v-list two-line>
         <template v-for="(tune, index) in tunes">
           <v-list-tile :key="index" avatar>
-            <v-list-tile-avatar>
+            <v-list-tile-avatar tile>
               <img :src="tune.cover">
             </v-list-tile-avatar>
 

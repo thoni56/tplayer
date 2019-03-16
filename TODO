@@ -27,4 +27,5 @@ Graphics:
 
 System:
     ☐ Upgrade npm 'npm i -g npm'
+    ☐ Give progress feedback when loading tunes (load a batch of tunes at a time? progress bar?)
     ☐ Switch to node-walk when finding tunes since it should be more standard (don't need the speed of 'walkdir')

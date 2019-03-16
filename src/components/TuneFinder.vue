@@ -12,33 +12,23 @@ function info(field: any): any {
   return field ? field : "unknown";
 }
 
-function sleep(ms: number) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-async function pause() {
-  await sleep(1000);
-}
-
-// Load all music files
-
 export const allTunes: TuneInfo[] = [];
 const files: string[] = [];
 
 async function readMetadataForAllFiles() {
-  for (const file of files) {
-    const metadata = await mm.parseFile(file);
-    allTunes.push(
-      new TuneInfo(
-        info(metadata.common.title),
-        info(metadata.common.artist),
-        info(metadata.common.album),
-        info(metadata.common.genre),
-        info(metadata.common.bpm),
-        metadata.common.picture ? metadata.common.picture[0] : undefined
-      )
+  const all = new Array(files.length);
+  for (const index in files) {
+    const metadata = await mm.parseFile(files[index]);
+    all[index] = new TuneInfo(
+      info(metadata.common.title),
+      info(metadata.common.artist),
+      info(metadata.common.album),
+      info(metadata.common.genre),
+      info(metadata.common.bpm),
+      metadata.common.picture ? metadata.common.picture[0] : undefined
     );
   }
+  allTunes.push(...all);
 }
 
 const emitter = walk("C:/Users/Thomas/Music/iTunes/iTunes Media/Music");

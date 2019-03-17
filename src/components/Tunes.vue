@@ -3,7 +3,7 @@
     <v-flex xs12>
       <v-list two-line>
         <template v-for="(tune, index) in tunes">
-          <v-list-tile :key="index" avatar>
+          <v-list-tile :key="tune.file" avatar>
             <v-list-tile-avatar tile>
               <img :src="tune.cover">
             </v-list-tile-avatar>
@@ -18,6 +18,7 @@
               <v-chip small>{{ tune.bpm }}</v-chip>
             </v-list-tile-action>
           </v-list-tile>
+          <v-divider :key="index"/>
         </template>
       </v-list>
     </v-flex>

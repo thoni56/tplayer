@@ -1,8 +1,8 @@
 <template>
   <v-container>
     <h1>PLAYER</h1>
-    <v-btn v-on="play">Play</v-btn>
-    <v-btn v-on="pause">Pause</v-btn>
+    <PlayerControls v-on:play-track="playTrack" @pause-track="pauseTrack"/>
+    <Tunes :tunes="tunes"/>
   </v-container>
 </template>
 
@@ -19,8 +19,14 @@ import PlayerControls from "@/components/PlayerControls.vue";
   }
 })
 export default class Player extends Vue {
-  @Prop() tunes!: TuneInfo[];
-  public play() {}
-  public pause() {}
+  @Prop() public tunes!: TuneInfo[];
+
+  public playTrack() {
+    console.log("Play!");
+  }
+
+  public pauseTrack() {
+    console.log("Pause!");
+  }
 }
 </script>

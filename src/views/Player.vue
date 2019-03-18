@@ -12,10 +12,9 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 import { TuneInfo } from "@/models/TuneInfo";
 import Tunes from "@/components/Tunes.vue";
 import PlayerControls from "@/components/PlayerControls.vue";
+
 import { remote } from "electron";
-
 import fs from "fs";
-
 const dataurl = remote.require("dataurl");
 
 async function convertSongToUri(filePath: string): Promise<string> {
@@ -61,22 +60,31 @@ function fadeIn() {
 export default class Player extends Vue {
   @Prop() public tunes!: TuneInfo[];
 
+  private tuneIndex = 0; // At which track in the list?
+  private insideTune = false;
+
   public playTrack() {
-    convertSongToUri(this.tunes[0].file!).then(
-      uri => {
-        audio.src = uri;
-        audio.load();
-        audio.play();
-      },
-      err => {
-        // tslint:disable-next-line:no-console
-        console.log(err);
-      }
-    );
+    if (!this.insideTune) {
+      convertSongToUri(this.tunes[this.tuneIndex].file!).then(
+        uri => {
+          audio.src = uri;
+          audio.load();
+          fadeIn();
+          this.insideTune = true;
+        },
+        err => {
+          // tslint:disable-next-line:no-console
+          console.log(err);
+        }
+      );
+    } else {
+      fadeIn();
+    }
   }
 
   public pauseTrack() {
     fadeOut();
+    console.log(audio.currentTime);
   }
 }
 </script>

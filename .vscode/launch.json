@@ -11,8 +11,7 @@
       "webRoot": "${workspaceFolder}",
       "sourceMaps": true,
       "sourceMapPathOverrides": {
-        "webpack:///./src/components/*.vue": "${webRoot}/src/components/*.vue",
-        "webpack:///./src/*": "${webRoot}/src/*",
+        "webpack:///./src/*": "${webRoot}/src/*"
       },
       "port": 9222,
       "url": "http://localhost:8080/#/",
@@ -26,7 +25,8 @@
       "runtimeArgs": [
         "${workspaceFolder}/dist_electron/index.js",
         "--remote-debugging-port=9222"
-      ]
+      ],
+      "sourceMaps": true
     }
   ],
   "compounds": [

@@ -1,6 +1,6 @@
 Filtering:
     ✔ Move tune-finding to separate class (like it was ;-) @done(19-03-16 12:19)
-    ☐ Scrollable list, but keep filters on top
+    ✔ Scrollable list, but keep filters on top @done(19-03-17 21:30)
     Genres:
         ☐ Let the genre toggle buttons in filtering be activated initially, and push to filter
         ☐ Let found genres in the tunes create toggle buttons in filtering
@@ -24,9 +24,8 @@ Settings:
         ☐ Fade over for next tune
 
 Player:
-    ☐ Play
-    ☐ Pause
-    ☐ Click to play
+    ☐ Play and Pause
+    ☐ Double-click on tune to play
     ☐ Remote control
         ☐ Play and pause using remote control
 

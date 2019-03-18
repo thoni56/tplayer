@@ -23,10 +23,6 @@ export default class PlayerControls extends Vue {
   public playing = false;
   public icon: string = "play_arrow";
 
-  @Emit() public previousTrack() {
-    console.log("Previous");
-  }
-
   public playTrack() {
     if (this.playing) {
       this.$emit("pause-track");
@@ -39,7 +35,12 @@ export default class PlayerControls extends Vue {
   }
 
   @Emit() public nextTrack() {
+    // tslint:disable-next-line:no-console
     console.log("Next");
+  }
+  @Emit() public previousTrack() {
+    // tslint:disable-next-line:no-console
+    console.log("Previous");
   }
 }
 </script>

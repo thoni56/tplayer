@@ -50,6 +50,7 @@ emitter.on("end", () => {
   readMetadataForAllFiles();
 });
 emitter.on("error", (path: string) => {
-  console.log("Error parsing ", path);
+  // tslint:disable-next-line:no-console
+  console.log("Error parsing '", path, "'");
 });
 </script>

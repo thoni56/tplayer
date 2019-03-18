@@ -2,8 +2,8 @@ Filtering:
     ✔ Move tune-finding to separate class (like it was ;-) @done(19-03-16 12:19)
     ✔ Scrollable list, but keep filters on top @done(19-03-17 21:30)
     Genres:
-        ☐ Let the genre toggle buttons in filtering be activated initially, and push to filter
-        ☐ Let found genres in the tunes create toggle buttons in filtering
+        ☐ Push to filter on genre
+        ☐ Let found genres in the tunes create buttons for filtering
     BPM:
         ☐ Filter on range of BPM
     Sorting:
@@ -24,10 +24,15 @@ Settings:
         ☐ Fade over for next tune
 
 Player:
-    ☐ Play and Pause
+    ✔ Play and Pause @done(19-03-18 22:55)
+    ✔ Fade in and out on play/pause @done(19-03-18 23:16)
+    ☐ Progress Bar
     ☐ Double-click on tune to play
     ☐ Remote control
         ☐ Play and pause using remote control
+    ☐ Next/Previous
+    ☐ Center playlist so that playing song is visible
+    ☐ BIG title
 
 Graphics:
     ☐ Add image for tunes not having embedded cover art

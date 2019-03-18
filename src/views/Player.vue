@@ -31,6 +31,26 @@ async function convertSongToUri(filePath: string): Promise<string> {
 }
 
 const audio = new Audio();
+const fadeStep = 0.1;
+const fadeTime = 100;
+function fadeOut() {
+  if (audio.volume > fadeStep) {
+    audio.volume -= fadeStep;
+    setTimeout(fadeOut, fadeTime);
+  } else {
+    audio.volume = 0;
+    audio.pause();
+  }
+}
+function fadeIn() {
+  audio.play();
+  if (audio.volume < 1 - fadeStep) {
+    audio.volume += fadeStep;
+    setTimeout(fadeIn, fadeTime);
+  } else {
+    audio.volume = 1;
+  }
+}
 
 @Component({
   components: {
@@ -49,13 +69,14 @@ export default class Player extends Vue {
         audio.play();
       },
       err => {
+        // tslint:disable-next-line:no-console
         console.log(err);
       }
     );
   }
 
   public pauseTrack() {
-    audio.pause();
+    fadeOut();
   }
 }
 </script>

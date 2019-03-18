@@ -1,5 +1,5 @@
 import { IPicture } from 'music-metadata/lib/type';
-import { ICommonTagsResult, IAudioMetadata } from 'music-metadata';
+import { IAudioMetadata } from 'music-metadata';
 import '../../public/vinyl.png';
 
 function pictureToHTML(picture: IPicture) {

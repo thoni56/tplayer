@@ -3,8 +3,8 @@
     <v-flex xs12>
       <v-list two-line>
         <template v-for="(tune, index) in tunes">
-          <v-list-tile :key="tune.file" avatar>
-            <v-list-tile-avatar tile>
+          <v-list-tile :key="tune.file" :class="{'highlighted': currentTune == tune.file}">
+            <v-list-tile-avatar>
               <img :src="tune.cover">
             </v-list-tile-avatar>
 
@@ -18,6 +18,7 @@
               <v-chip small>{{ tune.bpm }}</v-chip>
             </v-list-tile-action>
           </v-list-tile>
+
           <v-divider :key="index"/>
         </template>
       </v-list>
@@ -31,8 +32,11 @@ import { TuneInfo } from "@/models/TuneInfo";
 
 @Component
 export default class Tunes extends Vue {
-  @Prop({ default: [] })
+  @Prop({
+    default: []
+  })
   public tunes!: TuneInfo[];
+  @Prop() public currentTune: string = "";
 
   public formatTime(seconds: number) {
     // Hours, minutes and seconds
@@ -58,5 +62,9 @@ export default class Tunes extends Vue {
 .scrollable {
   overflow-y: scroll;
   height: calc(100vh - 250px);
+}
+
+.highlighted {
+  background-color: red;
 }
 </style>

@@ -2,7 +2,7 @@
   <v-container>
     <h1>PLAYER</h1>
     <PlayerControls v-on:play-track="playTrack" @pause-track="pauseTrack"/>
-    <Tunes :tunes="tunes"/>
+    <Tunes :tunes="tunes" :currentTune="tunes[tuneIndex].file"/>
     <audio/>
   </v-container>
 </template>
@@ -52,9 +52,6 @@ function fadeIn() {
   }
 }
 
-let tuneIndex = 0; // At which track in the list?
-let insideTune = false;
-
 @Component({
   components: {
     Tunes,
@@ -64,14 +61,17 @@ let insideTune = false;
 export default class Player extends Vue {
   @Prop() public tunes!: TuneInfo[];
 
+  private tuneIndex = 14;
+  private insideTune = false;
+
   public playTrack() {
-    if (!insideTune) {
-      convertSongToUri(this.tunes[tuneIndex].file!).then(
+    if (!this.insideTune) {
+      convertSongToUri(this.tunes[this.tuneIndex].file!).then(
         uri => {
           audio.src = uri;
           audio.load();
           fadeIn();
-          insideTune = true;
+          this.insideTune = true;
         },
         err => {
           // tslint:disable-next-line:no-console
@@ -81,13 +81,15 @@ export default class Player extends Vue {
     } else {
       fadeIn();
     }
-    audio.addEventListener("ended", () => {
+    // TODO: This should be in mounted()?
+    let self = this;
+    audio.addEventListener("ended", function() {
       // tslint:disable-next-line:no-console
       console.log("ended");
-      insideTune = false;
-      tuneIndex++;
-      if (tuneIndex <= this.tunes.length) {
-        this.playTrack();
+      self.insideTune = false;
+      self.tuneIndex++;
+      if (self.tuneIndex <= self.tunes.length) {
+        self.playTrack();
       }
     });
   }

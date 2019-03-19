@@ -1,7 +1,7 @@
 <template>
   <v-container>
-    <h1>PLAYER</h1>
     <PlayerControls v-on:play-track="playTrack" @pause-track="pauseTrack"/>
+    <Playbar :totalSeconds="47" :playedSeconds="13"/>
     <Tunes :tunes="tunes" :currentTune="tunes[tuneIndex].file"/>
     <audio/>
   </v-container>
@@ -12,6 +12,8 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 import { TuneInfo } from "@/models/TuneInfo";
 import Tunes from "@/components/Tunes.vue";
 import PlayerControls from "@/components/PlayerControls.vue";
+import Playbar from "@/components/Playbar.vue";
+
 
 import { remote } from "electron";
 import fs from "fs";
@@ -55,7 +57,8 @@ function fadeIn() {
 @Component({
   components: {
     Tunes,
-    PlayerControls
+    PlayerControls,
+    Playbar
   }
 })
 export default class Player extends Vue {

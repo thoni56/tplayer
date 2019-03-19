@@ -30,6 +30,7 @@ async function convertSongToUri(filePath: string): Promise<string> {
 }
 
 const audio = new Audio();
+
 const fadeStep = 0.1;
 const fadeTime = 100;
 function fadeOut() {
@@ -51,6 +52,9 @@ function fadeIn() {
   }
 }
 
+let tuneIndex = 0; // At which track in the list?
+let insideTune = false;
+
 @Component({
   components: {
     Tunes,
@@ -60,17 +64,14 @@ function fadeIn() {
 export default class Player extends Vue {
   @Prop() public tunes!: TuneInfo[];
 
-  private tuneIndex = 0; // At which track in the list?
-  private insideTune = false;
-
   public playTrack() {
-    if (!this.insideTune) {
-      convertSongToUri(this.tunes[this.tuneIndex].file!).then(
+    if (!insideTune) {
+      convertSongToUri(this.tunes[tuneIndex].file!).then(
         uri => {
           audio.src = uri;
           audio.load();
           fadeIn();
-          this.insideTune = true;
+          insideTune = true;
         },
         err => {
           // tslint:disable-next-line:no-console
@@ -80,11 +81,19 @@ export default class Player extends Vue {
     } else {
       fadeIn();
     }
+    audio.addEventListener("ended", () => {
+      // tslint:disable-next-line:no-console
+      console.log("ended");
+      insideTune = false;
+      tuneIndex++;
+      if (tuneIndex <= this.tunes.length) {
+        this.playTrack();
+      }
+    });
   }
 
   public pauseTrack() {
     fadeOut();
-    console.log(audio.currentTime);
   }
 }
 </script>

@@ -26,6 +26,7 @@ Settings:
 Player:
     ✔ Play and Pause @done(19-03-18 22:55)
     ✔ Fade in and out on play/pause @done(19-03-18 23:16)
+    ✔ Play next tune when finished @done(19-03-19 01:15)
     ☐ Progress Bar
     ☐ Double-click on tune to play
     ☐ Remote control

@@ -28,6 +28,8 @@ Player:
     ✔ Fade in and out on play/pause @done(19-03-18 23:16)
     ✔ Play next tune when finished @done(19-03-19 01:15)
     ✔ Highlight playing tune @done(19-03-19 08:29)
+    ✔ Highlight should stay even when navigating back and forth @done(19-03-19 08:43)
+    ☐ Play icon state should stay even when navigating back and forth
     ☐ Progress Bar
     ☐ Double-click on tune to play
     ☐ Next/Previous

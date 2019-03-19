@@ -36,7 +36,7 @@ export default class Tunes extends Vue {
     default: []
   })
   public tunes!: TuneInfo[];
-  @Prop() public currentTune: string = "";
+  @Prop() public currentTune!: string;
 
   public formatTime(seconds: number) {
     // Hours, minutes and seconds

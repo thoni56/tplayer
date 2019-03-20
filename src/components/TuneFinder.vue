@@ -6,6 +6,7 @@ import { TuneInfo } from "@/models/TuneInfo";
 
 const walker = remote.require("walkdir");
 
+// Need this to make vue(?) Hot Loader work
 export default {};
 
 function info(field: any): any {
@@ -20,7 +21,6 @@ async function readMetadataForAllFiles() {
   let previous = 0;
   for (let index = 0; index < files.length; index++) {
     if (files.hasOwnProperty(index)) {
-      // See https://stackoverflow.com/questions/40770425/tslint-codelyzer-ng-lint-error-for-in-statements-must-be-filtere
       const metadata = await mm.parseFile(files[index]);
       all[index] = new TuneInfo(files[index]);
       all[index].fillFromCommonTags(metadata);

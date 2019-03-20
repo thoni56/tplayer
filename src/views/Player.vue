@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <PlayerControls v-on:play-track="playTrack" @pause-track="pauseTrack"/>
+    <PlayerControls @play-track="playTrack" @pause-track="pauseTrack"/>
     <Playbar :secondsPlayed="timePlayed" :secondsTotal="timeTotal"/>
     <Tunes :tunes="tunes" :currentTune="currentTune"/>
     <audio/>
@@ -30,26 +30,26 @@ async function convertSongToUri(filePath: string): Promise<string> {
   return await songPromise;
 }
 
-const audio = new Audio();
+let self: Player;
 
 const fadeStep = 0.1;
 const fadeTime = 100;
 function fadeOut() {
-  if (audio.volume > fadeStep) {
-    audio.volume -= fadeStep;
+  if (self.audio.volume > fadeStep) {
+    self.audio.volume -= fadeStep;
     setTimeout(fadeOut, fadeTime);
   } else {
-    audio.volume = 0;
-    audio.pause();
+    self.audio.volume = 0;
+    self.audio.pause();
   }
 }
 function fadeIn() {
-  audio.play();
-  if (audio.volume < 1 - fadeStep) {
-    audio.volume += fadeStep;
+  self.audio.play();
+  if (self.audio.volume < 1 - fadeStep) {
+    self.audio.volume += fadeStep;
     setTimeout(fadeIn, fadeTime);
   } else {
-    audio.volume = 1;
+    self.audio.volume = 1;
   }
 }
 
@@ -66,21 +66,43 @@ export default class Player extends Vue {
   public tuneIndex = 14;
   public insideTune = false;
   public timePlayed = 0;
-  public timeTotal = 234;
+  public timeTotal = 0;
+  public audio = new Audio();
+
+  public mounted() {
+    self = this;
+    this.audio.addEventListener("playing", () => {
+      self.timeTotal = self.audio.duration;
+    });
+    this.audio.addEventListener("ended", () => {
+      self.insideTune = false;
+      self.tuneIndex++;
+      if (self.tuneIndex <= self.tunes.length) {
+        self.playTrack();
+      }
+    });
+  }
 
   get currentTune() {
-    if (this.tuneIndex < this.tunes.length)
+    if (this.tuneIndex < this.tunes.length) {
       return this.tunes[this.tuneIndex].file;
-    else return undefined;
+    } else {
+      return undefined;
+    }
   }
 
   public playTrack() {
-    if (this.tunes.length == 0) return;
+    if (this.tunes.length === 0) {
+      return;
+    }
     if (!this.insideTune) {
+      if (!this.tuneIndex) {
+        this.tuneIndex = 0;
+      }
       convertSongToUri(this.tunes[this.tuneIndex].file!).then(
         uri => {
-          audio.src = uri;
-          audio.load();
+          self.audio.src = uri;
+          self.audio.load();
           fadeIn();
           this.insideTune = true;
         },
@@ -92,17 +114,6 @@ export default class Player extends Vue {
     } else {
       fadeIn();
     }
-    // TODO: This should be in mounted()?
-    const self = this;
-    audio.addEventListener("ended", () => {
-      // tslint:disable-next-line:no-console
-      console.log("ended");
-      self.insideTune = false;
-      self.tuneIndex++;
-      if (self.tuneIndex <= self.tunes.length) {
-        self.playTrack();
-      }
-    });
   }
 
   public pauseTrack() {

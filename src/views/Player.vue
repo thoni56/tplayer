@@ -68,6 +68,7 @@ export default class Player extends Vue {
   private insideTune = false;
 
   public playTrack() {
+    if (this.tunes.length == 0) return;
     if (!this.insideTune) {
       convertSongToUri(this.tunes[this.tuneIndex].file!).then(
         uri => {

@@ -1,6 +1,7 @@
 Filtering:
     ✔ Move tune-finding to separate class (like it was ;-) @done(19-03-16 12:19)
     ✔ Scrollable list, but keep filters on top @done(19-03-17 21:30)
+    ☐ Load tunes on startup (now requires reload for some reason)
     Genres:
         ☐ Push to filter on genre
         ☐ Let found genres in the tunes create buttons for filtering

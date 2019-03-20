@@ -13,7 +13,7 @@
               <v-list-tile-sub-title>{{ tune.artist + " - " + tune.album }}</v-list-tile-sub-title>
             </v-list-tile-content>
             <v-spacer></v-spacer>
-            {{ formatTime(tune.duration) }}
+            {{ formattedDuration(tune) }}
             <v-list-tile-action>
               <v-chip small>{{ tune.bpm }}</v-chip>
             </v-list-tile-action>
@@ -29,6 +29,9 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { TuneInfo } from "@/models/TuneInfo";
+import { formatTime } from "@/models/timeFormatter";
+
+const ft = formatTime; // To ensure a reference exists
 
 @Component
 export default class Tunes extends Vue {
@@ -37,23 +40,8 @@ export default class Tunes extends Vue {
   })
   public tunes!: TuneInfo[];
   @Prop() public currentTune!: string;
-
-  public formatTime(seconds: number) {
-    // Hours, minutes and seconds
-    const hrs = Math.round(seconds / 3600);
-    const mins = Math.round((seconds % 3600) / 60);
-    const secs = Math.round(seconds % 60);
-
-    // Output like "1:01" or "4:03:59" or "123:03:59"
-    let ret = "";
-
-    if (hrs > 0) {
-      ret += "" + hrs + ":" + (mins < 10 ? "0" : "");
-    }
-
-    ret += "" + mins + ":" + (secs < 10 ? "0" : "");
-    ret += "" + secs;
-    return ret;
+  public formattedDuration(tune: TuneInfo): string {
+    return formatTime(tune.duration!);
   }
 }
 </script>

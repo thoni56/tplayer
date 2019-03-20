@@ -21,9 +21,15 @@ export default class Playbar extends Vue {
   @Prop() private secondsPlayed!: number;
   @Prop() private secondsTotal!: number;
 
-  private timePlayed = formatTime(this.secondsPlayed);
-  private timeTotal = formatTime(this.secondsTotal);
+  get timePlayed() {
+    return formatTime(this.secondsPlayed);
+  }
+  get timeTotal() {
+    return formatTime(this.secondsTotal);
+  }
 
-  private percent: number = 47;
+  get percent() {
+    return (this.secondsPlayed / this.secondsTotal) * 100;
+  }
 }
 </script>

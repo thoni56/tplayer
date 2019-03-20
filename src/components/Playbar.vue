@@ -1,25 +1,29 @@
 <template>
-    <div>
-        <v-layout justify-space-between >
-            <v-container style="padding-left:0px; padding-bottom:0px;">
-            <div style="text-align:left">{{playedSeconds}}</div>
-            </v-container>
-            <v-container style="padding-right:0px; padding-bottom:0px;">
-            <div style="text-align:right">{{totalSeconds}}</div>
-            </v-container>
-        </v-layout>
-        <v-progress-linear :value="percent" />
-    </div>
+  <div>
+    <v-layout justify-space-between>
+      <v-container style="padding-left:0px; padding-bottom:0px;">
+        <div style="text-align:left">{{timePlayed}}</div>
+      </v-container>
+      <v-container style="padding-right:0px; padding-bottom:0px;">
+        <div style="text-align:right">{{timeTotal}}</div>
+      </v-container>
+    </v-layout>
+    <v-progress-linear height="40" :value="percent"/>
+  </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
+import { formatTime } from "@/models/timeFormatter";
 
 @Component
 export default class Playbar extends Vue {
-    @Prop() private totalSeconds!: number;
-    @Prop() private playedSeconds!: number;
+  @Prop() private secondsPlayed!: number;
+  @Prop() private secondsTotal!: number;
 
-    private percent: number = 47;
+  private timePlayed = formatTime(this.secondsPlayed);
+  private timeTotal = formatTime(this.secondsTotal);
+
+  private percent: number = 47;
 }
 </script>

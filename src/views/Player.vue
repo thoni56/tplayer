@@ -1,8 +1,8 @@
 <template>
   <v-container>
     <PlayerControls v-on:play-track="playTrack" @pause-track="pauseTrack"/>
-    <Playbar :totalSeconds="47" :playedSeconds="13"/>
-    <Tunes :tunes="tunes" :currentTune="tunes[tuneIndex].file"/>
+    <Playbar :secondsPlayed="timePlayed" :secondsTotal="timeTotal"/>
+    <Tunes :tunes="tunes" :currentTune="currentTune"/>
     <audio/>
   </v-container>
 </template>
@@ -13,7 +13,6 @@ import { TuneInfo } from "@/models/TuneInfo";
 import Tunes from "@/components/Tunes.vue";
 import PlayerControls from "@/components/PlayerControls.vue";
 import Playbar from "@/components/Playbar.vue";
-
 
 import { remote } from "electron";
 import fs from "fs";
@@ -56,16 +55,24 @@ function fadeIn() {
 
 @Component({
   components: {
-    Tunes,
     PlayerControls,
-    Playbar
+    Playbar,
+    Tunes
   }
 })
 export default class Player extends Vue {
   @Prop() public tunes!: TuneInfo[];
 
-  private tuneIndex = 14;
-  private insideTune = false;
+  public tuneIndex = 14;
+  public insideTune = false;
+  public timePlayed = 0;
+  public timeTotal = 234;
+
+  get currentTune() {
+    if (this.tuneIndex < this.tunes.length)
+      return this.tunes[this.tuneIndex].file;
+    else return undefined;
+  }
 
   public playTrack() {
     if (this.tunes.length == 0) return;
@@ -86,8 +93,8 @@ export default class Player extends Vue {
       fadeIn();
     }
     // TODO: This should be in mounted()?
-    let self = this;
-    audio.addEventListener("ended", function() {
+    const self = this;
+    audio.addEventListener("ended", () => {
       // tslint:disable-next-line:no-console
       console.log("ended");
       self.insideTune = false;

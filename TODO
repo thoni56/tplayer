@@ -19,6 +19,7 @@ Filtering:
                 ☐ Random count within groups
 Settings:
     ☐ Select directory to (re-)load tunes from
+    ☐ Persist path to tunes directory
     ☐ Fade settings
         ☐ Fade out on pause
         ☐ Fade in on play
@@ -32,24 +33,25 @@ Player:
     ✔ Highlight should stay even when navigating back and forth @done(19-03-19 08:43)
     ✔ Show total time of tune @done(19-03-21 01:06)
     ✔ Next - start playing next tune @done(19-03-21 01:09)
-    ☐ Show played time of tune
-    ☐ Progress Bar
+    ✔ Show played time of tune @done(19-03-21 07:52)
+    ✔ Progress Bar @done(19-03-21 07:52)
     ☐ Next - if playing, play, else just move
     ☐ Previous
     ☐ Play icon state should stay even when navigating back and forth
+    ☐ BIG title, album etc, and smaller list
     ☐ Double-click on tune to play
     ☐ Center playlist so that playing song is visible
-    ☐ BIG title, album etc, and smaller list
     ☐ Normalize volume
     ☐ Remote control
         ☐ Play and pause using remote control
-    ☐ Pushing forward quickly aborts play requests with a new load request which causes player to become out of sync
+    ☐ BUG: Pushing forward or play/pause quickly causes player to come out of sync
 
 Graphics:
-    ☐ Add image for tunes not having embedded cover art
+    ✔ Add image for tunes not having embedded cover art @done(19-03-21 07:50)
+    ✔ BUG: Is loading of cover art from tunes broken? @done(19-03-21 09:18)
 
 System:
     ✔ Upgrade npm 'npm i -g npm' @done(19-03-20 22:27)
     ✔ Give progress feedback when loading tunes (load a batch of tunes at a time? progress bar?) @done(19-03-20 22:27)
-    ☐ Switch to node-walk when finding tunes since it should be more standard (don't need the speed of 'walkdir')
     ☐ Prevent screen lock
+    ☐ Switch to node-walk when finding tunes since it should be more standard (don't need the speed of 'walkdir')

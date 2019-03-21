@@ -44,6 +44,7 @@ export class TuneInfo {
     this.bpm = metadata.common.bpm ? Math.round(metadata.common.bpm) : undefined;
     this.genre = metadata.common.genre ? metadata.common.genre[0] : undefined;
     this.duration = metadata.format.duration ? Math.round(metadata.format.duration) : undefined;
+    this.cover = metadata.common.picture ? pictureToHTML(metadata.common.picture[0]) : defaultCover;
   }
 
 }

@@ -2,13 +2,13 @@
   <div>
     <v-toolbar flat height="90">
       <v-spacer></v-spacer>
-      <v-btn outline fab small color="#1976d2" @click="previousTrack">
+      <v-btn outline fab medium color="#1976d2" @click="previousTrack">
         <v-icon>skip_previous</v-icon>
       </v-btn>
-      <v-btn outline fab color="#1976d2" @click="playTrack">
-        <v-icon large>{{ this.icon }}</v-icon>
+      <v-btn outline fab large color="#1976d2" @click="playOrPauseTrack">
+        <v-icon>{{ icon }}</v-icon>
       </v-btn>
-      <v-btn outline fab small color="#1976d2" @click="$emit('next-track')">
+      <v-btn outline fab medium color="#1976d2" @click="$emit('next-track')">
         <v-icon>skip_next</v-icon>
       </v-btn>
       <v-spacer></v-spacer>
@@ -16,24 +16,23 @@
   </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Emit } from "vue-property-decorator";
+import { Vue, Component, Emit, Prop } from "vue-property-decorator";
 
 @Component
 export default class PlayerControls extends Vue {
-  public playing = false;
-  public icon: string = "play_arrow";
+  @Prop() private playing = false;
 
-  public playTrack() {
+  public playOrPauseTrack() {
     if (this.playing) {
       this.$emit("pause-track");
-      this.icon = "play_arrow";
     } else {
       this.$emit("play-track");
-      this.icon = "pause";
     }
-    this.playing = !this.playing;
   }
 
+  get icon() {
+    return this.playing ? "pause" : "play_arrow";
+  }
   @Emit() public nextTrack() {
     // tslint:disable-next-line:no-console
     console.log("Next");

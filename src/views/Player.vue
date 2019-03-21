@@ -1,6 +1,11 @@
 <template>
   <v-container>
-    <PlayerControls @play-track="playTrack" @pause-track="pauseTrack" @next-track="nextTrack"/>
+    <PlayerControls
+      :playing="playing"
+      @play-track="playTrack"
+      @pause-track="pauseTrack"
+      @next-track="nextTrack"
+    />
     <Playbar :secondsPlayed="timePlayed" :secondsTotal="timeTotal"/>
     <Tunes :tunes="tunes" :currentTune="currentTune"/>
     <audio/>
@@ -69,6 +74,7 @@ function playTimer() {
 export default class Player extends Vue {
   @Prop() public tunes!: TuneInfo[];
 
+  public playing = false;
   public tuneIndex = 14;
   public insideTune = false;
   public timePlayed = 0;
@@ -122,10 +128,12 @@ export default class Player extends Vue {
     } else {
       fadeIn();
     }
+    this.playing = true;
   }
 
   public pauseTrack() {
     fadeOut();
+    this.playing = false;
   }
 
   public nextTrack() {

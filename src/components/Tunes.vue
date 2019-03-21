@@ -53,6 +53,6 @@ export default class Tunes extends Vue {
 }
 
 .highlighted {
-  background-color: red;
+  background-color: #1976d2;
 }
 </style>

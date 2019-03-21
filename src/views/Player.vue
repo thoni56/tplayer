@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <PlayerControls @play-track="playTrack" @pause-track="pauseTrack"/>
+    <PlayerControls @play-track="playTrack" @pause-track="pauseTrack" @next-track="nextTrack"/>
     <Playbar :secondsPlayed="timePlayed" :secondsTotal="timeTotal"/>
     <Tunes :tunes="tunes" :currentTune="currentTune"/>
     <audio/>
@@ -16,6 +16,7 @@ import Playbar from "@/components/Playbar.vue";
 
 import { remote } from "electron";
 import fs from "fs";
+import { setTimeout } from "timers";
 const dataurl = remote.require("dataurl");
 
 async function convertSongToUri(filePath: string): Promise<string> {
@@ -53,6 +54,11 @@ function fadeIn() {
   }
 }
 
+function playTimer() {
+  self.timePlayed = self.audio.currentTime;
+  setTimeout(playTimer, 200);
+}
+
 @Component({
   components: {
     PlayerControls,
@@ -81,6 +87,8 @@ export default class Player extends Vue {
         self.playTrack();
       }
     });
+
+    setTimeout(playTimer, 200);
   }
 
   get currentTune() {
@@ -118,6 +126,15 @@ export default class Player extends Vue {
 
   public pauseTrack() {
     fadeOut();
+  }
+
+  public nextTrack() {
+    if (this.tuneIndex <= this.tunes.length - 1) {
+      this.pauseTrack();
+      this.insideTune = false;
+      this.tuneIndex++;
+      this.playTrack();
+    }
   }
 }
 </script>

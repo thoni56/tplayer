@@ -8,7 +8,7 @@
       <v-btn outline fab color="#1976d2" @click="playTrack">
         <v-icon large>{{ this.icon }}</v-icon>
       </v-btn>
-      <v-btn outline fab small color="#1976d2" @click="$emit('play-track')">
+      <v-btn outline fab small color="#1976d2" @click="$emit('next-track')">
         <v-icon>skip_next</v-icon>
       </v-btn>
       <v-spacer></v-spacer>

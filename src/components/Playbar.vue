@@ -5,7 +5,10 @@
         <div style="text-align:left">{{timePlayed}}</div>
       </v-container>
       <v-container style="padding-right:0px; padding-bottom:0px;">
-        <div style="text-align:right">{{timeTotal}}</div>
+        <div style="text-align:center">{{timeTotal}}</div>
+      </v-container>
+      <v-container style="padding-right:0px; padding-bottom:0px;">
+        <div style="text-align:right">{{timeRemaining}}</div>
       </v-container>
     </v-layout>
     <v-progress-linear height="40" :value="percent"/>
@@ -26,6 +29,9 @@ export default class Playbar extends Vue {
   }
   get timeTotal() {
     return formatTime(this.secondsTotal);
+  }
+  get timeRemaining() {
+    return "-" + formatTime(this.secondsTotal - this.secondsPlayed);
   }
 
   get percent() {

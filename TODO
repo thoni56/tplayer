@@ -30,14 +30,20 @@ Player:
     ✔ Play next tune when finished @done(19-03-19 01:15)
     ✔ Highlight playing tune @done(19-03-19 08:29)
     ✔ Highlight should stay even when navigating back and forth @done(19-03-19 08:43)
-    ☐ Play icon state should stay even when navigating back and forth
+    ✔ Show total time of tune @done(19-03-21 01:06)
+    ✔ Next - start playing next tune @done(19-03-21 01:09)
+    ☐ Show played time of tune
     ☐ Progress Bar
+    ☐ Next - if playing, play, else just move
+    ☐ Previous
+    ☐ Play icon state should stay even when navigating back and forth
     ☐ Double-click on tune to play
-    ☐ Next/Previous
     ☐ Center playlist so that playing song is visible
     ☐ BIG title, album etc, and smaller list
+    ☐ Normalize volume
     ☐ Remote control
         ☐ Play and pause using remote control
+    ☐ Pushing forward quickly aborts play requests with a new load request which causes player to become out of sync
 
 Graphics:
     ☐ Add image for tunes not having embedded cover art

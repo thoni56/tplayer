@@ -40,23 +40,26 @@ let self: Player;
 
 const fadeStep = 0.1;
 const fadeTime = 100;
-function fadeOut() {
+async function fadeOut() {
   if (self.audio.volume > fadeStep) {
     self.audio.volume -= fadeStep;
     setTimeout(fadeOut, fadeTime);
   } else {
     self.audio.volume = 0;
-    self.audio.pause();
+    await self.audio.pause();
   }
+  self.playing = false;
 }
-function fadeIn() {
-  self.audio.play();
+
+async function fadeIn() {
+  await self.audio.play();
   if (self.audio.volume < 1 - fadeStep) {
     self.audio.volume += fadeStep;
     setTimeout(fadeIn, fadeTime);
   } else {
     self.audio.volume = 1;
   }
+  self.playing = true;
 }
 
 function playTimer() {
@@ -80,6 +83,7 @@ export default class Player extends Vue {
   public timePlayed = 0;
   public timeTotal = 0;
   public audio = new Audio();
+  private tuneLoaded = false;
 
   public mounted() {
     self = this;
@@ -105,43 +109,38 @@ export default class Player extends Vue {
     }
   }
 
-  public playTrack() {
+  private async loadTune(index: number) {
+    const uri = await convertSongToUri(this.tunes[index].file!);
+    self.audio.src = uri;
+    await self.audio.load();
+    this.insideTune = true;
+    this.tuneIndex = index;
+    this.tuneLoaded = true;
+  }
+
+  public async playTrack() {
     if (this.tunes.length === 0) {
       return;
     }
     if (!this.insideTune) {
-      if (!this.tuneIndex) {
-        this.tuneIndex = 0;
-      }
-      convertSongToUri(this.tunes[this.tuneIndex].file!).then(
-        uri => {
-          self.audio.src = uri;
-          self.audio.load();
-          fadeIn();
-          this.insideTune = true;
-        },
-        err => {
-          // tslint:disable-next-line:no-console
-          console.log(err);
-        }
-      );
-    } else {
-      fadeIn();
+      await this.loadTune(this.tuneIndex);
     }
-    this.playing = true;
+    fadeIn();
   }
 
-  public pauseTrack() {
+  public async pauseTrack() {
     fadeOut();
-    this.playing = false;
   }
 
-  public nextTrack() {
+  public async nextTrack() {
     if (this.tuneIndex <= this.tunes.length - 1) {
-      this.pauseTrack();
-      this.insideTune = false;
+      const wasPlaying = this.playing;
+      if (this.playing) {
+        await this.pauseTrack();
+      }
       this.tuneIndex++;
-      this.playTrack();
+      await this.loadTune(this.tuneIndex);
+      if (wasPlaying) await this.playTrack();
     }
   }
 }

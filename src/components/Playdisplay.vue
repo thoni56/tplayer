@@ -4,7 +4,7 @@
       <div style="float:left;">
         <img style="height:35vh;width:35vh;" :src="cover">
       </div>
-      <div style="float:left;margin-left:20px;">
+      <div style="padding-left:20px; overflow:auto;">
         <div class="display-4 clipped">{{ title }}</div>
         <div style="float:left;">
           <div class="display-3 clipped">{{ artist }}</div>

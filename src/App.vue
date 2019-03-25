@@ -17,7 +17,7 @@
       <v-toolbar-title>tplayer</v-toolbar-title>
     </v-toolbar>
     <v-content>
-      <v-container>
+      <v-container fluid>
         <router-view :tunes="current_tunes"/>
       </v-container>
     </v-content>

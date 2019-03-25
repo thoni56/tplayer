@@ -1,26 +1,21 @@
 <template>
   <v-container fluid>
-    <v-layout row justify-start>
-      <v-flex xs3>
-        <v-img height="30vh" width="30vh" :src="cover"/>
-      </v-flex>
-      <v-flex xs11>
-        <v-layout column>
-          <v-flex display-4>{{ title }}</v-flex>
-          <v-spacer/>
-          <v-flex>
-            <v-layout row>
-              <v-layout column align-content-space-between>
-                <v-flex display-3>{{ artist }}</v-flex>
-                <v-flex display-1>{{ album }}</v-flex>
-                <v-flex display-1>{{ totaltime }}</v-flex>
-              </v-layout>
-              <v-flex display-4 style="text-align:right">{{ bpm }}</v-flex>
-            </v-layout>
-          </v-flex>
-        </v-layout>
-      </v-flex>
-    </v-layout>
+    <div style="width: 100%;">
+      <div>
+        <div style="float:left;">
+          <img style="height:35vh;width:35vh;" :src="cover">
+        </div>
+        <div style="float:left;margin-left:20px;">
+          <div class="display-4 clipped">{{ title }}</div>
+          <div style="float:left;">
+            <div class="display-3 clipped">{{ artist }}</div>
+            <div class="display-1 clipped">{{ album }}</div>
+            <div class="display-1">{{ totaltime }}</div>
+          </div>
+          <div class="display-4 right">{{ bpm }}</div>
+        </div>
+      </div>
+    </div>
   </v-container>
 </template>
 
@@ -59,3 +54,12 @@ export default class Playdisplay extends Vue {
 }
 </script>
 
+<style>
+.clipped {
+  white-space: nowrap;
+  text-overflow: clip;
+  overflow-x: hidden;
+  padding-bottom: 250px;
+  margin-bottom: -250px;
+}
+</style>

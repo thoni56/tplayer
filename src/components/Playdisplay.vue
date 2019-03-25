@@ -1,19 +1,17 @@
 <template>
-  <v-container fluid>
+  <v-container fluid style="padding:0;">
     <div style="width: 100%;">
-      <div>
+      <div style="float:left;">
+        <img style="height:35vh;width:35vh;" :src="cover">
+      </div>
+      <div style="float:left;margin-left:20px;">
+        <div class="display-4 clipped">{{ title }}</div>
         <div style="float:left;">
-          <img style="height:35vh;width:35vh;" :src="cover">
+          <div class="display-3 clipped">{{ artist }}</div>
+          <div class="display-1 clipped">{{ album }}</div>
+          <div class="display-1">{{ totaltime }}</div>
         </div>
-        <div style="float:left;margin-left:20px;">
-          <div class="display-4 clipped">{{ title }}</div>
-          <div style="float:left;">
-            <div class="display-3 clipped">{{ artist }}</div>
-            <div class="display-1 clipped">{{ album }}</div>
-            <div class="display-1">{{ totaltime }}</div>
-          </div>
-          <div class="display-4 right">{{ bpm }}</div>
-        </div>
+        <div class="display-4 right" style="vertical-align: bottom;">{{ bpm }}</div>
       </div>
     </div>
   </v-container>

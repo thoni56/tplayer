@@ -78,7 +78,7 @@ export default class Player extends Vue {
   @Prop() public tunes!: TuneInfo[];
 
   public playing = false;
-  public tuneIndex = 14;
+  public tuneIndex = 2;
   public insideTune = false;
   public timePlayed = 0;
   public timeTotal = 0;
@@ -109,15 +109,6 @@ export default class Player extends Vue {
     }
   }
 
-  private async loadTune(index: number) {
-    const uri = await convertSongToUri(this.tunes[index].file!);
-    self.audio.src = uri;
-    await self.audio.load();
-    this.insideTune = true;
-    this.tuneIndex = index;
-    this.tuneLoaded = true;
-  }
-
   public async playTrack() {
     if (this.tunes.length === 0) {
       return;
@@ -125,23 +116,32 @@ export default class Player extends Vue {
     if (!this.insideTune) {
       await this.loadTune(this.tuneIndex);
     }
-    fadeIn();
+    startPlaying();
   }
 
-  public async pauseTrack() {
-    fadeOut();
+  public pauseTrack() {
+    stopPlaying();
   }
 
   public async nextTrack() {
     if (this.tuneIndex <= this.tunes.length - 1) {
       const wasPlaying = this.playing;
       if (this.playing) {
-        await this.pauseTrack();
+        stopPlaying();
       }
       this.tuneIndex++;
       await this.loadTune(this.tuneIndex);
-      if (wasPlaying) await this.playTrack();
+      if (wasPlaying) startPlaying();
     }
+    }
+
+  private async loadTune(index: number) {
+    const uri = await convertSongToUri(this.tunes[index].file!);
+    self.audio.src = uri;
+    await self.audio.load();
+    this.insideTune = true;
+    this.tuneIndex = index;
+    this.tuneLoaded = true;
   }
 }
 </script>

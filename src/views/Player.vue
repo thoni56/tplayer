@@ -1,14 +1,25 @@
 <template>
-  <v-container>
-    <PlayerControls
-      :playing="playing"
-      @play-track="playTrack"
-      @pause-track="pauseTrack"
-      @next-track="nextTrack"
-    />
-    <Playbar :secondsPlayed="timePlayed" :secondsTotal="timeTotal"/>
-    <Tunes :tunes="tunes" :currentTune="currentTune"/>
-    <audio/>
+  <v-container id="player" fluid>
+    <v-layout column>
+      <v-layout column>
+        <v-layout>
+          <Playdisplay :tune="tunes[tuneIndex]"/>
+        </v-layout>
+        <v-layout>
+          <Playbar :secondsPlayed="timePlayed" :secondsTotal="timeTotal"/>
+        </v-layout>
+      </v-layout>
+    </v-layout>
+    <v-layout column>
+      <PlayerControls
+        :playing="playing"
+        @play-track="playTrack"
+        @pause-track="pauseTrack"
+        @next-track="nextTrack"
+      />
+      <Tunes :tunes="tunes" :currentTune="currentTune"/>
+      <audio/>
+    </v-layout>
   </v-container>
 </template>
 
@@ -16,6 +27,7 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { TuneInfo } from "@/models/TuneInfo";
 import Tunes from "@/components/Tunes.vue";
+import Playdisplay from "@/components/Playdisplay.vue";
 import PlayerControls from "@/components/PlayerControls.vue";
 import Playbar from "@/components/Playbar.vue";
 
@@ -40,25 +52,25 @@ let self: Player;
 
 const fadeStep = 0.1;
 const fadeTime = 100;
-async function fadeOut() {
-  if (self.audio.volume > fadeStep) {
-    self.audio.volume -= fadeStep;
-    setTimeout(fadeOut, fadeTime);
-  } else {
-    self.audio.volume = 0;
-    await self.audio.pause();
-  }
+async function stopPlaying() {
+  // if (self.audio.volume > fadeStep) {
+  //   self.audio.volume -= fadeStep;
+  //   setTimeout(stopPlaying, fadeTime);
+  // } else {
+  //   self.audio.volume = 0;
+  await self.audio.pause();
+  // }
   self.playing = false;
 }
 
-async function fadeIn() {
+async function startPlaying() {
   await self.audio.play();
-  if (self.audio.volume < 1 - fadeStep) {
-    self.audio.volume += fadeStep;
-    setTimeout(fadeIn, fadeTime);
-  } else {
-    self.audio.volume = 1;
-  }
+  // if (self.audio.volume < 1 - fadeStep) {
+  //   self.audio.volume += fadeStep;
+  //   setTimeout(startPlaying, fadeTime);
+  // } else {
+  //   self.audio.volume = 1;
+  // }
   self.playing = true;
 }
 
@@ -69,6 +81,7 @@ function playTimer() {
 
 @Component({
   components: {
+    Playdisplay,
     PlayerControls,
     Playbar,
     Tunes
@@ -133,7 +146,7 @@ export default class Player extends Vue {
       await this.loadTune(this.tuneIndex);
       if (wasPlaying) startPlaying();
     }
-    }
+  }
 
   private async loadTune(index: number) {
     const uri = await convertSongToUri(this.tunes[index].file!);

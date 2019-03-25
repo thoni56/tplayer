@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-layout column>
     <v-layout justify-space-between>
       <v-container style="padding-left:0px; padding-bottom:0px;">
         <div style="text-align:left">{{timePlayed}}</div>
@@ -12,7 +12,7 @@
       </v-container>
     </v-layout>
     <v-progress-linear height="40" :value="percent"/>
-  </div>
+  </v-layout>
 </template>
 
 <script lang="ts">

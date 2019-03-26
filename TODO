@@ -39,7 +39,7 @@ Player:
     ☐ Center playlist so that playing song is visible
     ☐ Click on tune to select and load
     ☐ Fade in and out on play/pause
-    ☐ Next - if playing, play, else just move
+    ☐ Next - if playing, play, else just move, now it is quite flakey
     ☐ Previous
     ☐ Play icon state should stay even when navigating back and forth
     ☐ Double-click on tune to play

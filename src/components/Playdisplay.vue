@@ -50,19 +50,25 @@ export default class Playdisplay extends Vue {
     return this.tune ? formatTime(this.tune.duration!) : undefined;
   }
 }
+
+function isOverflown(element: HTMLElement) {
+  return (
+    element.scrollHeight > element.clientHeight ||
+    element.scrollWidth > element.clientWidth
+  );
+}
 </script>
 
 <style>
 .overflow-scroll {
   white-space: nowrap;
-  text-overflow: clip;
   overflow-x: hidden;
   padding-bottom: 250px;
   margin-bottom: -250px;
-  animation: marquee 20s linear infinite;
+  /*animation: scrolling 20s linear infinite;*/
 }
 
-@keyframes marquee {
+@keyframes scrolling {
   0% {
     transform: translateX(0%);
   }

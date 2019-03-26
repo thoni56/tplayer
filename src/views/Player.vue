@@ -17,8 +17,7 @@
         @pause-track="pauseTrack"
         @next-track="nextTrack"
       />
-      <Tunes :tunes="tunes" :currentTune="currentTune"/>
-      <audio/>
+      <Tunes :tunes="tunes" :currentTune="currentTune" :onClick="setTune"/>
     </v-layout>
   </v-container>
 </template>
@@ -114,6 +113,7 @@ export default class Player extends Vue {
     setTimeout(remainingTimer, 200);
   }
 
+  // UI functions
   get currentTune() {
     if (this.tuneIndex < this.tunes.length) {
       return this.tunes[this.tuneIndex].file;
@@ -122,6 +122,7 @@ export default class Player extends Vue {
     }
   }
 
+  // Public events
   public async playTrack() {
     if (this.tunes.length === 0) {
       return;
@@ -148,6 +149,11 @@ export default class Player extends Vue {
     }
   }
 
+  public setTune(id: string) {
+    this.loadTune(this.tunes.findIndex(tune => tune.file == id));
+  }
+
+  // Internal functions
   private async loadTune(index: number) {
     const uri = await convertSongToUri(this.tunes[index].file!);
     self.audio.src = uri;
@@ -155,6 +161,7 @@ export default class Player extends Vue {
     this.insideTune = true;
     this.tuneIndex = index;
     this.tuneLoaded = true;
+    this.playing = false;
   }
 }
 </script>

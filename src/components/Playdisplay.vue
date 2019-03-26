@@ -2,7 +2,7 @@
   <v-container fluid style="padding:0">
     <v-layout row align-start>
       <v-flex xs2>
-        <v-img :src="cover" style="object-fit:cover;height:100%;width:100%;"/>
+        <v-img :src="cover" style="object-fit:cover;height:30vh;width:30vh;"/>
       </v-flex>
       <v-flex xs10 style="margin-left:1%">
         <v-layout column align-content-space-between>
@@ -33,19 +33,19 @@ export default class Playdisplay extends Vue {
   @Prop() private tune!: TuneInfo;
 
   get cover() {
-    return this.tune ? this.tune.cover : "";
+    return this.tune ? this.tune.cover : undefined;
   }
 
   get title() {
-    return this.tune ? this.tune.title : "";
+    return this.tune ? this.tune.title : "\x09";
   }
 
   get artist() {
-    return this.tune ? this.tune.artist : "";
+    return this.tune ? this.tune.artist : "\x09";
   }
 
   get album() {
-    return this.tune ? this.tune.album : "";
+    return this.tune ? this.tune.album : "\x09";
   }
 
   get bpm() {

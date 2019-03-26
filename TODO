@@ -35,9 +35,9 @@ Player:
     ✔ Show played time of tune @done(19-03-21 07:52)
     ✔ Progress Bar @done(19-03-21 07:52)
     ✔ BIG title, album etc, and smaller list @done(19-03-25 23:59)
+    ☐ Click on tune to select and load
     ☐ Scroll overflowed text horizontally
     ☐ Center playlist so that playing song is visible
-    ☐ Click on tune to select and load
     ☐ Fade in and out on play/pause
     ☐ Next - if playing, play, else just move, now it is quite flakey
     ☐ Previous

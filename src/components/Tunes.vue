@@ -3,7 +3,11 @@
     <v-flex xs12>
       <v-list two-line>
         <template v-for="(tune, index) in tunes">
-          <v-list-tile :key="tune.file" :class="{'highlighted': currentTune == tune.file}">
+          <v-list-tile
+            :key="tune.file"
+            :class="{'highlighted': currentTune == tune.file}"
+            @click="clicked(tune.file)"
+          >
             <v-list-tile-avatar tile>
               <img :src="tune.cover">
             </v-list-tile-avatar>
@@ -40,8 +44,15 @@ export default class Tunes extends Vue {
   })
   public tunes!: TuneInfo[];
   @Prop() public currentTune!: string;
+
+  @Prop() public onClick!: (id: string) => void;
+
   public formattedDuration(tune: TuneInfo): string {
     return formatTime(tune.duration!);
+  }
+
+  public clicked(tuneId: string) {
+    if (this.onClick) this.onClick(tuneId);
   }
 }
 </script>

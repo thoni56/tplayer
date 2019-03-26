@@ -74,9 +74,9 @@ async function startPlaying() {
   self.playing = true;
 }
 
-function playTimer() {
+function remainingTimer() {
   self.timePlayed = self.audio.currentTime;
-  setTimeout(playTimer, 200);
+  setTimeout(remainingTimer, 200);
 }
 
 @Component({
@@ -111,7 +111,7 @@ export default class Player extends Vue {
       }
     });
 
-    setTimeout(playTimer, 200);
+    setTimeout(remainingTimer, 200);
   }
 
   get currentTune() {

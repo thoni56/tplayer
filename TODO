@@ -27,7 +27,6 @@ Settings:
 
 Player:
     ✔ Play and Pause @done(19-03-18 22:55)
-    ✔ Fade in and out on play/pause @done(19-03-18 23:16)
     ✔ Play next tune when finished @done(19-03-19 01:15)
     ✔ Highlight playing tune @done(19-03-19 08:29)
     ✔ Highlight should stay even when navigating back and forth @done(19-03-19 08:43)
@@ -35,12 +34,15 @@ Player:
     ✔ Next - start playing next tune @done(19-03-21 01:09)
     ✔ Show played time of tune @done(19-03-21 07:52)
     ✔ Progress Bar @done(19-03-21 07:52)
+    ✔ BIG title, album etc, and smaller list @done(19-03-25 23:59)
+    ☐ Scroll overflowed text horizontally
+    ☐ Center playlist so that playing song is visible
+    ☐ Click on tune to select and load
+    ☐ Fade in and out on play/pause
     ☐ Next - if playing, play, else just move
     ☐ Previous
     ☐ Play icon state should stay even when navigating back and forth
-    ☐ BIG title, album etc, and smaller list
     ☐ Double-click on tune to play
-    ☐ Center playlist so that playing song is visible
     ☐ Normalize volume
     ☐ Remote control
         ☐ Play and pause using remote control

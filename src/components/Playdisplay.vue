@@ -5,10 +5,10 @@
         <img style="height:35vh;width:35vh;" :src="cover">
       </div>
       <div style="padding-left:20px; overflow:auto;">
-        <div class="display-4 clipped">{{ title }}</div>
+        <div class="display-4 overflow-scroll">{{ title }}</div>
         <div style="float:left;">
-          <div class="display-3 clipped">{{ artist }}</div>
-          <div class="display-1 clipped">{{ album }}</div>
+          <div class="display-3 overflow-scroll">{{ artist }}</div>
+          <div class="display-1 overflow-scroll">{{ album }}</div>
           <div class="display-1">{{ totaltime }}</div>
         </div>
         <div class="display-4 right" style="vertical-align: bottom;">{{ bpm }}</div>
@@ -53,11 +53,24 @@ export default class Playdisplay extends Vue {
 </script>
 
 <style>
-.clipped {
+.overflow-scroll {
   white-space: nowrap;
   text-overflow: clip;
   overflow-x: hidden;
   padding-bottom: 250px;
   margin-bottom: -250px;
+  animation: marquee 20s linear infinite;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  50% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
 }
 </style>

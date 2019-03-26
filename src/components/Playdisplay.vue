@@ -1,19 +1,25 @@
 <template>
-  <v-container fluid style="padding:0;">
-    <div style="width: 100%;">
-      <div style="float:left;">
-        <img style="height:35vh;width:35vh;" :src="cover">
-      </div>
-      <div style="padding-left:20px; overflow:auto;">
-        <div class="display-4 overflow-scroll">{{ title }}</div>
-        <div style="float:left;">
-          <div class="display-3 overflow-scroll">{{ artist }}</div>
-          <div class="display-1 overflow-scroll">{{ album }}</div>
-          <div class="display-1">{{ totaltime }}</div>
-        </div>
-        <div class="display-4 right" style="vertical-align: bottom;">{{ bpm }}</div>
-      </div>
-    </div>
+  <v-container fluid style="padding:0">
+    <v-layout row align-start>
+      <v-flex xs2>
+        <v-img :src="cover" style="object-fit:cover;height:100%;width:100%;"/>
+      </v-flex>
+      <v-flex xs10 style="margin-left:1%">
+        <v-layout column align-content-space-between>
+          <v-layout row>
+            <div class="display-4 overflow-scroll">{{ title }}</div>
+          </v-layout>
+          <v-layout row>
+            <v-layout column align-content-space-between>
+              <div class="display-3 overflow-scroll">{{ artist }}</div>
+              <div class="display-1 overflow-scroll">{{ album }}</div>
+              <div class="display-1">{{ totaltime }}</div>
+            </v-layout>
+            <v-layout display-4 justify-end>{{ bpm }}</v-layout>
+          </v-layout>
+        </v-layout>
+      </v-flex>
+    </v-layout>
   </v-container>
 </template>
 
@@ -63,6 +69,7 @@ function isOverflown(element: HTMLElement) {
 .overflow-scroll {
   white-space: nowrap;
   overflow-x: hidden;
+  text-overflow: clip;
   padding-bottom: 250px;
   margin-bottom: -250px;
   /*animation: scrolling 20s linear infinite;*/

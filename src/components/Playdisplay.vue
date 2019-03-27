@@ -37,15 +37,15 @@ export default class Playdisplay extends Vue {
   }
 
   get title() {
-    return this.tune ? this.tune.title : "\x09";
+    return this.tune ? this.tune.title : "";
   }
 
   get artist() {
-    return this.tune ? this.tune.artist : "\x09";
+    return this.tune ? this.tune.artist : "";
   }
 
   get album() {
-    return this.tune ? this.tune.album : "\x09";
+    return this.tune ? this.tune.album : "";
   }
 
   get bpm() {

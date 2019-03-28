@@ -21,7 +21,6 @@
         <router-view :tunes="current_tunes"/>
       </v-container>
     </v-content>
-    <v-footer app fixed></v-footer>
   </v-app>
 </template>
 

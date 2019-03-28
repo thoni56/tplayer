@@ -17,7 +17,7 @@
         @pause-track="pauseTrack"
         @next-track="nextTrack"
       />
-      <Tunes :tunes="tunes" :currentTune="currentTune" :onClick="setTune"/>
+      <Tunes :tunes="tunes" :currentTune="currentTune" :onClick="setTune" style="height:35vh;"/>
     </v-layout>
   </v-container>
 </template>
@@ -150,7 +150,7 @@ export default class Player extends Vue {
   }
 
   public setTune(id: string) {
-    this.loadTune(this.tunes.findIndex(tune => tune.file == id));
+    this.loadTune(this.tunes.findIndex(tune => tune.file === id));
   }
 
   // Internal functions

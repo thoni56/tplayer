@@ -14,7 +14,7 @@ export class TuneInfo {
   public artist?: string;
   public album?: string;
   public track?: number;
-  public genre?: string;
+  public genre?: string[];
   public bpm?: number;
   public duration?: number;
   public cover?: string;
@@ -25,15 +25,15 @@ export class TuneInfo {
     title?: string,
     artist?: string,
     album?: string,
-    genre?: string,         // TODO: allow more genres
+    genre?: string[],
     bpm?: number,
     cover?: IPicture
   ) {
     this.file = file;
-    this.title = title && title || undefined;
-    this.artist = artist && artist || undefined;
-    this.album = album && album || undefined;
-    this.genre = genre && genre[0] || undefined;
+    this.title = title ? title : undefined;
+    this.artist = artist ? artist : undefined;
+    this.album = album ? album : undefined;
+    this.genre = genre ? this.genresToGenres(genre) : undefined;
     this.bpm = bpm ? Math.round(bpm) : undefined;
     this.cover = cover ? pictureToHTML(cover) : defaultCover;
   }
@@ -44,9 +44,17 @@ export class TuneInfo {
     this.track = metadata.common.track.no;
     this.artist = metadata.common.artist;
     this.bpm = metadata.common.bpm ? Math.round(metadata.common.bpm) : undefined;
-    this.genre = metadata.common.genre ? metadata.common.genre[0] : undefined;
+    this.genre = metadata.common.genre ? this.genresToGenres(metadata.common.genre) : undefined;
     this.duration = metadata.format.duration ? Math.round(metadata.format.duration) : undefined;
     this.cover = metadata.common.picture ? pictureToHTML(metadata.common.picture[0]) : defaultCover;
+  }
+
+  private genresToGenres(genre: string[]) {
+    let newGenres: string[] = [];
+    genre.forEach(element => {
+      newGenres = newGenres.concat(element.split('+'));
+    });
+    return newGenres;
   }
 
 }

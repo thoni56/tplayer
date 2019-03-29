@@ -1,10 +1,10 @@
 <template>
   <v-container fluid style="padding:0">
     <v-layout row align-start>
-      <v-flex xs2>
-        <v-img :src="cover" style="object-fit:cover;height:30vh;width:30vh;"/>
-      </v-flex>
-      <v-flex xs10 style="margin-left:1%">
+      <div>
+        <img :src="cover" style="object-fit:cover;height:30vh;width:30vh;">
+      </div>
+      <div style="margin-left:1%">
         <v-layout column align-content-space-between>
           <v-layout row>
             <div class="display-4 overflow-scroll">{{ title }}</div>
@@ -18,7 +18,7 @@
             <v-layout display-4 justify-end>{{ bpm }}</v-layout>
           </v-layout>
         </v-layout>
-      </v-flex>
+      </div>
     </v-layout>
   </v-container>
 </template>

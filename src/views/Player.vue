@@ -3,7 +3,7 @@
     <v-layout column>
       <v-layout column>
         <v-layout>
-          <Playdisplay :tune="tunes[tuneIndex]"/>
+          <Tunedisplay :tune="tunes[tuneIndex]"/>
         </v-layout>
         <v-layout>
           <Playbar :secondsPlayed="timePlayed" :secondsTotal="timeTotal"/>
@@ -26,7 +26,7 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { TuneInfo } from "@/models/TuneInfo";
 import Tunes from "@/components/Tunes.vue";
-import Playdisplay from "@/components/Playdisplay.vue";
+import Tunedisplay from "@/components/Tunedisplay.vue";
 import PlayerControls from "@/components/PlayerControls.vue";
 import Playbar from "@/components/Playbar.vue";
 
@@ -80,7 +80,7 @@ function remainingTimer() {
 
 @Component({
   components: {
-    Playdisplay,
+    Tunedisplay,
     PlayerControls,
     Playbar,
     Tunes

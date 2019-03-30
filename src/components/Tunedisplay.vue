@@ -23,7 +23,7 @@ import { TuneInfo } from "@/models/TuneInfo";
 import { formatTime } from "@/models/timeFormatter";
 
 @Component
-export default class Playdisplay extends Vue {
+export default class Tunedisplay extends Vue {
   @Prop() private tune!: TuneInfo;
 
   get cover() {

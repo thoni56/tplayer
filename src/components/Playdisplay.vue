@@ -4,20 +4,13 @@
       <div>
         <img :src="cover" style="object-fit:cover;height:30vh;width:30vh;">
       </div>
-      <div style="margin-left:1%">
-        <v-layout column align-content-space-between>
-          <v-layout row>
-            <div class="display-4 overflow-scroll">{{ title }}</div>
-          </v-layout>
-          <v-layout row>
-            <v-layout column align-content-space-between>
-              <div class="display-3 overflow-scroll">{{ artist }}</div>
-              <div class="display-1 overflow-scroll">{{ album }}</div>
-              <div class="display-1">{{ totaltime }}</div>
-            </v-layout>
-            <v-layout display-4 justify-end>{{ bpm }}</v-layout>
-          </v-layout>
-        </v-layout>
+      <div style="margin-left:1%;">
+        <div style="font-size:9vh;" class="overflow">{{ title }}</div>
+        <div>
+          <div style="font-size:5vh;">{{ artist }}</div>
+          <div style="font-size:3vh;">{{ album }}</div>
+          <div style="font-size:3vh;">{{ totaltime }}</div>
+        </div>
       </div>
     </v-layout>
   </v-container>
@@ -25,6 +18,7 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
+import { VueResizeText } from "vue-resize-text";
 import { TuneInfo } from "@/models/TuneInfo";
 import { formatTime } from "@/models/timeFormatter";
 
@@ -66,6 +60,14 @@ function isOverflown(element: HTMLElement) {
 </script>
 
 <style>
+.overflow {
+  white-space: nowrap;
+  overflow-x: hidden;
+  text-overflow: clip;
+  padding-bottom: 250px;
+  margin-bottom: -250px;
+}
+
 .overflow-scroll {
   white-space: nowrap;
   overflow-x: hidden;

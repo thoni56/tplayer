@@ -33,6 +33,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
+import { VueResizeText } from "vue-resize-text";
 import { TuneInfo } from "@/models/TuneInfo";
 import { formatTime } from "@/models/timeFormatter";
 

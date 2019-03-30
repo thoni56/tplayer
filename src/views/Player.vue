@@ -140,9 +140,7 @@ export default class Player extends Vue {
   public async nextTrack() {
     if (this.tuneIndex <= this.tunes.length - 1) {
       const wasPlaying = this.playing;
-      if (this.playing) {
-        stopPlaying();
-      }
+      if (this.playing) stopPlaying();
       this.tuneIndex++;
       await this.loadTune(this.tuneIndex);
       if (wasPlaying) startPlaying();

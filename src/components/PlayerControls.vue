@@ -1,14 +1,14 @@
 <template>
-  <div>
-    <v-toolbar flat height="90">
+  <div style="height:10vh;">
+    <v-toolbar style="height:9vh;padding-top:1vh;">
       <v-spacer></v-spacer>
-      <v-btn outline fab medium color="#1976d2" @click="previousTrack">
+      <v-btn fab color="#1976d2" @click="previousTrack">
         <v-icon>skip_previous</v-icon>
       </v-btn>
-      <v-btn outline fab large color="#1976d2" @click="playOrPauseTrack">
+      <v-btn fab style="height:6vh;" color="#1976d2" @click="playOrPauseTrack">
         <v-icon>{{ icon }}</v-icon>
       </v-btn>
-      <v-btn outline fab medium color="#1976d2" @click="$emit('next-track')">
+      <v-btn fab style="height:4vh;" color="#1976d2" @click="$emit('next-track')">
         <v-icon>skip_next</v-icon>
       </v-btn>
       <v-spacer></v-spacer>
@@ -43,4 +43,3 @@ export default class PlayerControls extends Vue {
   }
 }
 </script>
-

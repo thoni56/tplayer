@@ -3,7 +3,7 @@
     <v-layout column>
       <v-layout column>
         <v-layout>
-          <Tunedisplay :tune="tunes[tuneIndex]"/>
+          <TuneDisplay :tune="tunes[tuneIndex]"/>
         </v-layout>
         <v-layout>
           <Playbar :secondsPlayed="timePlayed" :secondsTotal="timeTotal"/>

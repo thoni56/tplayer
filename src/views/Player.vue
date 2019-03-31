@@ -26,7 +26,7 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { TuneInfo } from "@/models/TuneInfo";
 import Tunes from "@/components/Tunes.vue";
-import Tunedisplay from "@/components/Tunedisplay.vue";
+import TuneDisplay from "@/components/TuneDisplay.vue";
 import PlayerControls from "@/components/PlayerControls.vue";
 import Playbar from "@/components/Playbar.vue";
 
@@ -80,7 +80,7 @@ function remainingTimer() {
 
 @Component({
   components: {
-    Tunedisplay,
+    TuneDisplay,
     PlayerControls,
     Playbar,
     Tunes

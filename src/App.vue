@@ -40,17 +40,17 @@ export default class App extends Vue {
     { icon: "settings", text: "Settings", route: "/settings" }
   ];
 
+  private filters = ["Bugg"];
+
   public data() {
     return {
       tuneCount: allTunes ? allTunes.length : 0,
-      currentTunes: this.filter(allTunes)
+      currentTunes: allTunes.filter(this.currentFilter)
     };
   }
 
-  private filter(tunes: TuneInfo[]) {
-    return tunes.filter(t =>
-      t.genre ? t.genre.some(g => g === "Bugg") : false
-    );
+  private currentFilter(t: TuneInfo) {
+    return t.genre ? t.genre.some(g => g === "Bugg") : false;
   }
 }
 </script>

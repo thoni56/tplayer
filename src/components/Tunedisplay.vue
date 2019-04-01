@@ -4,13 +4,14 @@
       <div>
         <img :src="cover" style="object-fit:cover;height:30vh;width:30vh;">
       </div>
-      <div style="margin-left:1%;">
+      <div style="margin-left:1%;width:100%;">
         <div style="font-size:9vh;" class="overflow">{{ title }}</div>
-        <div>
+        <div style="float:left;">
           <div style="font-size:5vh;">{{ artist }}</div>
           <div style="font-size:3vh;">{{ album + (track?" - ("+track+")":"") }}</div>
           <div style="font-size:3vh;">{{ totaltime }}</div>
         </div>
+        <div style="font-size:10vh;text-align:right;">{{ bpm }}</div>
       </div>
     </v-layout>
   </v-container>

@@ -40,11 +40,8 @@ import { formatTime } from "@/models/timeFormatter";
 const ft = formatTime; // To ensure a reference exists
 
 @Component
-export default class Tunes extends Vue {
-  @Prop({
-    default: []
-  })
-  public tunes!: TuneInfo[];
+export default class TuneList extends Vue {
+  @Prop() public tunes!: TuneInfo[];
   @Prop() public currentTune!: string;
 
   @Prop() public onClick!: (id: string) => void;

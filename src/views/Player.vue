@@ -3,7 +3,7 @@
     <v-layout column>
       <v-layout column>
         <v-layout>
-          <TuneDisplay :tune="tunes[tuneIndex]"/>
+          <TuneDisplay :tune="currentTunes[tuneIndex]"/>
         </v-layout>
         <v-layout>
           <Playbar :secondsPlayed="timePlayed" :secondsTotal="timeTotal"/>
@@ -17,7 +17,12 @@
         @pause-track="pauseTrack"
         @next-track="nextTrack"
       />
-      <Tunes :tunes="tunes" :currentTune="currentTune" :onClick="setTune" style="height:35vh;"/>
+      <TuneList
+        :tunes="currentTunes"
+        :currentTune="currentTune"
+        :onClick="setTune"
+        style="height:35vh;"
+      />
     </v-layout>
   </v-container>
 </template>
@@ -25,7 +30,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { TuneInfo } from "@/models/TuneInfo";
-import Tunes from "@/components/Tunes.vue";
+import TuneList from "@/components/TuneList.vue";
 import TuneDisplay from "@/components/TuneDisplay.vue";
 import PlayerControls from "@/components/PlayerControls.vue";
 import Playbar from "@/components/Playbar.vue";
@@ -83,11 +88,11 @@ function remainingTimer() {
     TuneDisplay,
     PlayerControls,
     Playbar,
-    Tunes
+    TuneList
   }
 })
 export default class Player extends Vue {
-  @Prop() public tunes!: TuneInfo[];
+  @Prop() public currentTunes!: TuneInfo[];
 
   public playing = false;
   public tuneIndex = 2;
@@ -105,7 +110,7 @@ export default class Player extends Vue {
     this.audio.addEventListener("ended", () => {
       self.insideTune = false;
       self.tuneIndex++;
-      if (self.tuneIndex <= self.tunes.length) {
+      if (self.tuneIndex <= self.currentTunes.length) {
         self.playTrack();
       }
     });
@@ -115,8 +120,8 @@ export default class Player extends Vue {
 
   // UI functions
   get currentTune() {
-    if (this.tuneIndex < this.tunes.length) {
-      return this.tunes[this.tuneIndex].file;
+    if (this.tuneIndex < this.currentTunes.length) {
+      return this.currentTunes[this.tuneIndex].file;
     } else {
       return undefined;
     }
@@ -124,7 +129,7 @@ export default class Player extends Vue {
 
   // Public events
   public async playTrack() {
-    if (this.tunes.length === 0) {
+    if (this.currentTunes.length === 0) {
       return;
     }
     if (!this.insideTune) {
@@ -138,7 +143,7 @@ export default class Player extends Vue {
   }
 
   public async nextTrack() {
-    if (this.tuneIndex <= this.tunes.length - 1) {
+    if (this.tuneIndex <= this.currentTunes.length - 1) {
       const wasPlaying = this.playing;
       if (this.playing) stopPlaying();
       this.tuneIndex++;
@@ -148,12 +153,12 @@ export default class Player extends Vue {
   }
 
   public setTune(id: string) {
-    this.loadTune(this.tunes.findIndex(tune => tune.file === id));
+    this.loadTune(this.currentTunes.findIndex(tune => tune.file === id));
   }
 
   // Internal functions
   private async loadTune(index: number) {
-    const uri = await convertSongToUri(this.tunes[index].file!);
+    const uri = await convertSongToUri(this.currentTunes[index].file!);
     self.audio.src = uri;
     await self.audio.load();
     this.insideTune = true;

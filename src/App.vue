@@ -18,7 +18,7 @@
     </v-toolbar>
     <v-content>
       <v-container fluid>
-        <router-view :tunes="current_tunes"/>
+        <router-view :currentTunes="currentTunes" :total="tuneCount"/>
       </v-container>
     </v-content>
   </v-app>
@@ -26,6 +26,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
+import { TuneInfo } from "@/models/TuneInfo";
 import { allTunes } from "@/components/TuneFinder.vue";
 
 Vue.config.productionTip = false;
@@ -41,8 +42,15 @@ export default class App extends Vue {
 
   public data() {
     return {
-      current_tunes: allTunes
+      tuneCount: allTunes ? allTunes.length : 0,
+      currentTunes: this.filter(allTunes)
     };
+  }
+
+  private filter(tunes: TuneInfo[]) {
+    return tunes.filter(t =>
+      t.genre ? t.genre.some(g => g === "Bugg") : false
+    );
   }
 }
 </script>

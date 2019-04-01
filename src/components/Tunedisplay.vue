@@ -69,16 +69,12 @@ function isOverflown(element: HTMLElement) {
   white-space: nowrap;
   overflow-x: hidden;
   text-overflow: clip;
-  padding-bottom: 250px;
-  margin-bottom: -250px;
 }
 
 .overflow-scroll {
   white-space: nowrap;
   overflow-x: hidden;
   text-overflow: clip;
-  padding-bottom: 250px;
-  margin-bottom: -250px;
   /*animation: scrolling 20s linear infinite;*/
 }
 

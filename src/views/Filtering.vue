@@ -18,8 +18,8 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop, Emit } from "vue-property-decorator";
-import TuneList from "@/components/TuneList.vue";
 import { TuneInfo } from "@/models/TuneInfo";
+import TuneList from "@/components/TuneList.vue";
 
 @Component({
   components: {

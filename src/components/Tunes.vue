@@ -14,7 +14,7 @@
 
             <v-list-tile-content>
               <v-list-tile-title>{{ tune.title }}</v-list-tile-title>
-              <v-list-tile-sub-title>{{ tune.artist + " - " + tune.album + " " + (tune.track?"("+tune.track+")":"") }}</v-list-tile-sub-title>
+              <v-list-tile-sub-title>{{ tune.artist + " - " + tune.album + (tune.track?" - ("+tune.track+")":"") }}</v-list-tile-sub-title>
               <v-list-tile-sub-title>{{ genres(tune) }}</v-list-tile-sub-title>
             </v-list-tile-content>
             <v-spacer></v-spacer>

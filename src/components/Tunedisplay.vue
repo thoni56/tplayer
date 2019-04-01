@@ -8,7 +8,7 @@
         <div style="font-size:9vh;" class="overflow">{{ title }}</div>
         <div>
           <div style="font-size:5vh;">{{ artist }}</div>
-          <div style="font-size:3vh;">{{ album }}</div>
+          <div style="font-size:3vh;">{{ album + (track?" - ("+track+")":"") }}</div>
           <div style="font-size:3vh;">{{ totaltime }}</div>
         </div>
       </div>
@@ -40,6 +40,10 @@ export default class TuneDisplay extends Vue {
 
   get album() {
     return this.tune ? this.tune.album : "";
+  }
+
+  get track() {
+    return this.tune ? this.tune.track : undefined;
   }
 
   get bpm() {

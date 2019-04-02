@@ -45,20 +45,12 @@ export default class App extends Vue {
   public data() {
     return {
       tuneCount: allTunes ? allTunes.length : 0,
-      currentTunes: allTunes.filter(t => this.currentFilter(t, this.genres))
+      currentTunes: allTunes.filter(this.currentFilter)
     };
   }
 
-  private currentFilter(t: TuneInfo, genres: string[]): boolean {
-    if (t.genre) {
-      const x = t.genre.some(function(g) {
-        console.log(genres);
-        return genres.includes(g);
-      });
-      return x;
-    } else {
-      return false;
-    }
+  private currentFilter(t: TuneInfo): boolean {
+    return t.genre ? t.genre.some(g => ["Bugg", "Boogie"].includes(g)) : false;
   }
 }
 </script>

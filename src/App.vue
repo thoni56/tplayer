@@ -18,7 +18,7 @@
     </v-toolbar>
     <v-content>
       <v-container fluid>
-        <router-view :currentTunes="currentTunes" :total="tuneCount"/>
+        <router-view :currentTunes="currentTunes" :total="totalCount"/>
       </v-container>
     </v-content>
   </v-app>
@@ -27,7 +27,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { TuneInfo } from "@/models/TuneInfo";
-import { allTunes } from "@/components/TuneFinder.vue";
+import { loadTunes } from "@/components/TuneFinder.vue";
 
 Vue.config.productionTip = false;
 
@@ -41,16 +41,27 @@ export default class App extends Vue {
   ];
 
   private genres = ["Bugg"];
+  private allTunes: TuneInfo[] = [];
 
-  public data() {
-    return {
-      tuneCount: allTunes ? allTunes.length : 0,
-      currentTunes: allTunes.filter(this.currentFilter)
-    };
+  get totalCount() {
+    return this.allTunes.length;
+  }
+
+  get currentTunes() {
+    return this.allTunes ? this.allTunes.filter(this.currentFilter) : [];
+  }
+
+  constructor() {
+    super();
+    loadTunes(this.tunesLoaded);
   }
 
   private currentFilter(t: TuneInfo): boolean {
     return t.genre ? t.genre.some(g => ["Bugg", "Boogie"].includes(g)) : false;
+  }
+
+  private tunesLoaded(tunes: TuneInfo[]) {
+    this.allTunes.push(...tunes);
   }
 }
 </script>

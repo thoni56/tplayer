@@ -7,8 +7,8 @@
       <div style="margin-left:1%;width:100%;">
         <div style="font-size:9vh;" class="overflow">{{ title }}</div>
         <div style="float:left;">
-          <div style="font-size:5vh;">{{ artist }}</div>
-          <div style="font-size:3vh;">{{ album + (track?" - ("+track+")":"") }}</div>
+          <div class="overflow" style="font-size:5vh;">{{ artist }}</div>
+          <div class="overflow" style="font-size:3vh;">{{ album + (track?" - ("+track+")":"") }}</div>
           <div style="font-size:3vh;">{{ totaltime }}</div>
         </div>
         <div style="font-size:10vh;text-align:right;">{{ bpm }}</div>

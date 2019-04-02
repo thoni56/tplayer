@@ -27,9 +27,11 @@ export default class Playbar extends Vue {
   get timePlayed() {
     return formatTime(this.secondsPlayed);
   }
+
   get timeTotal() {
     return formatTime(this.secondsTotal);
   }
+
   get timeRemaining() {
     return "-" + formatTime(this.secondsTotal - this.secondsPlayed);
   }

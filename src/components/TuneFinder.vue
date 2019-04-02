@@ -13,10 +13,35 @@ function info(field: any): any {
   return field ? field : "unknown";
 }
 
-export const allTunes: TuneInfo[] = [];
 const files: string[] = [];
 
-async function readMetadataForAllFiles() {
+export function loadTunes(loadBatch: (tunes: TuneInfo[]) => void) {
+  let emitter;
+  if (process.platform === "darwin") {
+    emitter = walk("/Users/Thomas/Music/iTunes/iTunes Music/Compilations");
+  } else {
+    emitter = walk(
+      "C:/Users/Thomas/Music/iTunes/iTunes Media/Music/Compilations"
+    );
+  }
+  emitter.on("file", (path: string) => {
+    if (
+      path.endsWith(".mp3") ||
+      path.endsWith(".m4a") ||
+      path.endsWith(".mp4")
+    ) {
+      files.push(path);
+    }
+  });
+  emitter.on("end", () => {
+    readMetadataForAllFiles(loadBatch);
+  });
+  emitter.on("error", (path: string) => {
+    // tslint:disable-next-line:no-console
+    console.log("Error parsing '", path, "'");
+  });
+}
+async function readMetadataForAllFiles(loadBatch: (tunes: TuneInfo[]) => void) {
   const all = new Array(files.length);
   let previous = 0;
   for (let index = 0; index < files.length; index++) {
@@ -26,31 +51,10 @@ async function readMetadataForAllFiles() {
       all[index].fillFromCommonTags(metadata);
     }
     if (index > 0 && index % 100 === 0) {
-      allTunes.push(...all.slice(previous, index));
+      loadBatch(all.slice(previous, index));
       previous = index;
     }
   }
-  allTunes.push(...all.slice(previous));
+  loadBatch(all.slice(previous));
 }
-
-let emitter;
-if (process.platform === "darwin") {
-  emitter = walk("/Users/Thomas/Music/iTunes/iTunes Music/Compilations");
-} else {
-  emitter = walk(
-    "C:/Users/Thomas/Music/iTunes/iTunes Media/Music/Compilations"
-  );
-}
-emitter.on("file", (path: string) => {
-  if (path.endsWith(".mp3") || path.endsWith(".m4a") || path.endsWith(".mp4")) {
-    files.push(path);
-  }
-});
-emitter.on("end", () => {
-  readMetadataForAllFiles();
-});
-emitter.on("error", (path: string) => {
-  // tslint:disable-next-line:no-console
-  console.log("Error parsing '", path, "'");
-});
 </script>

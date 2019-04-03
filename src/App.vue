@@ -18,7 +18,7 @@
     </v-toolbar>
     <v-content>
       <v-container fluid>
-        <router-view :currentTunes="currentTunes" :total="totalCount"/>
+        <router-view :currentTunes="currentTunes" :total="totalCount" @toggle-genre="toggleGenre"/>
       </v-container>
     </v-content>
   </v-app>
@@ -40,7 +40,7 @@ export default class App extends Vue {
     { icon: "settings", text: "Settings", route: "/settings" }
   ];
 
-  private genres = ["Bugg"];
+  private genres = [];
   private allTunes: TuneInfo[] = [];
 
   get totalCount() {
@@ -57,11 +57,16 @@ export default class App extends Vue {
   }
 
   private currentFilter(t: TuneInfo): boolean {
-    return t.genre ? t.genre.some(g => ["Bugg", "Boogie"].includes(g)) : false;
+    return t.genre ? t.genre.some(g => this.genres.includes(g)) : false;
   }
 
   private tunesLoaded(tunes: TuneInfo[]) {
     this.allTunes.push(...tunes);
+  }
+
+  private toggleGenre(genre: string) {
+    if (!this.genres.includes(genre)) this.genres.push(genre);
+    else this.genres.splice(this.genres.indexOf(genre), 1);
   }
 }
 </script>

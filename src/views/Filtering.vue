@@ -4,10 +4,10 @@
     <v-layout row wrap justify-center>
       <v-flex xs12 sm6 class="py-2">
         <v-btn-toggle v-model="genre_selected" multiple>
-          <v-btn flat>Bugg</v-btn>
-          <v-btn flat>Boogie Woogie</v-btn>
-          <v-btn flat>Lindy Hop</v-btn>
-          <v-btn flat>West Coast Swing</v-btn>
+          <v-btn flat @click="$emit('toggle-genre', 'Bugg')">Bugg</v-btn>
+          <v-btn flat @click="$emit('toggle-genre', 'Boogie')">Boogie</v-btn>
+          <v-btn flat @click="$emit('toggle-genre', 'Lindy')">Lindy</v-btn>
+          <v-btn flat @click="$emit('toggle-genre', 'WCS')">WCS</v-btn>
         </v-btn-toggle>
       </v-flex>
     </v-layout>

@@ -40,7 +40,7 @@ export default class App extends Vue {
     { icon: "settings", text: "Settings", route: "/settings" }
   ];
 
-  private genres = [];
+  private genres: string[] = [];
   private allTunes: TuneInfo[] = [];
 
   get totalCount() {

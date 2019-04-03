@@ -4,10 +4,12 @@
     <v-layout row wrap justify-center>
       <v-flex xs12 sm6 class="py-2">
         <v-btn-toggle v-model="genre_selected" multiple>
-          <v-btn flat @click="$emit('toggle-genre', 'Bugg')">Bugg</v-btn>
-          <v-btn flat @click="$emit('toggle-genre', 'Boogie')">Boogie</v-btn>
-          <v-btn flat @click="$emit('toggle-genre', 'Lindy')">Lindy</v-btn>
-          <v-btn flat @click="$emit('toggle-genre', 'WCS')">WCS</v-btn>
+          <v-btn
+            v-for="genre in genres"
+            :key="genre"
+            flat
+            @click="$emit('toggle-genre', genre)"
+          >{{genre}}</v-btn>
         </v-btn-toggle>
       </v-flex>
     </v-layout>
@@ -30,9 +32,11 @@ export default class Filtering extends Vue {
   @Prop() public total!: number;
   @Prop() public currentTunes!: TuneInfo[];
 
+  private genres: string[] = ["Bugg", "Boogie", "Lindy", "WCS"];
+
   public data() {
     return {
-      genre_selected: [0, 1, 2, 3] // Everything selected
+      genre_selected: []
     };
   }
 }

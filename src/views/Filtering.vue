@@ -3,7 +3,7 @@
     <h1>Filter (total: {{ total }}, filtered: {{ currentTunes?currentTunes.length:0 }})</h1>
     <v-layout row wrap justify-center>
       <v-flex xs12 sm6 class="py-2">
-        <v-btn-toggle v-model="genre_selected" multiple>
+        <v-btn-toggle v-model="genreSelected" multiple>
           <v-btn
             v-for="genre in genres"
             :key="genre"
@@ -33,11 +33,7 @@ export default class Filtering extends Vue {
   @Prop() public currentTunes!: TuneInfo[];
 
   private genres: string[] = ["Bugg", "Boogie", "Lindy", "WCS"];
+  private genresSelected : number[] = [];
 
-  public data() {
-    return {
-      genre_selected: []
-    };
-  }
 }
 </script>

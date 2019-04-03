@@ -3,7 +3,8 @@ Filtering:
     ✔ Scrollable list, but keep filters on top @done(19-03-17 21:30)
     ☐ Load tunes on startup (now requires reload for some reason)
     Genres:
-        ☐ Push to filter on genre
+        ✔ Push to filter on genre @done(19-04-03 11:26)
+        ☐ Keep selected genres when switching views
         ☐ Let found genres in the tunes create buttons for filtering
     BPM:
         ☐ Filter on range of BPM
@@ -35,7 +36,7 @@ Player:
     ✔ Show played time of tune @done(19-03-21 07:52)
     ✔ Progress Bar @done(19-03-21 07:52)
     ✔ BIG title, album etc, and smaller list @done(19-03-25 23:59)
-    ☐ Click on tune to select and load
+    ✔ Click on tune to select and load @done(19-04-03 11:21)
     ☐ Scroll overflowed text horizontally
     ☐ Center playlist so that playing song is visible
     ☐ Fade in and out on play/pause

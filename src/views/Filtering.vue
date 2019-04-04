@@ -1,48 +1,44 @@
 <template>
-<v-container>
-    <h1>Filter (total: {{ total }}, filtered: {{ currentTunes?currentTunes.length:0 }})</h1>
-    <v-layout row wrap justify-center>
-        <v-flex xs12 sm6 class="py-2">
+  <v-container fluid>
+    <v-layout row>
+      <v-layout justify-space-between>
+        <v-flex style="font-size:3vh;">Total: {{ totalCount }}, filtered: {{ currentCount }}</v-flex>
+        <v-layout row wrap justify-center>
+          <v-flex xs12 sm6 class="py-2">
             <v-btn-toggle v-model="genresSelected" multiple>
-                <v-btn v-for="genre in genres" :key="genre" flat @click="$emit('toggle-genre', genre)">{{genre}}</v-btn>
+              <v-btn
+                v-for="genre in genres"
+                :key="genre"
+                flat
+                @click="$emit('toggle-genre', genre)"
+              >{{genre}}</v-btn>
             </v-btn-toggle>
-        </v-flex>
+          </v-flex>
+        </v-layout>
+      </v-layout>
     </v-layout>
-    <TuneList :tunes="currentTunes" />
-</v-container>
+  </v-container>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
-import {
-    Component,
-    Prop,
-    Emit,
-    Mixins
-} from "vue-property-decorator";
-import {
-    TuneInfo
-} from "@/models/TuneInfo";
-import TuneList from "@/components/TuneList.vue";
-import saveState from 'vue-save-state';
+import { Component, Prop, Emit, Mixins } from "vue-property-decorator";
+import { TuneInfo } from "@/models/TuneInfo";
+import saveState from "vue-save-state";
 
-@Component({
-    components: {
-        TuneList
-    }
-})
+@Component
 export default class Filtering extends Mixins(saveState) {
-    @Prop() public total!: number;
-    @Prop() public currentTunes!: TuneInfo[];
+  @Prop() public totalCount!: number;
+  @Prop() public currentCount!: number;
 
-    private genres: string[] = ["Bugg", "Boogie", "Lindy", "WCS"];
-    private genresSelected: number[] = [];
+  private genres: string[] = ["Bugg", "Boogie", "Lindy", "WCS"];
+  private genresSelected: number[] = [];
 
-    // ID for saving component state using vue-save-state
-    private getSaveStateConfig() {
-        return {
-            'cacheKey': 'Filtering'
-        };
-    }
+  // ID for saving component state using vue-save-state
+  private getSaveStateConfig() {
+    return {
+      cacheKey: "Filtering"
+    };
+  }
 }
 </script>

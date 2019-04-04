@@ -2,14 +2,14 @@
   <v-container fluid style="padding:0">
     <v-layout row align-start>
       <div>
-        <img :src="cover" style="object-fit:cover;height:30vh;width:30vh;">
+        <img :src="cover" style="object-fit:cover;height:25vh;width:25vh;">
       </div>
       <div style="margin-left:1%;width:100%;">
-        <div style="font-size:9vh;" class="overflow">{{ title }}</div>
+        <div style="font-size:8vh;" class="overflow">{{ title }}</div>
         <div style="float:left;">
-          <div style="font-size:5vh;" class="overflow">{{ artist }}</div>
-          <div style="font-size:3vh;" class="overflow">{{ album + (track?" - ("+track+")":"") }}</div>
-          <div style="font-size:3vh;">{{ totaltime }}</div>
+          <div style="font-size:4vh;" class="overflow">{{ artist }}</div>
+          <div style="font-size:2vh;" class="overflow">{{ album + (track?" - ("+track+")":"") }}</div>
+          <div style="font-size:2vh;">{{ totaltime }}</div>
         </div>
         <div style="font-size:10vh;text-align:right;">{{ bpm }}</div>
       </div>

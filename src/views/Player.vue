@@ -21,7 +21,7 @@
         :tunes="currentTunes"
         :currentTune="currentTune"
         :onClick="setTune"
-        style="height:33vh;"
+        style="height:30vh;"
       />
     </v-layout>
   </v-container>

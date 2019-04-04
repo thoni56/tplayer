@@ -111,6 +111,7 @@ export default class Player extends Mixins(saveState) {
 
   public mounted() {
     self = this;
+    this.audio = new Audio();
     this.audio.addEventListener("playing", () => {
       self.timeTotal = self.audio.duration;
     });

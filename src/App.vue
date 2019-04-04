@@ -38,8 +38,7 @@ export default class App extends Vue {
     return this.allTunes ? this.allTunes.filter(this.currentFilter) : [];
   }
 
-  constructor() {
-    super();
+  public mounted() {
     loadTunes(this.tunesLoaded);
   }
 

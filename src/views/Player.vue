@@ -64,31 +64,33 @@ let self: Player;
 const fadeStep = 0.1;
 const fadeTime = 100;
 async function stopPlaying() {
-  // if (self.audio.volume > fadeStep) {
-  //   self.audio.volume -= fadeStep;
+  // if (audio.volume > fadeStep) {
+  //   audio.volume -= fadeStep;
   //   setTimeout(stopPlaying, fadeTime);
   // } else {
-  //   self.audio.volume = 0;
-  await self.audio.pause();
+  //   audio.volume = 0;
+  await audio.pause();
   // }
   self.playing = false;
 }
 
 async function startPlaying() {
-  await self.audio.play();
-  // if (self.audio.volume < 1 - fadeStep) {
-  //   self.audio.volume += fadeStep;
+  await audio.play();
+  // if (audio.volume < 1 - fadeStep) {
+  //   audio.volume += fadeStep;
   //   setTimeout(startPlaying, fadeTime);
   // } else {
-  //   self.audio.volume = 1;
+  //   audio.volume = 1;
   // }
   self.playing = true;
 }
 
 function remainingTimer() {
-  self.timePlayed = self.audio.currentTime;
+  self.timePlayed = audio.currentTime;
   setTimeout(remainingTimer, 200);
 }
+
+const audio = new Audio();
 
 @Component({
   components: {
@@ -103,20 +105,16 @@ export default class Player extends Mixins(saveState) {
 
   public playing = false;
   public tuneIndex = 2;
-  public insideTune = false;
   public timePlayed = 0;
   public timeTotal = 0;
-  public audio = new Audio();
   private tuneLoaded = false;
 
   public mounted() {
     self = this;
-    this.audio = new Audio();
-    this.audio.addEventListener("playing", () => {
-      self.timeTotal = self.audio.duration;
+    audio.addEventListener("playing", () => {
+      self.timeTotal = audio.duration;
     });
-    this.audio.addEventListener("ended", () => {
-      self.insideTune = false;
+    audio.addEventListener("ended", () => {
       self.tuneIndex++;
       if (self.tuneIndex <= self.currentTunes.length) {
         self.playTrack();
@@ -139,9 +137,6 @@ export default class Player extends Mixins(saveState) {
   public async playTrack() {
     if (this.currentTunes.length === 0) {
       return;
-    }
-    if (!this.insideTune) {
-      await this.loadTune(this.tuneIndex);
     }
     startPlaying();
   }
@@ -174,9 +169,8 @@ export default class Player extends Mixins(saveState) {
   // Internal functions
   private async loadTune(index: number) {
     const uri = await convertSongToUri(this.currentTunes[index].file!);
-    self.audio.src = uri;
-    await self.audio.load();
-    this.insideTune = true;
+    audio.src = uri;
+    await audio.load();
     this.tuneIndex = index;
     this.tuneLoaded = true;
     this.playing = false;

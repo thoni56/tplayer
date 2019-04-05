@@ -43,7 +43,7 @@ import saveState from "vue-save-state";
 const dataurl = remote.require("dataurl");
 
 async function convertSongToUri(filePath: string): Promise<string> {
-  const songPromise = new Promise<string>((resolve, reject) => {
+  const conversion = new Promise<string>((resolve, reject) => {
     fs.readFile(filePath, (err, data) => {
       if (err) {
         reject(err);
@@ -56,7 +56,7 @@ async function convertSongToUri(filePath: string): Promise<string> {
       );
     });
   });
-  return await songPromise;
+  return await conversion;
 }
 
 let self: Player;

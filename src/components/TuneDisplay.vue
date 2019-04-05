@@ -2,7 +2,8 @@
   <v-container fluid style="padding:0">
     <v-layout row align-start>
       <div>
-        <img :src="cover" style="object-fit:cover;height:25vh;width:25vh;">
+        <img v-if="cover" :src="cover" style="object-fit:cover;height:25vh;width:25vh;">
+        <div v-else style="object-fit:cover;height:25vh;width:25vh;"></div>
       </div>
       <div style="margin-left:1%;width:100%;">
         <div style="font-size:8vh;" class="overflow">{{ title }}</div>
@@ -28,7 +29,7 @@ export default class TuneDisplay extends Vue {
   @Prop() private tune!: TuneInfo;
 
   get cover() {
-    return this.tune ? this.tune.cover : undefined;
+    return this.tune ? this.tune.cover : "";
   }
 
   get title() {

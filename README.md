@@ -9,4 +9,4 @@ A music player specifically designed for dance classes. It (will)
   - random
   - circulating (a few tunes in one BPM range, then a few tunes in another)
 
-This is a budding project, and far from even finding tunes, much less filtering and even playing them.
+This is a budding project, but it can now find tunes, do trivial filtering and play them.

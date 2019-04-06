@@ -14,7 +14,7 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 import Filtering from "@/views/Filtering.vue";
 import Player from "@/views/Player.vue";
 import { TuneInfo } from "@/models/TuneInfo";
-import { loadTunes } from "@/components/TuneFinder.vue";
+import { ipcRenderer } from "electron";
 
 Vue.config.productionTip = false;
 
@@ -23,16 +23,19 @@ export default class App extends Vue {
   private genres: string[] = [];
   private allTunes: TuneInfo[] = [];
 
+  public mounted() {
+    const self = this;
+    ipcRenderer.on("discoveredTunes", (event: any, tunes: TuneInfo[]) => {
+      self.tunesLoaded(tunes);
+    });
+    ipcRenderer.send("discoverTunes");
+  }
   get totalCount() {
     return this.allTunes.length;
   }
 
   get currentTunes() {
     return this.allTunes ? this.allTunes.filter(this.currentFilter) : [];
-  }
-
-  public mounted() {
-    loadTunes(this.tunesLoaded);
   }
 
   private currentFilter(t: TuneInfo): boolean {

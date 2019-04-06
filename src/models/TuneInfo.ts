@@ -1,6 +1,6 @@
 import { IPicture } from 'music-metadata/lib/type';
 import { IAudioMetadata } from 'music-metadata';
-import '../../public/vinyl.png';
+// import '../../public/vinyl.png';
 
 function pictureToHTML(picture: IPicture) {
   return "data:" + picture.format + ";base64," + picture.data.toString('base64');

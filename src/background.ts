@@ -1,10 +1,13 @@
 'use strict';
 
-import { app, protocol, BrowserWindow } from 'electron';
+import { app, protocol, BrowserWindow, ipcMain, dialog } from 'electron';
 import {
   createProtocol,
   installVueDevtools
 } from 'vue-cli-plugin-electron-builder/lib';
+import { discoverTunes } from './tuneFinder';
+import fs from 'fs';
+import dataurl from 'dataurl';
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
@@ -82,3 +85,31 @@ if (isDevelopment) {
     });
   }
 }
+
+ipcMain.on('discoverTunes', () => {
+  discoverTunes(win!);
+})
+
+async function convertToUri(filePath: string) {
+  dialog.showMessageBox(win, { message: filePath });
+  const conversion = new Promise<string>((resolve, reject) => {
+    fs.readFile(filePath, (err, data) => {
+      if (err) {
+        dialog.showMessageBox(win, { message: "reject:" + err })
+        reject(err);
+      }
+      resolve(
+        dataurl.convert({
+          data,
+          mimetype: "audio/mp3"
+        })
+      );
+    });
+  });
+  dialog.showMessageBox(win, { message: "await" });
+  const uri = await conversion;
+  dialog.showMessageBox(win, { message: uri });
+  return uri;
+}
+
+ipcMain.on('convertSongToUri', (event: any, filePath: string) => { convertToUri(filePath); });

@@ -155,13 +155,15 @@ export default class Player extends Vue {
   // Internal functions
   private async loadTune(index: number) {
     console.log(index);
-    ipcRenderer.send("convertSongToUri", this.currentTunes[index].file);
-    console.log("here");
-    // audio.src = uri;
-    // await audio.load();
-    // this.tuneIndex = index;
-    // this.tuneLoaded = true;
-    // this.playing = false;
+    const uri = ipcRenderer.sendSync(
+      "convertSongToUri",
+      this.currentTunes[index].file
+    );
+    audio.src = uri;
+    await audio.load();
+    this.tuneIndex = index;
+    this.tuneLoaded = true;
+    this.playing = false;
   }
 }
 </script>

@@ -25,11 +25,14 @@ export default class App extends Vue {
 
   public mounted() {
     const self = this;
+
+    // Discover tunes over IPC
     ipcRenderer.on("discoveredTunes", (event: any, tunes: TuneInfo[]) => {
-      self.tunesLoaded(tunes);
+      self.addTunes(tunes);
     });
     ipcRenderer.send("discoverTunes");
   }
+
   get totalCount() {
     return this.allTunes.length;
   }
@@ -42,7 +45,7 @@ export default class App extends Vue {
     return t.genre ? t.genre.some(g => this.genres.includes(g)) : false;
   }
 
-  private tunesLoaded(tunes: TuneInfo[]) {
+  private addTunes(tunes: TuneInfo[]) {
     this.allTunes.push(...tunes);
   }
 

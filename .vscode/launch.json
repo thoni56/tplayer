@@ -14,7 +14,7 @@
         "webpack:///./src/*": "${webRoot}/src/*"
       },
       "port": 9222,
-      "url": "http://localhost:8080/#/",
+      "url": "http://localhost:8080/",
       "timeout": 20000
     },
     {

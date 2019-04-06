@@ -20,13 +20,6 @@ Vue.config.productionTip = false;
 
 @Component({ components: { Filtering, Player } })
 export default class App extends Vue {
-  public drawer = false;
-  public links = [
-    { icon: "play_arrow", text: "Player", route: "/" },
-    { icon: "filter_list", text: "Filter", route: "/filtering" },
-    { icon: "settings", text: "Settings", route: "/settings" }
-  ];
-
   private genres: string[] = [];
   private allTunes: TuneInfo[] = [];
 

@@ -1,10 +1,13 @@
+Overall:
+    ✔ Go for a single page design, with filters and play info together for better UX @done(19-04-06 10:57)
+
 Filtering:
     ✔ Move tune-finding to separate class (like it was ;-) @done(19-03-16 12:19)
     ✔ Scrollable list, but keep filters on top @done(19-03-17 21:30)
-    ☐ Load tunes on startup (now requires reload for some reason)
+    ✔ Load tunes on startup (now requires reload for some reason) @done(19-04-05 17:54)
     Genres:
         ✔ Push to filter on genre @done(19-04-03 11:26)
-        ☐ Keep selected genres when switching views
+        ☐ Keep selected genres in sync with filters
         ☐ Let found genres in the tunes create buttons for filtering
     BPM:
         ☐ Filter on range of BPM
@@ -37,14 +40,14 @@ Player:
     ✔ Progress Bar @done(19-03-21 07:52)
     ✔ BIG title, album etc, and smaller list @done(19-03-25 23:59)
     ✔ Click on tune to select and load @done(19-04-03 11:21)
+    ✔ Fade in and out on play/pause @done(19-04-05 17:54)
     ☐ Scroll overflowed text horizontally
     ☐ Center playlist so that playing song is visible
-    ☐ Fade in and out on play/pause
-    ☐ Next - if playing, play, else just move, now it is quite flakey
+    ☐ Next - if playing, play, else just move, now it is quite flakey (do we really want this?)
     ☐ Previous
-    ☐ Play icon state should stay even when navigating back and forth
-    ☐ Formatting of Playdisplay is wonky if any(?) field (except BPM) is empty
+    ☐ Formatting of PlayDisplay is wonky if any(?) field (except BPM) is empty or too long
     ☐ Double-click on tune to play
+    ☐ Click on tune to select, need play to play?
     ☐ Normalize volume
     ☐ Remote control
         ☐ Play and pause using remote control

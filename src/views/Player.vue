@@ -37,24 +37,23 @@ import Playbar from "@/components/Playbar.vue";
 
 import { ipcRenderer } from "electron";
 import fs from "fs";
-import { setTimeout } from "timers";
 import saveState from "vue-save-state";
 
-async function wait(millis: number) {
+function sleep(millis: number): Promise<any> {
   return new Promise(resolve => setTimeout(resolve, millis));
 }
 
 let self: Player;
 
 const fadeStep = 0.1;
-const fadeTime = 100;
+const fadeTime = 50;
 async function stopPlaying() {
   while (audio.volume > fadeStep) {
     audio.volume -= fadeStep;
-    await wait(fadeTime);
+    await sleep(fadeTime);
   }
   audio.volume = 0;
-  await audio.pause();
+  audio.pause();
   self.playing = false;
 }
 
@@ -62,7 +61,7 @@ async function startPlaying() {
   await audio.play();
   while (audio.volume < 1 - fadeStep) {
     audio.volume += fadeStep;
-    await wait(fadeTime);
+    await sleep(fadeTime);
   }
   audio.volume = 1;
   self.playing = true;
@@ -145,16 +144,8 @@ export default class Player extends Vue {
     this.loadTune(this.currentTunes.findIndex(tune => tune.file === id));
   }
 
-  // ID for saving component state using vue-save-state
-  private getSaveStateConfig() {
-    return {
-      cacheKey: "Player"
-    };
-  }
-
   // Internal functions
   private async loadTune(index: number) {
-    console.log(index);
     const uri = ipcRenderer.sendSync(
       "convertSongToUri",
       this.currentTunes[index].file

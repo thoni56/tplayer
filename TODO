@@ -7,7 +7,7 @@ Filtering:
     ✔ Load tunes on startup (now requires reload for some reason) @done(19-04-05 17:54)
     Genres:
         ✔ Push to filter on genre @done(19-04-03 11:26)
-        ☐ Keep selected genres in sync with filters
+        ✔ Keep selected genres in sync with filters by resetting both at mount-time @done(19-04-07 14:20)
         ☐ Let found genres in the tunes create buttons for filtering
     BPM:
         ☐ Filter on range of BPM

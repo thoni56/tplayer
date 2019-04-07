@@ -1,14 +1,14 @@
 <template>
   <v-container fluid>
     <v-layout row>
-      <v-layout>
-        <v-flex style="font-size:5vh;">
+      <v-layout shrink>
+        <v-flex style="font-size:5vh;padding-right:3vh;">
           Total: {{ totalCount }}
           <br>
           Filtered: {{ currentCount }}
         </v-flex>
       </v-layout>
-      <v-layout column>
+      <v-layout grow column padding="1vh">
         <v-layout row wrap justify-start>
           <v-btn-toggle v-model="genresSelected" multiple>
             <v-btn
@@ -20,10 +20,10 @@
           </v-btn-toggle>
         </v-layout>
         <v-layout row align-center>
-          <v-flex>
+          <v-flex grow>
             <v-slider dark v-model="bpm" max="300"/>
           </v-flex>
-          <v-flex style="font-size:5vh;padding-left:1vh;">{{ bpm }}</v-flex>
+          <v-flex shrink style="font-size:5vh;padding-left:1vh;">{{ bpm }}</v-flex>
         </v-layout>
       </v-layout>
     </v-layout>

@@ -2,13 +2,13 @@
   <div style="height:10vh;">
     <v-toolbar style="height:9vh;padding-top:1vh;">
       <v-spacer></v-spacer>
-      <v-btn fab medium color="#1976d2" @click="previousTrack">
+      <v-btn fab medium color="primary" @click="$emit('previous-track')">
         <v-icon>skip_previous</v-icon>
       </v-btn>
-      <v-btn fab large color="#1976d2" @click="playOrPauseTrack">
+      <v-btn fab large color="primary" @click="playOrPauseTrack">
         <v-icon>{{ icon }}</v-icon>
       </v-btn>
-      <v-btn fab medium color="#1976d2" @click="$emit('next-track')">
+      <v-btn fab medium color="primary" @click="$emit('next-track')">
         <v-icon>skip_next</v-icon>
       </v-btn>
       <v-spacer></v-spacer>
@@ -17,6 +17,7 @@
 </template>
 <script lang="ts">
 import { Vue, Component, Emit, Prop } from "vue-property-decorator";
+import colors from "vuetify/es5/util/colors";
 
 @Component
 export default class PlayerControls extends Vue {
@@ -32,14 +33,6 @@ export default class PlayerControls extends Vue {
 
   get icon() {
     return this.playing ? "pause" : "play_arrow";
-  }
-  @Emit() public nextTrack() {
-    // tslint:disable-next-line:no-console
-    console.log("Next");
-  }
-  @Emit() public previousTrack() {
-    // tslint:disable-next-line:no-console
-    console.log("Previous");
   }
 }
 </script>

@@ -73,7 +73,7 @@ export default class TuneList extends Vue {
 }
 
 .highlighted {
-  background-color: #1976d2;
+  background-color: var(--v-primary-base);
 }
 
 .tune-title {

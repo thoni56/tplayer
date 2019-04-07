@@ -1,7 +1,7 @@
 <template>
   <v-layout row scrollable>
-    <v-flex xs12>
-      <v-list two-line>
+    <v-flex>
+      <v-list dense>
         <template v-for="(tune, index) in tunes">
           <v-list-tile
             :key="tune.file"
@@ -13,9 +13,15 @@
             </v-list-tile-avatar>
 
             <v-list-tile-content>
-              <v-list-tile-title>{{ tune.title }}</v-list-tile-title>
-              <v-list-tile-sub-title>{{ tune.artist + " - " + tune.album + (tune.track?" - ("+tune.track+")":"") }}</v-list-tile-sub-title>
-              <v-list-tile-sub-title>{{ genres(tune) }}</v-list-tile-sub-title>
+              <v-list-tile-title>
+                <span class="tune-title">{{ tune.title }}</span>
+                <span class="tune-artist">{{ tune.artist }}</span>
+                <span class="tune-album">{{ tune.album }}</span>
+                <span class="tune-track">{{ tune.track?'#'+tune.track:"" }}</span>
+              </v-list-tile-title>
+              <v-list-tile-sub-title>
+                <span class="tune-genres">{{ genres(tune) }}</span>
+              </v-list-tile-sub-title>
             </v-list-tile-content>
             <v-spacer></v-spacer>
             {{ formattedDuration(tune) }}
@@ -68,5 +74,36 @@ export default class TuneList extends Vue {
 
 .highlighted {
   background-color: #1976d2;
+}
+
+.tune-title {
+  font-size: 1.2em;
+}
+.tune-title:after {
+  content: " - ";
+}
+
+.tune-artist {
+  font-size: 0.9em;
+  font-style: italic;
+}
+.tune-artist:after {
+  content: " - ";
+}
+
+.tune-album {
+  font-size: 0.8em;
+}
+.tune-album:after {
+  content: " - ";
+}
+
+.tune-track {
+  font-size: 0.7em;
+  font-style: italic;
+}
+
+.tune-genres {
+  font-size: 0.9em;
 }
 </style>

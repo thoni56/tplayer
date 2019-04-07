@@ -9,7 +9,7 @@
         <div style="font-size:8vh;" class="overflow">{{ title }}</div>
         <div style="float:left;">
           <div style="font-size:4vh;" class="overflow">{{ artist }}</div>
-          <div style="font-size:2vh;" class="overflow">{{ album + (track?" - ("+track+")":"") }}</div>
+          <div style="font-size:2vh;" class="overflow">{{ album + (track?" - #"+track:"") }}</div>
           <div style="font-size:2vh;">{{ totaltime }}</div>
         </div>
         <div style="font-size:10vh;text-align:right;">{{ bpm }}</div>

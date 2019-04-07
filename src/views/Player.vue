@@ -36,8 +36,6 @@ import PlayerControls from "@/components/PlayerControls.vue";
 import Playbar from "@/components/Playbar.vue";
 
 import { ipcRenderer } from "electron";
-import fs from "fs";
-import saveState from "vue-save-state";
 
 function sleep(millis: number): Promise<any> {
   return new Promise(resolve => setTimeout(resolve, millis));

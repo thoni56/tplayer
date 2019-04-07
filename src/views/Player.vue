@@ -1,5 +1,5 @@
 <template>
-  <v-container id="player" fluid>
+  <v-container id="player" fluid style="padding-top:0;">
     <v-layout column>
       <v-layout column>
         <v-layout>

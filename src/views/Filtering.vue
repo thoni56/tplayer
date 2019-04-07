@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-layout row>
       <v-layout shrink>
-        <v-flex style="font-size:5vh;padding-right:3vh;">
+        <v-flex style="font-size:3vh;padding-right:3vh;">
           Total: {{ totalCount }}
           <br>
           Filtered: {{ currentCount }}
@@ -23,7 +23,12 @@
           <v-flex grow>
             <v-slider dark v-model="bpm" max="300"/>
           </v-flex>
-          <v-flex shrink style="font-size:5vh;padding-left:1vh;">{{ bpm }}</v-flex>
+          <v-flex shrink style="font-size:5vh;padding-left:1vh;padding-right:2vh;">{{ bpm }}</v-flex>
+          <v-flex shrink>
+            <v-btn @click="$emit('sort-tunes')">
+              <v-icon>{{ sortIcon }}</v-icon>
+            </v-btn>
+          </v-flex>
         </v-layout>
       </v-layout>
     </v-layout>
@@ -39,6 +44,7 @@ import { TuneInfo } from "@/models/TuneInfo";
 export default class Filtering extends Vue {
   @Prop() public totalCount!: number;
   @Prop() public currentCount!: number;
+  @Prop() public sortingUp!: boolean;
 
   private genres: string[] = ["Bugg", "Boogie", "Lindy", "WCS"];
   private genresSelected: number[] = [];
@@ -49,11 +55,9 @@ export default class Filtering extends Vue {
     this.genresSelected = [];
   }
 
-  // ID for saving component state using vue-save-state
-  private getSaveStateConfig() {
-    return {
-      cacheKey: "Filtering"
-    };
+  get sortIcon() {
+    if (this.sortingUp) return "fas fa-sort-amount-up";
+    else return "fas fa-sort-amount-down";
   }
 }
 </script>

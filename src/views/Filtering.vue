@@ -34,6 +34,10 @@ export default class Filtering extends Mixins(saveState) {
   private genres: string[] = ["Bugg", "Boogie", "Lindy", "WCS"];
   private genresSelected: number[] = [];
 
+  private mounted() {
+    this.genresSelected = [];
+  }
+
   // ID for saving component state using vue-save-state
   private getSaveStateConfig() {
     return {

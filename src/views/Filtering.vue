@@ -24,10 +24,9 @@
 import Vue from "vue";
 import { Component, Prop, Emit, Mixins } from "vue-property-decorator";
 import { TuneInfo } from "@/models/TuneInfo";
-import saveState from "vue-save-state";
 
 @Component
-export default class Filtering extends Mixins(saveState) {
+export default class Filtering extends Vue {
   @Prop() public totalCount!: number;
   @Prop() public currentCount!: number;
 

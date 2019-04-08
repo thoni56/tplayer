@@ -95,10 +95,7 @@ export default class Player extends Vue {
       self.timeTotal = audio.duration;
     });
     audio.addEventListener("ended", () => {
-      self.tuneIndex!++;
-      if (self.tuneIndex! <= self.currentTunes.length) {
-        self.playTrack();
-      }
+      self.nextTrack();
     });
 
     setTimeout(remainingTimer, 200);

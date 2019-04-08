@@ -1,17 +1,17 @@
 <template>
-  <v-layout column>
-    <v-layout justify-space-between>
-      <v-container style="padding-left:0px; padding-bottom:0px;">
+  <v-layout column style="padding:0;">
+    <v-layout justify-space-between style="padding:0;">
+      <v-container style="padding:0px;">
         <div style="text-align:left;font-size:3vh;">{{timePlayed}}</div>
       </v-container>
-      <v-container style="padding-right:0px; padding-bottom:0px;">
+      <v-container style="padding:0px;">
         <div style="text-align:center;font-size:3vh;">{{timeTotal}}</div>
       </v-container>
-      <v-container style="padding-right:0px; padding-bottom:0px;">
+      <v-container style="padding:0px;">
         <div style="text-align:right;font-size:3vh;">{{timeRemaining}}</div>
       </v-container>
     </v-layout>
-    <v-progress-linear height="5vh" :value="percent"/>
+    <v-progress-linear height="5vh" :value="percent" style="padding:0;margin:0"/>
   </v-layout>
 </template>
 

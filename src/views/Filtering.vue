@@ -10,11 +10,11 @@
       </v-layout>
       <v-layout grow column padding="1vh">
         <v-layout row wrap justify-start>
-          <v-btn-toggle v-model="genresSelected" multiple>
+          <v-btn-toggle v-model="genresSelected" multiple color="primary">
             <v-btn
               v-for="genre in genres"
               :key="genre"
-              flat
+              color="primary"
               @click="$emit('toggle-genre', genre)"
             >{{genre}}</v-btn>
           </v-btn-toggle>
@@ -61,3 +61,8 @@ export default class Filtering extends Vue {
   }
 }
 </script>
+<style>
+button {
+  background-color: red lighten-3;
+}
+</style>

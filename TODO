@@ -68,6 +68,7 @@ System:
 Bugs:
     ✔ Is loading of cover art from tunes broken? @done(19-03-21 09:18)
     ✔ When finishing playing a tune it displays next tune, but continues to play the same @done(19-04-08 08:16)
+    ☐ When continuing to next tune play icon is wrong
     ☐ When tune is finished it does not always continue with next song, seems it only plays one second or so
     ☐ Forward skipping with tune reload and play only works once
     ☐ Pushing forward or play/pause quickly causes player to come out of sync

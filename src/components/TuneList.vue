@@ -1,5 +1,5 @@
 <template>
-  <v-layout row scrollable @mouseover="focus">
+  <v-layout row scrollable>
     <v-flex>
       <v-list dense>
         <template v-for="(tune, index) in tunes">
@@ -62,10 +62,6 @@ export default class TuneList extends Vue {
 
   public genres(tune: TuneInfo) {
     return tune.genre ? tune.genre.toString() : "";
-  }
-
-  public focus() {
-    this.focus();
   }
 }
 </script>

@@ -43,7 +43,7 @@ Player:
     ✔ Fade in and out on play/pause @done(19-04-05 17:54)
     ✔ Compact tune list @done(19-04-07 23:58)
     ✔ Click on tune to select @done(19-04-08 00:01)
-    ✔ Focus tune list when hovering so that scrolling of it works without clicking @done(19-04-08 19:29)
+    ✔ Play mp4-files (replace datauri package with file-to-datauri) @done(19-04-08 20:32)
     ☐ Show title and some more info in playbar so that whatever Player shows the playing tune is always visible
     ☐ Scroll overflowed text (title, album, etc) horizontally
     ☐ Center playlist so that playing song is visible

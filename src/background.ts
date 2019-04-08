@@ -6,7 +6,7 @@ import {
   installVueDevtools
 } from 'vue-cli-plugin-electron-builder/lib';
 import { discoverTunes } from './tuneFinder';
-import { sync as DataURI } from 'datauri';
+import datauri from 'file-to-datauri';
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
@@ -91,7 +91,7 @@ ipcMain.on('discoverTunes', () => {
 })
 
 function convertToUri(filePath: string) {
-  const uri: string = DataURI(filePath);
+  const uri: string = datauri.sync(filePath);
   return uri;
 }
 

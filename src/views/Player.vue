@@ -3,14 +3,13 @@
     <v-layout column>
       <v-layout column>
         <v-layout>
-          <TuneDisplay :tune="currentTunes[tuneIndex]"/>
+          <TuneDisplay :tune="currentTunes[playingIndex]"/>
         </v-layout>
         <v-layout>
           <Playbar
             :secondsPlayed="timePlayed"
             :secondsTotal="timeTotal"
-            :playingTitle="playingTitle"
-            :playingArtist="playingArtist"
+            :playingTune="playingTune"
           />
         </v-layout>
       </v-layout>
@@ -24,7 +23,7 @@
       />
       <TuneList
         :tunes="currentTunes"
-        :currentTune="currentTune"
+        :playingTune="playingTune"
         :onClick="setTune"
         style="height:30vh;"
       />
@@ -89,11 +88,10 @@ export default class Player extends Vue {
   @Prop() public currentTunes!: TuneInfo[];
 
   public playing = false;
-  public tuneIndex: number = -1;
   public timePlayed = 0;
   public timeTotal = 0;
-  private playingTitle: string = "";
-  private playingArtist: string = "";
+  public playingIndex: number = -1;
+  public playingTune: TuneInfo | undefined = new TuneInfo("");
 
   public mounted() {
     self = this;
@@ -107,22 +105,12 @@ export default class Player extends Vue {
     setTimeout(remainingTimer, 200);
   }
 
-  // UI functions
-  get currentTune() {
-    if (this.tuneIndex !== -1 && this.tuneIndex < this.currentTunes.length) {
-      return this.currentTunes[this.tuneIndex].file;
-    } else {
-      return undefined;
-    }
-  }
-
   // Public events
   public playTrack() {
     if (this.currentTunes.length === 0) {
       return;
     }
-    this.playingTitle = this.currentTunes[this.tuneIndex].title!;
-    this.playingArtist = this.currentTunes[this.tuneIndex].artist!;
+    this.playingTune = this.currentTunes[this.playingIndex];
     fadeIn(); // async
   }
 
@@ -132,12 +120,14 @@ export default class Player extends Vue {
 
   public async nextTrack() {
     if (
-      this.tuneIndex !== -1 &&
-      this.tuneIndex <= this.currentTunes.length - 1
+      this.playingIndex !== -1 &&
+      this.playingIndex <= this.currentTunes.length - 1
     ) {
       const wasPlaying = this.playing;
       if (this.playing) fadeOut();
-      await this.loadTune(this.tuneIndex + 1);
+      this.timePlayed = 0;
+      await this.loadTune(this.playingIndex + 1);
+      this.timeTotal = this.currentTunes[this.playingIndex].duration!;
       if (wasPlaying) this.playTrack();
     }
   }
@@ -155,10 +145,10 @@ export default class Player extends Vue {
     );
     audio.src = uri;
     await audio.load();
-    this.tuneIndex = index;
+    this.playingIndex = index;
     this.playing = false;
-    this.playingTitle = this.currentTunes[index].title!;
-    this.playingArtist = this.currentTunes[this.tuneIndex].artist!;
+    this.playingTune = this.currentTunes[index];
+    this.timePlayed = 0;
     this.timeTotal = audio.duration;
   }
 }

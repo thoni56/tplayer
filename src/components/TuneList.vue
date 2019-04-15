@@ -5,7 +5,7 @@
         <template v-for="(tune, index) in tunes">
           <v-list-tile
             :key="tune.file"
-            :class="{'highlighted': currentTune == tune.file}"
+            :class="{'highlighted': playingTune.file == tune.file}"
             @click="clicked(tune.file)"
           >
             <v-list-tile-avatar tile>
@@ -48,7 +48,7 @@ const ft = formatTime; // To ensure a reference exists
 @Component
 export default class TuneList extends Vue {
   @Prop() public tunes!: TuneInfo[];
-  @Prop() public currentTune!: string;
+  @Prop() public playingTune!: TuneInfo;
 
   @Prop() public onClick!: (id: string) => void;
 

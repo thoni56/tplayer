@@ -3,7 +3,7 @@
     <v-layout column>
       <v-layout column>
         <v-layout>
-          <TuneDisplay :tune="currentTunes[playingIndex]"/>
+          <TuneDisplay :tune="playingTune"/>
         </v-layout>
         <v-layout>
           <Playbar
@@ -90,8 +90,7 @@ export default class Player extends Vue {
   public playing = false;
   public timePlayed = 0;
   public timeTotal = 0;
-  public playingIndex: number = -1;
-  public playingTune: TuneInfo | undefined = new TuneInfo("");
+  public playingTune: TuneInfo = new TuneInfo("");
 
   public mounted() {
     self = this;
@@ -106,29 +105,31 @@ export default class Player extends Vue {
   }
 
   // Public events
-  public playTrack() {
+  public async playTrack() {
     if (this.currentTunes.length === 0) {
       return;
     }
-    this.playingTune = this.currentTunes[this.playingIndex];
-    fadeIn(); // async
+    await fadeIn(); // async
   }
 
-  public pauseTrack() {
-    fadeOut(); // async
+  public async pauseTrack() {
+    await fadeOut(); // async
   }
 
   public async nextTrack() {
-    if (
-      this.playingIndex !== -1 &&
-      this.playingIndex <= this.currentTunes.length - 1
-    ) {
-      const wasPlaying = this.playing;
-      if (this.playing) fadeOut();
-      this.timePlayed = 0;
-      await this.loadTune(this.playingIndex + 1);
-      this.timeTotal = this.currentTunes[this.playingIndex].duration!;
-      if (wasPlaying) this.playTrack();
+    if (this.playingTune.file != "") {
+      const playingIndex = this.currentTunes.findIndex(
+        tune => tune === this.playingTune
+      );
+      if (playingIndex < this.currentTunes.length - 1) {
+        const wasPlaying = this.playing;
+        if (this.playing) await fadeOut();
+        this.timePlayed = 0;
+        await this.loadTune(playingIndex + 1);
+        this.timeTotal = this.currentTunes[playingIndex].duration!;
+        if (wasPlaying) await this.playTrack();
+        await sleep(2000);
+      }
     }
   }
 
@@ -145,7 +146,6 @@ export default class Player extends Vue {
     );
     audio.src = uri;
     await audio.load();
-    this.playingIndex = index;
     this.playing = false;
     this.playingTune = this.currentTunes[index];
     this.timePlayed = 0;

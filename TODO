@@ -44,7 +44,7 @@ Player:
     ✔ Compact tune list @done(19-04-07 23:58)
     ✔ Click on tune to select @done(19-04-08 00:01)
     ✔ Play mp4-files (replace datauri package with file-to-datauri) @done(19-04-08 20:32)
-    ☐ Show title and some more info in playbar so that whatever Player shows the playing tune is always visible
+    ✔ Show title and some more info in playbar so that whatever Player shows the playing tune is always visible @done(19-04-15 22:50)
     ☐ Scroll overflowed text (title, album, etc) horizontally
     ☐ Center playlist so that playing song is visible
     ☐ Next - just move so that playing needs a play press (requires change in PlayerControls?)
@@ -68,8 +68,8 @@ System:
 Bugs:
     ✔ Is loading of cover art from tunes broken? @done(19-03-21 09:18)
     ✔ When finishing playing a tune it displays next tune, but continues to play the same @done(19-04-08 08:16)
-    ☐ When continuing to next tune play icon is wrong
-    ☐ When tune is finished it does not always continue with next song, seems it only plays one second or so
-    ☐ Forward skipping with tune reload and play only works once
+    ✔ When continuing to next tune play icon is wrong @done(19-04-15 22:50)
+    ✔ When tune is finished it does not always continue with next song, seems it only plays one second or so @done(19-04-15 22:50)
+    ✔ Forward skipping with tune reload and play only works once @done(19-04-15 22:50)
     ☐ Pushing forward or play/pause quickly causes player to come out of sync
     ☐ When re-sorting the displayed tune should not change

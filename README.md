@@ -10,3 +10,5 @@ A music player specifically designed for dance classes. It (will)
   - circulating (a few tunes in one BPM range, then a few tunes in another)
 
 This is a budding project, but it can now find tunes, do trivial filtering and play them.
+
+To use it you need Node with Electron and Vue. Start it with 'npm run electron:serve'.

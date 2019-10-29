@@ -10,6 +10,9 @@ Filtering:
         ✔ Keep selected genres in sync with filters by resetting both at mount-time @done(19-04-07 14:20)
         ☐ Let found genres in the tunes create buttons for filtering
     BPM:
+        ✔ BPM slider @done(19-10-29 21:05)
+        ☐ Display range of BPM
+        ☐ Extend or shrink BPM range
         ☐ Filter on range of BPM
     Sorting:
         ✔ Sort BPM @done(19-04-08 00:03)

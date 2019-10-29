@@ -23,7 +23,7 @@
           <v-flex grow>
             <v-slider dark v-model="bpm" max="300"/>
           </v-flex>
-          <v-flex shrink style="font-size:5vh;padding-left:1vh;padding-right:2vh;">{{ bpm }}</v-flex>
+          <v-flex shrink style="font-size:5vh;padding-left:1vh;padding-right:2vh;">{{ bpm }}&#177;{{bpmRange}}</v-flex>
           <v-flex shrink>
             <v-btn @click="$emit('sort-tunes')">
               <v-icon>{{ sortIcon }}</v-icon>

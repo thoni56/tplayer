@@ -7,7 +7,7 @@
       @toggle-genre="toggleGenre"
       @sort-tunes="sortTunes"
     />
-    <Player :currentTunes="currentTunes"/>
+    <Player :currentTunes="currentTunes" />
   </v-app>
 </template>
 
@@ -48,14 +48,15 @@ export default class App extends Vue {
     const filteredTunes = this.allTunes
       ? this.allTunes.filter(this.currentFilter)
       : [];
-    if (this.sortingUp)
+    if (this.sortingUp) {
       return filteredTunes.sort((t1, t2) => {
         return getBPM(t1) - getBPM(t2);
       });
-    else
+    } else {
       return filteredTunes.sort((t1, t2) => {
         return getBPM(t2) - getBPM(t1);
       });
+    }
     this.sortingUp = !this.sortingUp;
   }
 

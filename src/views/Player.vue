@@ -3,7 +3,7 @@
     <v-layout column>
       <v-layout column>
         <v-layout>
-          <TuneDisplay :tune="playingTune"/>
+          <TuneDisplay :tune="playingTune" />
         </v-layout>
         <v-layout>
           <Playbar
@@ -117,7 +117,7 @@ export default class Player extends Vue {
   }
 
   public async nextTrack() {
-    if (this.playingTune.file != "") {
+    if (this.playingTune.file !== "") {
       const playingIndex = this.currentTunes.findIndex(
         tune => tune === this.playingTune
       );

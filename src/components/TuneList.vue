@@ -9,7 +9,7 @@
             @click="clicked(tune.file)"
           >
             <v-list-tile-avatar tile>
-              <img :src="tune.cover">
+              <img :src="tune.cover" />
             </v-list-tile-avatar>
 
             <v-list-tile-content>
@@ -30,7 +30,7 @@
             </v-list-tile-action>
           </v-list-tile>
 
-          <v-divider :key="index"/>
+          <v-divider :key="index" />
         </template>
       </v-list>
     </v-flex>

@@ -4,7 +4,7 @@
       <v-layout shrink>
         <v-flex style="font-size:3vh;padding-right:3vh;">
           Total: {{ totalCount }}
-          <br>
+          <br />
           Filtered: {{ currentCount }}
         </v-flex>
       </v-layout>
@@ -21,9 +21,12 @@
         </v-layout>
         <v-layout row align-center>
           <v-flex grow>
-            <v-slider dark v-model="bpm" max="300"/>
+            <v-slider dark v-model="bpm" max="300" />
           </v-flex>
-          <v-flex shrink style="font-size:5vh;padding-left:1vh;padding-right:2vh;">{{ bpm }}&#177;{{bpmRange}}</v-flex>
+          <v-flex
+            shrink
+            style="font-size:5vh;padding-left:1vh;padding-right:2vh;"
+          >{{ bpm }}&#177;{{bpmRange}}</v-flex>
           <v-flex shrink>
             <v-btn @click="$emit('sort-tunes')">
               <v-icon>{{ sortIcon }}</v-icon>

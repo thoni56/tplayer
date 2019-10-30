@@ -11,9 +11,10 @@ Filtering:
         ☐ Let found genres in the tunes create buttons for filtering
     BPM:
         ✔ BPM slider @done(19-10-29 21:05)
-        ☐ Display range of BPM
-        ☐ Extend or shrink BPM range
+        ✔ Display range of BPM @done(19-10-29 21:43)
         ☐ Filter on range of BPM
+        ☐ Set BPM slider min/max from tunes
+        ☐ Extend or shrink BPM range
     Sorting:
         ✔ Sort BPM @done(19-04-08 00:03)
             ✔ Up @done(19-04-08 00:03)

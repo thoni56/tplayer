@@ -7,6 +7,7 @@
             :key="tune.file"
             :class="{'highlighted': playingTune.file == tune.file}"
             @click="clicked(tune.file)"
+            v-on:dblclick="doubleClicked(tune.file)"
           >
             <v-list-tile-avatar tile>
               <img :src="tune.cover" />
@@ -51,6 +52,7 @@ export default class TuneList extends Vue {
   @Prop() public playingTune!: TuneInfo;
 
   @Prop() public onClick!: (id: string) => void;
+  @Prop() public onDblClick!: (id: string) => void;
 
   public formattedDuration(tune: TuneInfo): string {
     return formatTime(tune.duration!);
@@ -58,6 +60,10 @@ export default class TuneList extends Vue {
 
   public clicked(tuneId: string) {
     if (this.onClick) this.onClick(tuneId);
+  }
+
+  public doubleClicked(tuneId: string) {
+    if (this.onDblClick) this.onDblClick(tuneId);
   }
 
   public genres(tune: TuneInfo) {

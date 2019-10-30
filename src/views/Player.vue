@@ -25,6 +25,7 @@
         :tunes="currentTunes"
         :playingTune="playingTune"
         :onClick="setTune"
+        :onDblClick="setTuneAndPlay"
         style="height:30vh;"
       />
     </v-layout>
@@ -136,6 +137,12 @@ export default class Player extends Vue {
   // :onClick from TuneList
   public setTune(id: string) {
     this.loadTune(this.currentTunes.findIndex(tune => tune.file === id));
+  }
+
+  // :onDblClick from TuneList
+  public setTuneAndPlay(id: string) {
+    this.setTune(id);
+    this.playTrack();
   }
 
   // Internal functions

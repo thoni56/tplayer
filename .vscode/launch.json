@@ -27,7 +27,19 @@
         "${workspaceFolder}/dist_electron/index.js",
         "--remote-debugging-port=9222"
       ],
-      "sourceMaps": true
+      "sourceMaps": true,
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "electron:serve",
+      "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/vue-cli-service",
+      "runtimeArgs": [
+        "electron:serve",
+        "--remote-debugging-port=9222"
+      ],
+      "sourceMaps": true,
+      "timeout": 30000
     }
   ],
   "compounds": [

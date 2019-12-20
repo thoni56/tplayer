@@ -135,8 +135,12 @@ export default class Player extends Vue {
   }
 
   // :onClick from TuneList
-  public setTune(id: string) {
+  public async setTune(id: string) {
+    await fadeOut(); // async
     this.loadTune(this.currentTunes.findIndex(tune => tune.file === id));
+    // This seems necessary to set the actual played time to zero
+    await audio.play();
+    await audio.pause();
   }
 
   // :onDblClick from TuneList

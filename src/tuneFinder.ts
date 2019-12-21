@@ -15,7 +15,7 @@ export function discoverTunes(renderer: BrowserWindow) {
     emitter = walk("/Users/Thomas/Music/iTunes/iTunes Music/Compilations");
   } else {
     emitter = walk(
-      "C:/Users/Thomas/Music/iTunes/iTunes Media/Music/Compilations"
+      "C:/Users/Thomas/Music/Testdata"
     );
   }
   emitter.on("file", (path: string) => {

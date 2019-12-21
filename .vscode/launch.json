@@ -5,49 +5,42 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Electron: Main",
+      "type": "node",
+      "request": "launch",
+      "protocol": "inspector",
+      "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron",
+      "windows": {
+        "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron.cmd"
+      },
+      "preLaunchTask": "electron-debug",
+      "args": [
+        "--remote-debugging-port=9223",
+        "./dist_electron"
+      ],
+      "outFiles": [
+        "${workspaceFolder}/dist_electron/**/*.js"
+      ]
+    },
+    {
+      "name": "Electron: Renderer",
       "type": "chrome",
       "request": "attach",
-      "name": "renderer : attach",
-      "webRoot": "${workspaceFolder}",
-      "sourceMaps": true,
+      "port": 9223,
+      "urlFilter": "http://localhost:*",
+      "timeout": 30000,
+      "webRoot": "${workspaceFolder}/src",
       "sourceMapPathOverrides": {
-        "webpack:///./*": "${webRoot}/*",
-        "webpack:///./src/*": "${webRoot}/src/*"
-      },
-      "port": 9222,
-      "url": "http://localhost:8080/",
-      "timeout": 20000
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "main",
-      "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
-      "runtimeArgs": [
-        "${workspaceFolder}/dist_electron/index.js",
-        "--remote-debugging-port=9222"
-      ],
-      "sourceMaps": true,
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "electron:serve",
-      "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/vue-cli-service",
-      "runtimeArgs": [
-        "electron:serve",
-        "--remote-debugging-port=9222"
-      ],
-      "sourceMaps": true,
-      "timeout": 30000
+        "webpack:///./src/*": "${webRoot}/*"
+      }
     }
   ],
   "compounds": [
     {
-      "name": "All",
+      "name": "Electron: All",
       "configurations": [
-        "main",
-        "renderer : attach"
+        "Electron: Main",
+        "Electron: Renderer"
       ]
     }
   ]

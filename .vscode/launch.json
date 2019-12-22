@@ -16,7 +16,7 @@
       "preLaunchTask": "electron-debug",
       "args": [
         "--remote-debugging-port=9223",
-        "./dist_electron"
+        "./dist_electron/index.js"
       ],
       "outFiles": [
         "${workspaceFolder}/dist_electron/**/*.js"

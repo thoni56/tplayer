@@ -18,7 +18,7 @@ const files: string[] = [];
 export function loadTunes(loadBatch: (tunes: TuneInfo[]) => void) {
   let emitter;
   if (process.platform === "darwin") {
-    emitter = walk("/Users/Thomas/Music/iTunes/iTunes Music/Compilations");
+    emitter = walk("testdata");
   } else {
     emitter = walk(
       "C:/Users/Thomas/Music/iTunes/iTunes Media/Music/Compilations"

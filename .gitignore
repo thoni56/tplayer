@@ -2,6 +2,7 @@
 node_modules
 testdata
 dist
+Tplayer Testdata.ffs_gui
 
 # local env files
 .env.local

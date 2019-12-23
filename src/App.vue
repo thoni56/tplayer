@@ -6,6 +6,7 @@
       :sortingUp="sortingUp"
       @toggle-genre="toggleGenre"
       @sort-tunes="sortTunes"
+      @change-bpm="changeBpm"
     />
     <Player :currentTunes="currentTunes" />
   </v-app>
@@ -29,6 +30,7 @@ export default class App extends Vue {
   private genres: string[] = [];
   private allTunes: TuneInfo[] = [];
   private sortingUp: boolean = true;
+  private bpm: number = 0;
 
   public mounted() {
     const self = this;
@@ -75,6 +77,10 @@ export default class App extends Vue {
 
   private sortTunes() {
     this.sortingUp = !this.sortingUp;
+  }
+
+  private changeBpm(bpm: number, range: number) {
+    this.bpm = bpm;
   }
 }
 </script>

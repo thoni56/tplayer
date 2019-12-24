@@ -1,8 +1,9 @@
 .DS_Store
 node_modules
-testdata
-dist
-Tplayer Testdata.ffs_gui
+/dist
+/testdata
+Testdata för Tplayer.ffs_batch
+
 
 # local env files
 .env.local

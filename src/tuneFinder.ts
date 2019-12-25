@@ -11,13 +11,9 @@ const files: string[] = [];
 
 export function discoverTunes(renderer: BrowserWindow) {
   let emitter;
-  if (process.platform === "darwin") {
-    emitter = walk("/Users/Thomas/Music/iTunes/iTunes Music/Compilations");
-  } else {
-    emitter = walk(
-      "C:/Users/Thomas/Music/Testdata"
-    );
-  }
+  emitter = walk(
+    "testdata"
+  );
   emitter.on("file", (path: string) => {
     if (
       path.endsWith(".mp3") ||

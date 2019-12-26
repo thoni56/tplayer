@@ -1,6 +1,5 @@
 <template>
-  <div style="height:10vh;">
-    <v-toolbar style="height:9vh;padding-top:1vh;">
+    <v-toolbar>
       <v-spacer></v-spacer>
       <v-btn rounded medium color="primary" @click="$emit('previous-track')">
         <v-icon>skip_previous</v-icon>
@@ -13,7 +12,6 @@
       </v-btn>
       <v-spacer></v-spacer>
     </v-toolbar>
-  </div>
 </template>
 <script lang="ts">
 import { Vue, Component, Emit, Prop } from "vue-property-decorator";

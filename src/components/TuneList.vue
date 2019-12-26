@@ -3,33 +3,33 @@
     <v-flex>
       <v-list dense>
         <template v-for="(tune, index) in tunes">
-          <v-list-tile
+          <v-list-item
             :key="tune.file"
             :class="{'highlighted': playingTune.file == tune.file}"
             @click="clicked(tune.file)"
             v-on:dblclick="doubleClicked(tune.file)"
           >
-            <v-list-tile-avatar tile>
+            <v-list-item-avatar tile>
               <img :src="tune.cover" />
-            </v-list-tile-avatar>
+            </v-list-item-avatar>
 
-            <v-list-tile-content>
-              <v-list-tile-title>
+            <v-list-item-content>
+              <v-list-item-title>
                 <span class="tune-title">{{ tune.title }}</span>
                 <span class="tune-artist">{{ tune.artist }}</span>
                 <span class="tune-album">{{ tune.album }}</span>
                 <span class="tune-track">{{ tune.track?'#'+tune.track:"" }}</span>
-              </v-list-tile-title>
-              <v-list-tile-sub-title>
+              </v-list-item-title>
+              <v-list-item-subtitle>
                 <span class="tune-genres">{{ genres(tune) }}</span>
-              </v-list-tile-sub-title>
-            </v-list-tile-content>
+              </v-list-item-subtitle>
+            </v-list-item-content>
             <v-spacer></v-spacer>
             {{ formattedDuration(tune) }}
-            <v-list-tile-action>
+            <v-list-item-action>
               <v-chip small>{{ tune.bpm }}</v-chip>
-            </v-list-tile-action>
-          </v-list-tile>
+            </v-list-item-action>
+          </v-list-item>
 
           <v-divider :key="index" />
         </template>

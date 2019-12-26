@@ -13,10 +13,14 @@ const opts: VuetifyPreset = {
   options: {
     customProperties: true
   },
-  themes: {
-    theme: {
-      primary: colors.red.darken4
+  theme: {
+    dark: true,
+    themes: {
+      dark: {
+        primary: colors.red.darken4
+      }
     }
+
   }
 }
 

@@ -12,7 +12,7 @@
           <div style="font-size:2vh;" class="overflow">{{ album + (track?" - #"+track:"") }}</div>
           <div style="font-size:2vh;">{{ totaltime }}</div>
         </div>
-        <div style="font-size:10vh;text-align:right;">{{ bpm }}</div>
+        <div style="font-size:9vh;text-align:right;">{{ bpm }}</div>
       </div>
     </v-layout>
   </v-container>

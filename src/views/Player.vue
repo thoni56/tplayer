@@ -26,7 +26,7 @@
         :playingTune="playingTune"
         :onClick="setTune"
         :onDblClick="setTuneAndPlay"
-        style="height:30vh;"
+        style="height:32vh;"
       />
     </v-layout>
   </v-container>

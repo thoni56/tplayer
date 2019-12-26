@@ -1,6 +1,6 @@
 <template>
   <v-container fluid style="padding:0">
-    <v-layout row align-start>
+    <v-layout align-start>
       <div>
         <img v-if="cover" :src="cover" style="object-fit:cover;height:25vh;width:25vh;">
         <div v-else style="object-fit:cover;height:25vh;width:25vh;"></div>

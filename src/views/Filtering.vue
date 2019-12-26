@@ -1,6 +1,6 @@
 <template>
   <v-container fluid style="padding-bottom:0;">
-    <v-layout row>
+    <v-layout>
       <v-layout shrink>
         <v-flex style="font-size:3vh;padding-right:3vh;">
           Total: {{ totalCount }}

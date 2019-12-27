@@ -15,6 +15,7 @@
               v-for="genre in genres"
               :key="genre"
               color="primary"
+              class="white--text"
               @click="$emit('toggle-genre', genre)"
             >{{genre}}</v-btn>
           </v-btn-toggle>

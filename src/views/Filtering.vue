@@ -22,7 +22,7 @@
         </v-layout>
         <v-layout align-center>
           <v-flex grow>
-            <v-slider @change="$emit('change-bpm', bpm)" dark v-model="bpm" max="300" />
+            <v-range-slider @change="$emit('change-bpm', bpm)" dark v-model="bpm" max="300" />
           </v-flex>
           <v-flex
             shrink

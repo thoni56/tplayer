@@ -9,7 +9,7 @@
         </v-flex>
       </v-layout>
       <v-layout grow column padding="1vh">
-        <v-layout row wrap justify-start>
+        <v-layout wrap justify-start>
           <v-btn-toggle v-model="genresSelected" multiple>
             <v-btn
               v-for="genre in genres"
@@ -20,7 +20,7 @@
             >{{genre}}</v-btn>
           </v-btn-toggle>
         </v-layout>
-        <v-layout row align-center>
+        <v-layout align-center>
           <v-flex grow>
             <v-slider @change="$emit('change-bpm', bpm)" dark v-model="bpm" max="300" />
           </v-flex>

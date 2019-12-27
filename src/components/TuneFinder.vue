@@ -50,7 +50,7 @@ async function readMetadataForAllFiles(loadBatch: (tunes: TuneInfo[]) => void) {
       all[index] = new TuneInfo(files[index]);
       all[index].fillFromCommonTags(metadata);
     }
-    if (index > 0 && index % 100 === 0) {
+    if (index > 0 && index % 10 === 0) {
       loadBatch(all.slice(previous, index));
       previous = index;
     }

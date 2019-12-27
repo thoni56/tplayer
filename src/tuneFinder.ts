@@ -38,7 +38,7 @@ async function readMetadataForAllFiles(renderer: BrowserWindow) {
     const metadata = await mm.parseFile(files[index]);
     all[index] = new TuneInfo(files[index]);
     all[index].fillFromCommonTags(metadata);
-    if (index > 0 && index % 100 === 0) {
+    if (index > 0 && index % 10 === 0) {
       renderer.webContents.send('discoveredTunes', all.slice(previous, index));
       previous = index;
     }

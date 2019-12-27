@@ -62,8 +62,17 @@ export default class App extends Vue {
     this.sortingUp = !this.sortingUp;
   }
 
-  private currentFilter(t: TuneInfo): boolean {
+  private genreFilter(t:TuneInfo) :boolean {
     return t.genre ? t.genre.some(g => this.genres.includes(g)) : false;
+  }
+
+  private bpmFilter(t:TuneInfo) :boolean {
+    let result :boolean = (this.bpm) - 3 < getBPM(t) && getBPM(t) < (this.bpm + 3);
+    return this.bpm == 0 || result;
+  }
+
+  private currentFilter(t: TuneInfo): boolean {
+    return this.genreFilter(t) && this.bpmFilter(t);
   }
 
   private addTunes(tunes: TuneInfo[]) {

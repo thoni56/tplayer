@@ -118,23 +118,13 @@ export default class Player extends Vue {
     await fadeOut(); // async
   }
 
-  private anyTrackSelected() : boolean {
-    return this.playingTune.file !== "";
-  }
-
   public async nextTrack() {
     if (this.anyTrackSelected()) {
       const playingIndex = this.currentTunes.findIndex(
         tune => tune === this.playingTune
       );
       if (playingIndex < this.currentTunes.length - 1) {
-        const wasPlaying = this.playing;
-        if (this.playing) await fadeOut();
-        this.timePlayed = 0;
-        await this.loadTune(playingIndex + 1);
-        this.timeTotal = this.currentTunes[playingIndex].duration!;
-        if (wasPlaying) await this.playTrack();
-        await sleep(2000);
+        this.moveToNextTrack(playingIndex, +1)
       }
     }
   }
@@ -145,13 +135,7 @@ export default class Player extends Vue {
         tune => tune === this.playingTune
       );
       if (playingIndex > 0) {
-        const wasPlaying = this.playing;
-        if (this.playing) await fadeOut();
-        this.timePlayed = 0;
-        await this.loadTune(playingIndex - 1);
-        this.timeTotal = this.currentTunes[playingIndex].duration!;
-        if (wasPlaying) await this.playTrack();
-        await sleep(2000);
+        this.moveToNextTrack(playingIndex, -1);
       }
     }
   }
@@ -172,6 +156,19 @@ export default class Player extends Vue {
   }
 
   // Internal functions
+  private anyTrackSelected() : boolean {
+    return this.playingTune.file !== "";
+  }
+
+  private async moveToNextTrack(playingIndex: number, direction : number) {
+    const wasPlaying = this.playing;
+    if (this.playing) await fadeOut();
+    this.timePlayed = 0;
+    await this.loadTune(playingIndex + direction);
+    this.timeTotal = this.currentTunes[playingIndex].duration!;
+    if (wasPlaying) await this.playTrack();
+  }
+      
   private async loadTune(index: number) {
     const uri = ipcRenderer.sendSync(
       "convertSongToUri",

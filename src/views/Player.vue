@@ -1,20 +1,8 @@
 <template>
   <v-container id="player" fluid style="padding-top:0;">
     <v-layout column>
-      <v-layout column>
-        <v-layout>
-          <TuneDisplay :tune="playingTune" />
-        </v-layout>
-        <v-layout>
-          <Playbar
-            :secondsPlayed="timePlayed"
-            :secondsTotal="timeTotal"
-            :playingTune="playingTune"
-          />
-        </v-layout>
-      </v-layout>
-    </v-layout>
-    <v-layout column>
+      <TuneDisplay :tune="playingTune" />
+      <Playbar :secondsPlayed="timePlayed" :secondsTotal="timeTotal" :playingTune="playingTune" />
       <PlayerControls
         :playing="playing"
         @previous-track="previousTune"
@@ -124,7 +112,7 @@ export default class Player extends Vue {
         tune => tune === this.playingTune
       );
       if (playingIndex < this.currentTunes.length - 1) {
-        this.moveToNextTrack(playingIndex, +1)
+        this.moveToNextTrack(playingIndex, +1);
       }
     }
   }
@@ -157,11 +145,11 @@ export default class Player extends Vue {
   }
 
   // Internal functions
-  private anyTuneSelected() : boolean {
+  private anyTuneSelected(): boolean {
     return this.playingTune.file !== "";
   }
 
-  private async moveToNextTrack(playingIndex: number, direction : number) {
+  private async moveToNextTrack(playingIndex: number, direction: number) {
     const wasPlaying = this.playing;
     if (this.playing) await fadeOut();
     this.timePlayed = 0;
@@ -169,7 +157,7 @@ export default class Player extends Vue {
     this.timeTotal = this.currentTunes[playingIndex].duration!;
     if (wasPlaying) await this.playTrack();
   }
-      
+
   private async loadTune(index: number) {
     const uri = ipcRenderer.sendSync(
       "convertSongToUri",

@@ -17,6 +17,7 @@
     <v-layout column>
       <PlayerControls
         :playing="playing"
+        @previous-track="previousTrack"
         @play-track="playTrack"
         @pause-track="pauseTrack"
         @next-track="nextTrack"
@@ -117,8 +118,12 @@ export default class Player extends Vue {
     await fadeOut(); // async
   }
 
+  private anyTrackSelected() : boolean {
+    return this.playingTune.file !== "";
+  }
+
   public async nextTrack() {
-    if (this.playingTune.file !== "") {
+    if (this.anyTrackSelected()) {
       const playingIndex = this.currentTunes.findIndex(
         tune => tune === this.playingTune
       );
@@ -127,6 +132,23 @@ export default class Player extends Vue {
         if (this.playing) await fadeOut();
         this.timePlayed = 0;
         await this.loadTune(playingIndex + 1);
+        this.timeTotal = this.currentTunes[playingIndex].duration!;
+        if (wasPlaying) await this.playTrack();
+        await sleep(2000);
+      }
+    }
+  }
+
+  public async previousTrack() {
+    if (this.anyTrackSelected()) {
+      const playingIndex = this.currentTunes.findIndex(
+        tune => tune === this.playingTune
+      );
+      if (playingIndex > 0) {
+        const wasPlaying = this.playing;
+        if (this.playing) await fadeOut();
+        this.timePlayed = 0;
+        await this.loadTune(playingIndex - 1);
         this.timeTotal = this.currentTunes[playingIndex].duration!;
         if (wasPlaying) await this.playTrack();
         await sleep(2000);

@@ -10,7 +10,7 @@
       </v-layout>
       <v-layout grow column padding="1vh">
         <v-layout wrap justify-start>
-          <v-btn-toggle v-model="genresSelected" multiple>
+          <v-btn-toggle v-model="genresSelected" multiple dense>
             <v-btn
               v-for="genre in genres"
               :key="genre"
@@ -52,8 +52,8 @@ export default class Filtering extends Vue {
 
   private genres: string[] = ["Bugg", "Boogie", "Lindy", "WCS"];
   private genresSelected: number[] = [];
-  private bpm: number = 140;
-  private bpmRange: number = 3;
+  private bpm: number = 0;
+  private bpmRange: number = 5;
 
   private mounted() {
     this.genresSelected = [];

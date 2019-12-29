@@ -1,40 +1,39 @@
 <template>
-  <v-container fluid style="padding-bottom:0;">
+  <v-container fluid>
     <v-layout>
-      <v-layout shrink>
-        <v-flex style="font-size:3vh;padding-right:3vh;">
-          Total: {{ totalCount }}
-          <br />
-          Filtered: {{ currentCount }}
-        </v-flex>
+      <v-flex shrink style="font-size:3vh;padding-right:3vh;">
+        Total: {{ totalCount }}
+        <br />
+        Filtered: {{ currentCount }}
+      </v-flex>
+      <v-layout wrap justify-start>
+        <v-btn-toggle v-model="genresSelected" multiple>
+          <v-btn
+            v-for="genre in genres"
+            :key="genre"
+            color="primary"
+            class="white--text"
+            @click="$emit('toggle-genre', genre)"
+          >{{genre}}</v-btn>
+        </v-btn-toggle>
       </v-layout>
-      <v-layout grow column padding="1vh">
-        <v-layout wrap justify-start>
-          <v-btn-toggle v-model="genresSelected" multiple dense>
-            <v-btn
-              v-for="genre in genres"
-              :key="genre"
-              color="primary"
-              class="white--text"
-              @click="$emit('toggle-genre', genre)"
-            >{{genre}}</v-btn>
-          </v-btn-toggle>
-        </v-layout>
-        <v-layout align-center>
-          <v-flex grow>
-            <v-slider @change="$emit('change-bpm', bpm)" dark v-model="bpm" max="300" />
-          </v-flex>
-          <v-flex
-            shrink
-            style="font-size:5vh;padding-left:1vh;padding-right:2vh;"
-          >{{ bpm }}&#177;{{bpmRange}}</v-flex>
-          <v-flex shrink>
-            <v-btn @click="$emit('sort-tunes')">
-              <v-icon>{{ sortIcon }}</v-icon>
-            </v-btn>
-          </v-flex>
-        </v-layout>
-      </v-layout>
+    </v-layout>
+    <v-layout>
+      <v-slider
+        grow
+        align-self-center
+        @change="$emit('change-bpm', bpm)"
+        dark
+        v-model="bpm"
+        max="300"
+      />
+      <v-flex
+        shrink
+        style="font-size:5vh;padding-left:1vh;padding-right:2vh;"
+      >{{ bpm }}&#177;{{bpmRange}}</v-flex>
+      <v-btn shrink @click="$emit('sort-tunes')">
+        <v-icon>{{ sortIcon }}</v-icon>
+      </v-btn>
     </v-layout>
   </v-container>
 </template>

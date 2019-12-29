@@ -25,7 +25,10 @@ protocol.registerSchemesAsPrivileged([{
 
 function createWindow() {
   // Create the browser window.
-  win = new BrowserWindow({ width: 800, height: 600 });
+  win = new BrowserWindow({
+    title: "Tplayer", width: 800, height: 600,
+    webPreferences: { nodeIntegration: true }
+  });
   win.setMenu(null);
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {

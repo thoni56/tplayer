@@ -7,7 +7,6 @@
             :key="tune.file"
             :class="{'highlighted': playingTune.file == tune.file}"
             @click="clicked(tune.file)"
-            v-on:dblclick="doubleClicked(tune.file)"
           >
             <v-list-item-avatar tile>
               <img :src="tune.cover" />
@@ -54,16 +53,22 @@ export default class TuneList extends Vue {
   @Prop() public onClick!: (id: string) => void;
   @Prop() public onDblClick!: (id: string) => void;
 
+    private timeoutId: NodeJS.Timer | null = null;
+
   public formattedDuration(tune: TuneInfo): string {
     return formatTime(tune.duration!);
   }
 
   public clicked(tuneId: string) {
-    if (this.onClick) this.onClick(tuneId);
+    if (!this.timeoutId) {
+      this.timeoutId = setTimeout(() => {
+        if (this.onClick) this.onClick(tuneId);
+        this.timeoutId = null;
+      }, 500);
+    } else {
+      clearTimeout(this.timeoutId);
+      if (this.onDblClick) this.onDblClick(tuneId);
   }
-
-  public doubleClicked(tuneId: string) {
-    if (this.onDblClick) this.onDblClick(tuneId);
   }
 
   public genres(tune: TuneInfo) {
@@ -85,6 +90,7 @@ export default class TuneList extends Vue {
 .tune-title {
   font-size: 1.2em;
 }
+
 .tune-title:after {
   content: " - ";
 }
@@ -93,6 +99,7 @@ export default class TuneList extends Vue {
   font-size: 0.9em;
   font-style: italic;
 }
+
 .tune-artist:after {
   content: " - ";
 }
@@ -100,6 +107,7 @@ export default class TuneList extends Vue {
 .tune-album {
   font-size: 0.8em;
 }
+
 .tune-album:after {
   content: " - ";
 }

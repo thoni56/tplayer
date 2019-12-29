@@ -1,10 +1,14 @@
 Overall:
     ✔ Go for a single page design, with filters and play info together for better UX @done(19-04-06 10:57)
 
-Filtering:
+Filtering & Sorting:
     ✔ Move tune-finding to separate class (like it was ;-) @done(19-03-16 12:19)
     ✔ Scrollable list, but keep filters on top @done(19-03-17 21:30)
     ✔ Load tunes on startup (now requires reload for some reason) @done(19-04-05 17:54)
+    Sorting:
+        ✔ Sort BPM @done(19-04-08 00:03)
+            ✔ Up @done(19-04-08 00:03)
+            ✔ Down @done(19-04-08 00:03)
     Genres:
         ✔ Push to filter on genre @done(19-04-03 11:26)
         ✔ Keep selected genres in sync with filters by resetting both at mount-time @done(19-04-07 14:20)
@@ -13,18 +17,20 @@ Filtering:
         ✔ BPM slider @done(19-10-29 21:05)
         ✔ Display range of BPM @done(19-10-29 21:43)
         ✔ Filter on range of BPM @done(19-12-29 12:36)
-        ☐ Set BPM slider min/max from tunes
         ☐ Extend or shrink BPM range
-    Sorting:
-        ✔ Sort BPM @done(19-04-08 00:03)
-            ✔ Up @done(19-04-08 00:03)
-            ✔ Down @done(19-04-08 00:03)
-        Random:
-            ☐ Random (any)
-            Random groups:
-                ☐ Random genres - which should not be mathematically random
-                ☐ Random tempo ranges
-                ☐ Random count within groups
+        ☐ Set BPM slider min/max from tunes
+    Text:
+        ☐ Filter on content of text field
+            ☐ Display text field
+            ☐ Filter on text field
+            ☐ Incrementally filter on input in text field
+    Random:
+        ☐ Random (any)
+        Random groups:
+            ☐ Random genres - which should not be mathematically random
+            ☐ Random tempo ranges
+            ☐ Random count within groups
+
 Settings:
     ☐ Select directory to (re-)load tunes from
     ☐ Persist path to tunes directory

@@ -69,7 +69,7 @@ System:
     ✔ Upgrade npm 'npm i -g npm' @done(19-03-20 22:27)
     ✔ Give progress feedback when loading tunes (load a batch of tunes at a time? progress bar?) @done(19-03-20 22:27)
     ☐ Prevent screen lock (https://ourcodeworld.com/articles/read/539/how-to-prevent-that-the-system-enters-in-suspension-sleep-mode-in-electron-framework)
-    ☐ Switch to node-walk when finding tunes since it should be more standard (don't need the speed of 'walkdir')
+    ☐ Unlock @types/node@12.12.22 depending on https://github.com/DefinitelyTyped/DefinitelyTyped/issues/41224
         
 Bugs:
     ✔ Is loading of cover art from tunes broken? @done(19-03-21 09:18)

@@ -18,12 +18,15 @@ Filtering & Sorting:
         ✔ Display range of BPM @done(19-10-29 21:43)
         ✔ Filter on range of BPM @done(19-12-29 12:36)
         ☐ Extend or shrink BPM range
-        ☐ Set BPM slider min/max from tunes
+        ☐ Set BPM slider min/max from all tunes
     Text:
         ☐ Filter on content of text field
             ☐ Display text field
             ☐ Filter on text field
             ☐ Incrementally filter on input in text field
+
+Playing:
+    ☐ Playing timer (how much of a tune should play before moving to next)
     Random:
         ☐ Random (any)
         Random groups:
@@ -59,13 +62,13 @@ Player:
     ✔ Tune out and in when forwarding to next song @done(19-12-21 09:55)
     ✔ Previous @done(19-12-29 13:38)
     ✔ Double-click on tune to play @done(19-12-29 16:45)
-    ☐ Scroll overflowed text (title, album, etc) horizontally
-    ☐ Center playlist so that playing song is visible
-    ☐ Next - just move so that playing needs a play press (requires change in PlayerControls?)
-    ☐ Formatting of PlayDisplay is wonky if any(?) field (except BPM) is empty or too long
-    ☐ Normalize volume
     ☐ Remote control
         ☐ Play and pause using remote control
+    ☐ Center playlist so that playing song is visible
+    ☐ Scroll overflowed text (title, album, etc) horizontally
+    ☐ Next - just move so that playing needs a play press? (requires change in PlayerControls?)
+    ☐ Formatting of PlayDisplay is wonky if any(?) field (except BPM) is empty or too long
+    ☐ Normalize volume (is the volume info from iTunes available?)
     ☐ Scroll inside playing tune
 
 Graphics:
@@ -75,6 +78,8 @@ System:
     ✔ Give progress feedback when loading tunes (load a batch of tunes at a time? progress bar?) @done(19-03-20 22:27)
     ☐ Prevent screen lock (https://ourcodeworld.com/articles/read/539/how-to-prevent-that-the-system-enters-in-suspension-sleep-mode-in-electron-framework)
     ☐ Unlock @types/node@12.12.22 depending on https://github.com/DefinitelyTyped/DefinitelyTyped/issues/41224
+    ☐ Move Filtering to components/
+    ☐ Move TuneFinder.vue to some other directory (helpers?)
         
 Bugs:
     ✔ Is loading of cover art from tunes broken? @done(19-03-21 09:18)
@@ -83,4 +88,3 @@ Bugs:
     ✔ When tune is finished it does not always continue with next song, seems it only plays one second or so @done(19-04-15 22:50)
     ✔ Forward skipping with tune reload and play only works once @done(19-04-15 22:50)
     ☐ Pushing forward or play/pause quickly causes player to come out of sync
-    ☐ When re-sorting the displayed tune should not change

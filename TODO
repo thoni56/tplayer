@@ -58,7 +58,7 @@ Player:
     ✔ Reset playing time when moving (not playing) to another tune @done(19-12-21 09:55)
     ✔ Tune out and in when forwarding to next song @done(19-12-21 09:55)
     ✔ Previous @done(19-12-29 13:38)
-    ☐ Double-click on tune to play
+    ✔ Double-click on tune to play @done(19-12-29 16:45)
     ☐ Scroll overflowed text (title, album, etc) horizontally
     ☐ Center playlist so that playing song is visible
     ☐ Next - just move so that playing needs a play press (requires change in PlayerControls?)

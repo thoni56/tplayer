@@ -150,8 +150,9 @@ export default class Player extends Vue {
   }
 
   // :onDblClick from TuneList
-  public setTuneAndPlay(id: string) {
-    this.setTune(id);
+  public async setTuneAndPlay(id: string) {
+    await fadeOut(); // async
+    this.loadTune(this.currentTunes.findIndex(tune => tune.file === id));
     this.playTrack();
   }
 

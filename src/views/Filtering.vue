@@ -18,21 +18,28 @@
         </v-btn-toggle>
       </v-layout>
     </v-layout>
-    <v-layout>
-      <v-slider grow @change="$emit('change-bpm', bpm)" v-model="bpm" max="300" />
-      <v-flex shrink style="font-size:5vh;padding-left:1vh;padding-right:1vh;">{{ bpm }}&#177;</v-flex>
-      <v-flex shrink>
-        <v-text-field
-          dense
-          v-model="bpmRange"
-          @change="$emit('change-bpmRange', bpmRange)"
-          type="number"
-          style="font-size:4vh;padding-top:0.5vh;width:9vh;"
-        ></v-text-field>
+    <v-layout style="margin-top:-5vh;">
+      <v-flex align-self-center grow style="margin-top:5vh">
+        <v-slider grow @change="$emit('change-bpm', bpm)" v-model="bpm" max="300" />
       </v-flex>
-      <v-btn shrink @click="$emit('sort-tunes')">
-        <v-icon>{{ sortIcon }}</v-icon>
-      </v-btn>
+      <v-flex
+        shrink
+        align-self-center
+        style="font-size:5vh;padding-left:1vh;padding-right:1vh;"
+      >{{ bpm }}&#177;</v-flex>
+      <v-flex shrink align-self-center>
+        <vue-numeric-input
+          controls-type="updown"
+          v-model="bpmRange"
+          @change="$emit('change-bpmRange', bpmRange);"
+          style="width:10vh;"
+        />
+      </v-flex>
+      <v-flex align-self-center shrink>
+        <v-btn @click="$emit('sort-tunes')">
+          <v-icon>{{ sortIcon }}</v-icon>
+        </v-btn>
+      </v-flex>
     </v-layout>
   </v-container>
 </template>
@@ -40,9 +47,12 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop, Emit, Mixins } from "vue-property-decorator";
+import VueNumericInput from "vue-numeric-input";
 import { TuneInfo } from "@/models/TuneInfo";
 
-@Component
+@Component({
+  components: { VueNumericInput }
+})
 export default class Filtering extends Vue {
   @Prop() public totalCount!: number;
   @Prop() public currentCount!: number;
@@ -63,3 +73,16 @@ export default class Filtering extends Vue {
   }
 }
 </script>
+<style>
+.vue-numeric-input button {
+  color: red;
+}
+
+.vue-numeric-input input {
+  border: 0px;
+}
+
+.v-messages__message {
+  height: 0;
+}
+</style>

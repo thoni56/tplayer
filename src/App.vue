@@ -7,6 +7,7 @@
       @toggle-genre="toggleGenre"
       @sort-tunes="sortTunes"
       @change-bpm="changeBpm"
+      @change-bpmRange="changeBpmRange"
     />
     <Player :currentTunes="currentTunes" />
   </v-app>
@@ -31,6 +32,7 @@ export default class App extends Vue {
   private allTunes: TuneInfo[] = [];
   private sortingUp: boolean = true;
   private bpm: number = 0;
+  private bpmRange: number = 5;
 
   public mounted() {
     const self = this;
@@ -62,12 +64,14 @@ export default class App extends Vue {
     this.sortingUp = !this.sortingUp;
   }
 
-  private genreFilter(t:TuneInfo) :boolean {
+  private genreFilter(t: TuneInfo): boolean {
     return t.genre ? t.genre.some(g => this.genres.includes(g)) : false;
   }
 
-  private bpmFilter(t:TuneInfo) :boolean {
-    const result :boolean = (this.bpm) - 3 < getBPM(t) && getBPM(t) < (this.bpm + 3);
+  private bpmFilter(t: TuneInfo): boolean {
+    const result: boolean =
+      this.bpm - this.bpmRange < getBPM(t) &&
+      getBPM(t) < this.bpm + this.bpmRange;
     return this.bpm === 0 || result;
   }
 
@@ -88,8 +92,12 @@ export default class App extends Vue {
     this.sortingUp = !this.sortingUp;
   }
 
-  private changeBpm(bpm: number, range: number) {
+  private changeBpm(bpm: number) {
     this.bpm = bpm;
+  }
+
+  private changeBpmRange(range: number) {
+    this.bpmRange = range;
   }
 }
 </script>

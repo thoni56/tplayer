@@ -20,10 +20,16 @@
     </v-layout>
     <v-layout>
       <v-slider grow @change="$emit('change-bpm', bpm)" v-model="bpm" max="300" />
-      <v-flex
-        shrink
-        style="font-size:5vh;padding-left:1vh;padding-right:2vh;"
-      >{{ bpm }}&#177;{{bpmRange}}</v-flex>
+      <v-flex shrink style="font-size:5vh;padding-left:1vh;padding-right:1vh;">{{ bpm }}&#177;</v-flex>
+      <v-flex shrink>
+        <v-text-field
+          dense
+          v-model="bpmRange"
+          @change="$emit('change-bpmRange', bpmRange)"
+          type="number"
+          style="font-size:4vh;padding-top:0.5vh;width:9vh;"
+        ></v-text-field>
+      </v-flex>
       <v-btn shrink @click="$emit('sort-tunes')">
         <v-icon>{{ sortIcon }}</v-icon>
       </v-btn>

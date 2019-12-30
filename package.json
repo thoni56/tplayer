@@ -19,6 +19,7 @@
     "music-metadata": "^5.4.3",
     "vue": "^2.6.11",
     "vue-class-component": "^7.1.0",
+    "vue-numeric-input": "^1.0.5",
     "vue-property-decorator": "^8.3.0",
     "vue-save-state": "^1.2.0",
     "vuetify": "^2.1.15",

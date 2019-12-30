@@ -12,7 +12,8 @@ const files: string[] = [];
 export function discoverTunes(renderer: BrowserWindow) {
   let emitter;
   emitter = walk(
-    "testdata"
+    "testdata",
+    {follow_symlinks: true}
   );
   emitter.on("file", (path: string) => {
     if (

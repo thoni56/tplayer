@@ -19,14 +19,7 @@
       </v-layout>
     </v-layout>
     <v-layout>
-      <v-slider
-        grow
-        align-self-center
-        @change="$emit('change-bpm', bpm)"
-        dark
-        v-model="bpm"
-        max="300"
-      />
+      <v-slider grow @change="$emit('change-bpm', bpm)" v-model="bpm" max="300" />
       <v-flex
         shrink
         style="font-size:5vh;padding-left:1vh;padding-right:2vh;"

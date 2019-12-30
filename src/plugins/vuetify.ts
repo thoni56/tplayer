@@ -19,8 +19,10 @@ const opts: VuetifyPreset = {
       dark: {
         primary: colors.red.darken4
       }
+    },
+    options: {
+      customProperties: true
     }
-
   }
 }
 

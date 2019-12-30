@@ -76,15 +76,11 @@ export default class Filtering extends Vue {
 }
 </script>
 <style>
-.vue-numeric-input button {
-  color: red;
+div.vue-numeric-input.updown button.btn {
+  background: var(--v-primary-base);
 }
 
-.vue-numeric-input input {
-  border: 0px;
-}
-
-.v-messages__message {
-  height: 0;
+div.vue-numeric-input.updown input.numeric-input {
+  border: 0;
 }
 </style>

@@ -1,23 +1,25 @@
 <template>
   <v-container id="player" fluid style="padding-top:0;">
-    <v-layout column>
-      <TuneDisplay :tune="playingTune" />
-      <Playbar :secondsPlayed="timePlayed" :secondsTotal="timeTotal" :playingTune="playingTune" />
-      <PlayerControls
-        :playing="playing"
-        @previous-track="previousTune"
-        @play-track="playTrack"
-        @pause-track="pauseTrack"
-        @next-track="nextTune"
-      />
-      <TuneList
-        :tunes="currentTunes"
-        :playingTune="playingTune"
-        :onClick="setTune"
-        :onDblClick="setTuneAndPlay"
-        style="height:32vh;"
-      />
-    </v-layout>
+    <v-row>
+      <v-col class="pt-0">
+        <TuneDisplay :tune="playingTune" />
+        <Playbar :secondsPlayed="timePlayed" :secondsTotal="timeTotal" :playingTune="playingTune" />
+        <PlayerControls
+          :playing="playing"
+          @previous-track="previousTune"
+          @play-track="playTrack"
+          @pause-track="pauseTrack"
+          @next-track="nextTune"
+        />
+        <TuneList
+          :tunes="currentTunes"
+          :playingTune="playingTune"
+          :onClick="setTune"
+          :onDblClick="setTuneAndPlay"
+          style="height:32vh;"
+        />
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 

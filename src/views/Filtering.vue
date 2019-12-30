@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid>
+  <v-container fluid class="pb-0">
     <v-layout>
       <v-flex shrink style="font-size:3vh;padding-right:3vh;">
         Total: {{ totalCount }}
@@ -19,22 +19,22 @@
         </v-btn-toggle>
       </v-layout>
     </v-layout>
-    <v-layout style="margin-top:-3vh;">
-      <v-flex align-self-center shrink style="font-size:2vh;padding-right:1vh;">BPM:</v-flex>
-      <v-flex align-self-center grow style="margin-top:4vh">
+    <v-layout style="margin-top:-3vh;margin-bottom:-1vh;">
+      <v-flex align-self-center shrink style="font-size:2vh;padding-right:1vw;">BPM:</v-flex>
+      <v-flex align-self-center grow style="margin-top:3vh;">
         <v-slider grow @change="$emit('change-bpm', bpm)" v-model="bpm" max="300" />
       </v-flex>
       <v-flex
         shrink
         align-self-center
-        style="font-size:5vh;padding-left:1vh;padding-right:1vh;"
+        style="font-size:5vh;padding-left:0.5vw;padding-right:0.5vw;"
       >{{ bpm }}&#177;</v-flex>
       <v-flex shrink align-self-center>
         <vue-numeric-input
           controls-type="updown"
           v-model="bpmRange"
           @change="$emit('change-bpmRange', bpmRange);"
-          style="font-size:3vh;width:11vh;margin-right:1vh;"
+          style="font-size:3vh;width:4vw;margin-right:1vw;"
         />
       </v-flex>
       <v-flex align-self-center shrink>

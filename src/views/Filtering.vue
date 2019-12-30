@@ -14,12 +14,14 @@
             color="primary"
             class="white--text"
             @click="$emit('toggle-genre', genre)"
+            style="height:9vh;"
           >{{genre}}</v-btn>
         </v-btn-toggle>
       </v-layout>
     </v-layout>
-    <v-layout style="margin-top:-5vh;">
-      <v-flex align-self-center grow style="margin-top:5vh">
+    <v-layout style="margin-top:-3vh;">
+      <v-flex align-self-center shrink style="font-size:2vh;padding-right:1vh;">BPM:</v-flex>
+      <v-flex align-self-center grow style="margin-top:4vh">
         <v-slider grow @change="$emit('change-bpm', bpm)" v-model="bpm" max="300" />
       </v-flex>
       <v-flex
@@ -32,7 +34,7 @@
           controls-type="updown"
           v-model="bpmRange"
           @change="$emit('change-bpmRange', bpmRange);"
-          style="width:10vh;"
+          style="font-size:3vh;width:11vh;margin-right:1vh;"
         />
       </v-flex>
       <v-flex align-self-center shrink>

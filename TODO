@@ -17,7 +17,7 @@ Filtering & Sorting:
         ✔ BPM slider @done(19-10-29 21:05)
         ✔ Display range of BPM @done(19-10-29 21:43)
         ✔ Filter on range of BPM @done(19-12-29 12:36)
-        ☐ Extend or shrink BPM range
+        ✔ Extend or shrink BPM range @done(19-12-31 10:48)
         ☐ Set BPM slider min/max from all tunes
     Text:
         ☐ Filter on content of text field

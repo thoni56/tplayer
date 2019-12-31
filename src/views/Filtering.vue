@@ -34,7 +34,7 @@
           controls-type="updown"
           v-model="bpmRange"
           @change="$emit('change-bpmRange', bpmRange);"
-          style="font-size:3vh;width:4vw;margin-right:1vw;"
+          style="font-size:3vh;width:8vw;margin-right:1vw;"
         />
       </v-flex>
       <v-flex align-self-center shrink>

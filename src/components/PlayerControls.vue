@@ -1,17 +1,17 @@
 <template>
-    <v-toolbar>
-      <v-spacer></v-spacer>
-      <v-btn rounded medium color="primary" @click="$emit('previous-track')">
-        <v-icon>skip_previous</v-icon>
-      </v-btn>
-      <v-btn rounded large color="primary" @click="playOrPauseTrack">
-        <v-icon>{{ icon }}</v-icon>
-      </v-btn>
-      <v-btn rounded medium color="primary" @click="$emit('next-track')">
-        <v-icon>skip_next</v-icon>
-      </v-btn>
-      <v-spacer></v-spacer>
-    </v-toolbar>
+  <v-toolbar>
+    <v-spacer></v-spacer>
+    <v-btn rounded medium color="primary" @click="$emit('previous-track')">
+      <v-icon>skip_previous</v-icon>
+    </v-btn>
+    <v-btn rounded large color="primary" @click="playOrPauseTrack">
+      <v-icon>{{ icon }}</v-icon>
+    </v-btn>
+    <v-btn rounded medium color="primary" @click="$emit('next-track')">
+      <v-icon>skip_next</v-icon>
+    </v-btn>
+    <v-spacer></v-spacer>
+  </v-toolbar>
 </template>
 <script lang="ts">
 import { Vue, Component, Emit, Prop } from "vue-property-decorator";

@@ -62,6 +62,10 @@ Player:
     ✔ Tune out and in when forwarding to next song @done(19-12-21 09:55)
     ✔ Previous @done(19-12-29 13:38)
     ✔ Double-click on tune to play @done(19-12-29 16:45)
+    ☐ Shortcuts
+        ☐ Space for Play/Pause
+        ☐ N/P for Next/Previous
+        ☐ F/S for Faster/Slower
     ☐ Remote control
         ☐ Play and pause using remote control
     ☐ Center playlist so that playing song is visible

@@ -7,6 +7,7 @@
         <PlayerControls
           :playing="playing"
           @previous-tune="previousTune"
+          @play-pause="playOrPause"
           @next-tune="nextTune"
         />
         <TuneList
@@ -95,7 +96,15 @@ export default class Player extends Vue {
   }
 
   // Public events
-  public async playTrack() {
+  public playOrPause() {
+    if (this.playing) {
+      this.pauseTune();
+    } else {
+      this.playTune();
+    }
+  }
+
+  public async playTune() {
     if (this.currentTunes.length === 0) {
       return;
     }

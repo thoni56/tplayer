@@ -37,7 +37,6 @@ export default class App extends Vue {
 
   public mounted() {
     const self = this;
-    this.allTunes = [];
 
     // Discover tunes over IPC
     ipcRenderer.on("discoveredTunes", (event: any, tunes: TuneInfo[]) => {

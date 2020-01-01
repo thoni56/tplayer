@@ -6,10 +6,8 @@
         <Playbar :secondsPlayed="timePlayed" :secondsTotal="timeTotal" :playingTune="playingTune" />
         <PlayerControls
           :playing="playing"
-          @previous-track="previousTune"
-          @play-track="playTrack"
-          @pause-track="pauseTrack"
-          @next-track="nextTune"
+          @previous-tune="previousTune"
+          @next-tune="nextTune"
         />
         <TuneList
           :tunes="currentTunes"
@@ -104,7 +102,7 @@ export default class Player extends Vue {
     await fadeIn(); // async
   }
 
-  public async pauseTrack() {
+  public async pauseTune() {
     await fadeOut(); // async
   }
 
@@ -114,7 +112,7 @@ export default class Player extends Vue {
         tune => tune === this.playingTune
       );
       if (playingIndex < this.currentTunes.length - 1) {
-        this.moveToNextTrack(playingIndex, +1);
+        this.moveToNextTune(playingIndex, +1);
       }
     }
   }
@@ -125,7 +123,7 @@ export default class Player extends Vue {
         tune => tune === this.playingTune
       );
       if (playingIndex > 0) {
-        this.moveToNextTrack(playingIndex, -1);
+        this.moveToNextTune(playingIndex, -1);
       }
     }
   }
@@ -143,7 +141,7 @@ export default class Player extends Vue {
   public async setTuneAndPlay(id: string) {
     await fadeOut(); // async
     this.loadTune(this.currentTunes.findIndex(tune => tune.file === id));
-    this.playTrack();
+    this.playTune();
   }
 
   // Internal functions
@@ -151,13 +149,13 @@ export default class Player extends Vue {
     return this.playingTune.file !== "";
   }
 
-  private async moveToNextTrack(playingIndex: number, direction: number) {
+  private async moveToNextTune(playingIndex: number, direction: number) {
     const wasPlaying = this.playing;
     if (this.playing) await fadeOut();
     this.timePlayed = 0;
     await this.loadTune(playingIndex + direction);
     this.timeTotal = this.currentTunes[playingIndex].duration!;
-    if (wasPlaying) await this.playTrack();
+    if (wasPlaying) await this.playTune();
   }
 
   private async loadTune(index: number) {

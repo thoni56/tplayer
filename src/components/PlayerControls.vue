@@ -1,13 +1,13 @@
 <template>
   <v-toolbar>
     <v-spacer></v-spacer>
-    <v-btn rounded medium color="primary" @click="$emit('previous-track')">
+    <v-btn rounded medium color="primary" @click="$emit('previous-tune')">
       <v-icon>skip_previous</v-icon>
     </v-btn>
     <v-btn rounded large color="primary" @click="playOrPauseTrack">
       <v-icon>{{ icon }}</v-icon>
     </v-btn>
-    <v-btn rounded medium color="primary" @click="$emit('next-track')">
+    <v-btn rounded medium color="primary" @click="$emit('next-tune')">
       <v-icon>skip_next</v-icon>
     </v-btn>
     <v-spacer></v-spacer>

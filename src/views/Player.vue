@@ -82,6 +82,7 @@ export default class Player extends Vue {
   public timePlayed = 0;
   public timeTotal = 0;
   public playingTune: TuneInfo = new TuneInfo("");
+  private keyListener: any;
 
   public mounted() {
     self = this;
@@ -93,6 +94,11 @@ export default class Player extends Vue {
     });
 
     setTimeout(remainingTimer, 200);
+    this.setUpShortkeys();
+  }
+
+  public beforeDestroyed() {
+    this.tearDownShortkeys();
   }
 
   // Public events
@@ -155,6 +161,32 @@ export default class Player extends Vue {
   }
 
   // Internal functions
+  private setUpShortkeys() {
+    this.keyListener = (e: KeyboardEvent) => {
+      e.preventDefault();
+      switch (e.key) {
+        case "p":
+          this.previousTune();
+          break;
+        case "n":
+          this.nextTune();
+          break;
+        case " ":
+          this.playOrPause();
+          break;
+        case "f":
+          break;
+        case "s":
+          break;
+      }
+    };
+    document.addEventListener("keydown", this.keyListener.bind(this));
+  }
+
+  private tearDownShortkeys() {
+    document.removeEventListener("keydown", this.keyListener);
+  }
+
   private anyTuneSelected(): boolean {
     return this.playingTune.file !== "";
   }

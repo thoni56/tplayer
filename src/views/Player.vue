@@ -108,6 +108,7 @@ export default class Player extends Vue {
     if (this.currentTunes.length === 0) {
       return;
     }
+    if (!this.anyTuneSelected()) this.loadTune(0);
     await fadeIn(); // async
   }
 

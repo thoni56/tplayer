@@ -33,6 +33,7 @@ export default class App extends Vue {
   private sortingUp: boolean = true;
   private bpm: number = 0;
   private bpmRange: number = 5;
+  private keyListener: any;
 
   public mounted() {
     const self = this;
@@ -42,6 +43,30 @@ export default class App extends Vue {
       self.addTunes(tunes);
     });
     ipcRenderer.send("discoverTunes");
+    this.setUpShortkeys();
+  }
+
+  private setUpShortkeys() {
+    this.keyListener = (e: KeyboardEvent) => {
+      switch (e.key) {
+        case "p":
+          console.log("*** Previous");
+          break;
+        case "n":
+          console.log("*** Next");
+          break;
+        case " ":
+          console.log("*** Play/Pause");
+          break;
+        case "f":
+          console.log("*** Faster");
+          break;
+        case "s":
+          console.log("*** Slower");
+          break;
+      }
+    };
+    document.addEventListener("keydown", this.keyListener.bind(this));
   }
 
   get totalCount() {

@@ -1,0 +1,2 @@
+#!/bin/bash
+rsync -av /run/user/1000/gvfs/smb-share\:server\=junovagen.local\,share\=music/iTunes/iTunes\ Media/Music testdata/ --delete

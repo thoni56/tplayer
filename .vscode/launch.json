@@ -5,6 +5,18 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "type": "node",
+      "request": "launch",
+      "name": "Read Music Metadata for file",
+      "program": "${workspaceFolder}/read-music-metadata.js",
+      "args": [
+        "M:/iTunes/iTunes Media/Music/Compilations/Baldakinen Bugglåtar/03 Underbara Söta Rara Sambo.mp3"
+      ],
+      "skipFiles": [
+        "<node_internals>/**"
+      ]
+    },
+    {
       "name": "Electron: Main",
       "type": "node",
       "request": "launch",

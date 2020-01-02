@@ -13,7 +13,7 @@ export function discoverTunes(renderer: BrowserWindow) {
   let emitter;
   emitter = walk(
     "testdata",
-    {follow_symlinks: true}
+    { follow_symlinks: true }
   );
   emitter.on("file", (path: string) => {
     if (
@@ -36,13 +36,15 @@ async function readMetadataForAllFiles(renderer: BrowserWindow) {
   const all = new Array(files.length);
   let previous = 0;
   for (let index = 0; index < files.length; index++) {
-    const metadata = await mm.parseFile(files[index]);
-    all[index] = new TuneInfo(files[index]);
-    all[index].fillFromCommonTags(metadata);
-    if (index > 0 && index % 10 === 0) {
-      renderer.webContents.send('discoveredTunes', all.slice(previous, index));
-      previous = index;
-    }
+    try {
+      const metadata = await mm.parseFile(files[index]);
+      all[index] = new TuneInfo(files[index]);
+      all[index].fillFromCommonTags(metadata);
+      if (index > 0 && index % 10 === 0) {
+        renderer.webContents.send('discoveredTunes', all.slice(previous, index));
+        previous = index;
+      }
+    } finally { ; }
   }
   renderer.webContents.send('discoveredTunes', all.slice(previous));
 }

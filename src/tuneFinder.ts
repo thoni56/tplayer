@@ -44,7 +44,10 @@ async function readMetadataForAllFiles(renderer: BrowserWindow) {
         renderer.webContents.send('discoveredTunes', all.slice(previous, index));
         previous = index;
       }
-    } finally { ; }
+    } catch (e) {
+      // tslint:disable-next-line: no-console
+      console.log("*** Could not read metadata from ", files[index])
+    }
   }
   renderer.webContents.send('discoveredTunes', all.slice(previous));
 }

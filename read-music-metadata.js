@@ -6,6 +6,7 @@
 
 const wd = require("walkdir")
 const mm = require("music-metadata")
+const fs = require("fs")
 
 const files = [];
 
@@ -37,8 +38,8 @@ async function readMetadataForAllFiles() {
   const all = new Array(files.length);
   for (const file of files) {
     try {
-      const metadata = await mm.parseFile(file);
-      process.stdout.write('.');
+      mm.parseFile(file).then(metadata =>
+        process.stdout.write('.'));
     } catch (e) {
       // tslint:disable-next-line: no-console
       console.log("\n*** Could not read metadata from ", file)
@@ -50,7 +51,12 @@ if (process.argv.length !== 3) {
   const scriptName = process.argv[1].split('\\').pop().split('/').pop();
   console.log("Usage: node ${scriptName} <directory>")
 } else {
-  const directory = process.argv[2];
-  discoverTunes(directory);
-  readMetadataForAllFiles();
+  const path = process.argv[2];
+  if (fs.lstatSync(path).isDirectory()) {
+    discoverTunes(path);
+    readMetadataForAllFiles();
+  } else {
+    mm.parseFile(path).then(metadata =>
+      console.log(metadata));
+  }
 }

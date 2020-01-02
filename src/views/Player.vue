@@ -166,9 +166,11 @@ export default class Player extends Vue {
       e.preventDefault();
       switch (e.key) {
         case "p":
+        case "ArrowLeft":
           this.previousTune();
           break;
         case "n":
+        case "ArrowRight":
           this.nextTune();
           break;
         case " ":

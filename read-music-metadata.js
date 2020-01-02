@@ -9,10 +9,10 @@ const mm = require("music-metadata")
 
 const files = [];
 
-function discoverTunes() {
+function discoverTunes(directory) {
   let emitter;
   emitter = wd.walk(
-    "testdata",
+    directory,
     { follow_symlinks: true }
   );
   emitter.on("file", (path) => {
@@ -46,5 +46,11 @@ async function readMetadataForAllFiles() {
   }
 }
 
-discoverTunes();
-readMetadataForAllFiles();
+if (process.argv.length !== 3) {
+  const scriptName = process.argv[1].split('\\').pop().split('/').pop();
+  console.log("Usage: node ${scriptName} <directory>")
+} else {
+  const directory = process.argv[2];
+  discoverTunes(directory);
+  readMetadataForAllFiles();
+}

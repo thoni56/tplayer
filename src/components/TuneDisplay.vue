@@ -2,7 +2,11 @@
   <v-container fluid style="padding:0">
     <v-layout align-start>
       <div>
-        <img v-if="cover" :src="cover" style="object-fit:cover;height:25vh;width:25vh;">
+        <img
+          v-if="cover"
+          :src="cover"
+          style="object-fit:cover;height:25vh;width:25vh;border-radius:5%;"
+        />
         <div v-else style="object-fit:cover;height:25vh;width:25vh;"></div>
       </div>
       <div style="margin-left:1%;width:100%;">

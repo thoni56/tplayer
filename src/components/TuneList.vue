@@ -53,7 +53,7 @@ export default class TuneList extends Vue {
   @Prop() public onClick!: (id: string) => void;
   @Prop() public onDblClick!: (id: string) => void;
 
-    private timeoutId: NodeJS.Timer | null = null;
+  private timeoutId: NodeJS.Timer | null = null;
 
   public formattedDuration(tune: TuneInfo): string {
     return formatTime(tune.duration!);
@@ -68,7 +68,7 @@ export default class TuneList extends Vue {
     } else {
       clearTimeout(this.timeoutId);
       if (this.onDblClick) this.onDblClick(tuneId);
-  }
+    }
   }
 
   public genres(tune: TuneInfo) {

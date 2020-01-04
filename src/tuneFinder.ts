@@ -2,6 +2,9 @@ import { BrowserWindow } from "electron";
 import walk from "walkdir";
 import * as mm from "music-metadata";
 import { TuneInfo } from "../src/models/TuneInfo";
+import { existsSync } from 'fs';
+import { join } from 'path';
+import { homedir } from 'os';
 
 function info(field: any): any {
   return field ? field : "unknown";
@@ -10,8 +13,9 @@ function info(field: any): any {
 const files: string[] = [];
 
 export function discoverTunes(renderer: BrowserWindow) {
+  const directory = existsSync("testdata") ? "testdata" : join(homedir(), "Music");
   const emitter = walk(
-    "testdata",
+    directory,
     { follow_symlinks: true }
   );
   emitter.on("file", (path: string) => {

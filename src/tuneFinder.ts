@@ -10,8 +10,7 @@ function info(field: any): any {
 const files: string[] = [];
 
 export function discoverTunes(renderer: BrowserWindow) {
-  let emitter;
-  emitter = walk(
+  const emitter = walk(
     "testdata",
     { follow_symlinks: true }
   );

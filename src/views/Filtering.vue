@@ -1,20 +1,19 @@
 <template>
   <v-container fluid class="pb-0">
     <v-layout>
-      <v-flex shrink style="font-size:3vh;padding-right:3vh;">
-        Total: {{ totalCount }}
-        <br />
-        Filtered: {{ currentCount }}
-      </v-flex>
+      <v-flex
+        shrink
+        style="font-size:3vh;padding-right:3vh;"
+        class="col-3 pl-0 pr-0 pb-0 pt-0 text-left"
+      >Filtered: {{ currentCount }}({{ totalCount }})</v-flex>
       <v-layout wrap justify-start>
-        <v-btn-toggle v-model="genresSelected" multiple>
+        <v-btn-toggle v-model="genresSelected" multiple dense>
           <v-btn
             v-for="genre in genres"
             :key="genre"
             color="primary"
             class="white--text"
             @click="$emit('toggle-genre', genre)"
-            style="height:9vh;"
           >{{genre}}</v-btn>
         </v-btn-toggle>
       </v-layout>
@@ -33,7 +32,7 @@
         <vue-numeric-input
           controls-type="updown"
           v-model="bpmRange"
-          min=1
+          min="1"
           @change="$emit('change-bpmRange', bpmRange);"
           style="font-size:3vh;width:3.5em;margin-right:1vw;"
         />

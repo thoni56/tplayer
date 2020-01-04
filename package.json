@@ -2,6 +2,11 @@
   "name": "tplayer",
   "version": "0.5.1",
   "private": true,
+  "description": "A music player for dance classes with appropriate filtering",
+  "author": {
+    "name": "Thomas Nilefalk",
+    "email": "thomas@nilefalk.se"
+  },
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",

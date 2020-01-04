@@ -32,7 +32,7 @@
         <vue-numeric-input
           controls-type="updown"
           v-model="bpmRange"
-          min="1"
+          :min="1"
           @change="$emit('change-bpmRange', bpmRange);"
           style="font-size:3vh;width:3.5em;margin-right:1vw;"
         />

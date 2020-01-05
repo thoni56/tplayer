@@ -35,10 +35,18 @@ export function discoverTunes(renderer: BrowserWindow) {
     console.log("Error parsing '", path, "'");
   });
 }
+
+function sleep(ms: number) {
+  return new Promise(resolve => {
+    setTimeout(resolve, ms)
+  })
+}
+
 async function readMetadataForAllFiles(renderer: BrowserWindow) {
   let all = new Array;
   for (let index = 0; index < files.length; index++) {
     try {
+      await sleep(1);
       const metadata = await mm.parseFile(files[index]);
       const tuneInfo = new TuneInfo(files[index]);
       tuneInfo.fillFromCommonTags(metadata);

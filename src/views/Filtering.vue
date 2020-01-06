@@ -18,10 +18,16 @@
         </v-btn-toggle>
       </v-layout>
     </v-layout>
-    <v-layout style="margin-top:-3vh;margin-bottom:-1vh;">
+    <v-layout style="margin-top:-3vh;">
       <v-flex align-self-center shrink style="font-size:2vh;padding-right:1vw;">BPM:</v-flex>
-      <v-flex align-self-center grow style="margin-top:3vh;">
-        <v-slider grow @change="$emit('change-bpm', bpm)" v-model="bpm" max="300" />
+      <v-flex align-self-center grow style="margin-top:2vh;">
+        <v-slider
+          grow
+          :hide-details="true"
+          @change="$emit('change-bpm', bpm)"
+          v-model="bpm"
+          :max="300"
+        />
       </v-flex>
       <v-flex
         shrink

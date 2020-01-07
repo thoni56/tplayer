@@ -38,15 +38,19 @@ async function readMetadataForAllFiles() {
   const all = new Array(files.length);
   for (const file of files) {
     try {
-      mm.parseFile(file).then(metadata =>
-        process.stdout.write('.'));
+      console.log(file);
+      mm.parseFile(file)
+        .catch(e => {
+          console.log("Could not read metadata from ", file);
+        })
     } catch (e) {
       // tslint:disable-next-line: no-console
-      console.log("\n*** Could not read metadata from ", file)
+      console.log("\n*** Could not read metadata from ", file);
     }
   }
 }
 
+async function main() {
 if (process.argv.length !== 3) {
   const scriptName = process.argv[1].split('\\').pop().split('/').pop();
   console.log("Usage: node ${scriptName} <directory>")
@@ -56,7 +60,13 @@ if (process.argv.length !== 3) {
     discoverTunes(path);
     readMetadataForAllFiles();
   } else {
-    mm.parseFile(path).then(metadata =>
-      console.log(metadata));
+    try {
+      metadata = await mm.parseFile(path);
+      console.log(metadata);
+    } catch (error) {
+      console.log("Error reading metadata")
+    }
   }
-}
+}}
+
+main();

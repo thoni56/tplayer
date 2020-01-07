@@ -36,21 +36,21 @@ export function discoverTunes(renderer: BrowserWindow) {
   });
 }
 async function readMetadataForAllFiles(renderer: BrowserWindow) {
-  const all = new Array(files.length);
-  let previous = 0;
+  let all = new Array;
   for (let index = 0; index < files.length; index++) {
     try {
       const metadata = await mm.parseFile(files[index]);
-      all[index] = new TuneInfo(files[index]);
-      all[index].fillFromCommonTags(metadata);
+      const tuneInfo = new TuneInfo(files[index]);
+      tuneInfo.fillFromCommonTags(metadata);
+      all.push(tuneInfo);
       if (index > 0 && index % 10 === 0) {
-        renderer.webContents.send('discoveredTunes', all.slice(previous, index));
-        previous = index;
+        renderer.webContents.send('discoveredTunes', all);
+        all = new Array;
       }
     } catch (e) {
       // tslint:disable-next-line: no-console
       console.log("*** Could not read metadata from ", files[index])
     }
   }
-  renderer.webContents.send('discoveredTunes', all.slice(previous));
+  renderer.webContents.send('discoveredTunes', all);
 }

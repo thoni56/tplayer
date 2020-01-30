@@ -15,7 +15,6 @@
           :playingTune="playingTune"
           :onClick="setTune"
           :onDblClick="setTuneAndPlay"
-          style="height:32vh;"
         />
       </v-col>
     </v-row>

@@ -84,7 +84,7 @@ Graphics:
 
 Layout:
     ✔ Place counts side by side to make that component a bit lower @done(20-01-30 09:46)
-    ☐ The tune list should fill rest of available space
+    ☐ The tune list should fill rest of available space @started(20-01-30 11:12)
     
 Refactoring:
     ☐ Move components up to App, maybe?

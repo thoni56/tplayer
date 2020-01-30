@@ -28,7 +28,7 @@ Filtering & Sorting:
 Playing:
     ☐ Playing timer (how much of a tune should play before moving to next)
     Random:
-        ☐ Random (any)
+        ☐ Random (any in list)
         Random groups:
             ☐ Random genres - which should not be mathematically random
             ☐ Random tempo ranges
@@ -67,7 +67,10 @@ Player:
         ✔ N/P for Next/Previous @done(20-01-01 14:52)
         ☐ F/S for Faster/Slower
     ☐ Remote control
-        ☐ Play and pause using remote control
+        ✔ Play and pause using remote control @done(20-01-30 09:48)
+        ✔ Next and previous using remote control @done(20-01-30 09:49)
+        ☐ Change tempo using remote control
+    ☐ Next (manual and auto, if playing) should pick a song and play even if selection has changed
     ☐ Center playlist so that playing song is visible
     ☐ Scroll overflowed text (title, album, etc) horizontally
     ☐ Next - just move so that playing needs a play press? (requires change in PlayerControls?)
@@ -80,7 +83,8 @@ Graphics:
     ✔ Slightly rounded images? @done(20-01-03 11:00)
 
 Layout:
-    ☐ Place counts side by side to make that component a bit lower
+    ✔ Place counts side by side to make that component a bit lower @done(20-01-30 09:46)
+    ☐ The tune list should fill rest of available space
     
 Refactoring:
     ☐ Move components up to App, maybe?

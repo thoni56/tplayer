@@ -183,7 +183,7 @@ export default class Player extends Vue {
         case "s":
           break;
         case "Unidentified":
-          // Maybe "Menu" on Apple remote
+        // Maybe "Menu" on Apple remote
       }
     };
     document.addEventListener("keydown", this.keyListener.bind(this));
@@ -201,8 +201,9 @@ export default class Player extends Vue {
     const wasPlaying = this.playing;
     if (this.playing) await fadeOut();
     this.timePlayed = 0;
-    await this.loadTune(playingIndex + direction);
-    this.timeTotal = this.currentTunes[playingIndex].duration!;
+    const nextTuneToPlay = playingIndex + direction;
+    await this.loadTune(nextTuneToPlay);
+    this.timeTotal = this.currentTunes[nextTuneToPlay].duration!;
     if (wasPlaying) await this.playTune();
   }
 

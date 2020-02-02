@@ -70,7 +70,7 @@ Player:
         ✔ Play and pause using remote control @done(20-01-30 09:48)
         ✔ Next and previous using remote control @done(20-01-30 09:49)
         ☐ Change tempo using remote control
-    ☐ Next (manual and auto, if playing) should pick a song and play even if selection has changed
+    ✔ If playing, <Next> (manual and auto) should pick a song and play even if selection has changed @done(20-02-02 20:09)
     ☐ Center playlist so that playing song is visible
     ☐ Scroll overflowed text (title, album, etc) horizontally
     ☐ Next - just move so that playing needs a play press? (requires change in PlayerControls?)

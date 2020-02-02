@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid style="padding:0">
+  <v-container fluid>
     <v-layout align-start>
       <div>
         <img

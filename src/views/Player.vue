@@ -9,6 +9,7 @@
           @previous-tune="previousTune"
           @play-pause="playOrPause"
           @next-tune="nextTune"
+          @play-timeout="setPlayTimer"
         />
         <TuneList
           :tunes="currentTunes"
@@ -83,6 +84,9 @@ export default class Player extends Vue {
   public playingTune: TuneInfo = new TuneInfo("");
   private keyListener: any;
 
+  private playTimeout: number = 0;
+  private playTimer!: ReturnType<typeof setTimeout>;
+
   public mounted() {
     self = this;
     audio.addEventListener("playing", () => {
@@ -115,6 +119,18 @@ export default class Player extends Vue {
     }
     if (!this.anyTuneSelected()) this.loadTune(0);
     await fadeIn(); // async
+
+    // TODO Using times is probably not a good idea
+    // We should probably hook into the time keeping
+    // timer instead, but that can't call nextTune()
+    // directly. So how to do that?
+    clearTimeout(this.playTimer);
+    if (this.playTimeout !== 0) {
+      this.playTimer = setTimeout(
+        () => self.nextTune(),
+        this.playTimeout * 1000
+      );
+    }
   }
 
   public async pauseTune() {
@@ -157,6 +173,10 @@ export default class Player extends Vue {
     await fadeOut(); // async
     this.loadTune(this.currentTunes.findIndex(tune => tune.file === id));
     this.playTune();
+  }
+
+  public setPlayTimer(seconds: number) {
+    this.playTimeout = seconds;
   }
 
   // Internal functions

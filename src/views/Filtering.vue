@@ -19,7 +19,7 @@
       </v-layout>
     </v-layout>
     <v-layout style="margin-top:-3vh;">
-      <v-flex align-self-center shrink style="font-size:2vh;padding-right:1vw;">BPM:</v-flex>
+      <v-flex align-self-center shrink style="font-size:2vh;padding-right:0.5vw;">BPM:</v-flex>
       <v-flex align-self-center grow style="margin-top:2vh;">
         <v-slider
           grow
@@ -32,15 +32,15 @@
       <v-flex
         shrink
         align-self-center
-        style="font-size:5vh;padding-left:0.5vw;padding-right:0.5vw;"
-      >{{ bpm }}&#177;</v-flex>
+        style="font-size:5vh;padding-left:0.3vw;padding-right:0;"
+      >{{ bpm }} +</v-flex>
       <v-flex shrink align-self-center>
         <vue-numeric-input
           controls-type="updown"
           v-model="bpmRange"
-          :min="1"
+          :min="0"
           @change="$emit('change-bpmRange', bpmRange);"
-          style="font-size:3vh;width:3.5em;margin-right:1vw;"
+          style="font-size:3.5vh;width:3em;margin-right:1vw;padding-right:1vw;"
         />
       </v-flex>
       <v-flex align-self-center shrink>

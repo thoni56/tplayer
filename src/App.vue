@@ -71,8 +71,7 @@ export default class App extends Vue {
 
   private bpmFilter(t: TuneInfo): boolean {
     const result: boolean =
-      this.bpm - this.bpmRange < getBPM(t) &&
-      getBPM(t) < this.bpm + this.bpmRange;
+      this.bpm <= getBPM(t) && getBPM(t) <= this.bpm + this.bpmRange;
     return this.bpm === 0 || result;
   }
 
@@ -107,5 +106,4 @@ html {
   height: 100%;
   overflow: hidden;
 }
-
 </style>

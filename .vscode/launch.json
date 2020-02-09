@@ -6,15 +6,16 @@
   "configurations": [
     {
       "type": "node",
+      "name": "vscode-jest-tests",
       "request": "launch",
-      "name": "Read Music Metadata for file",
-      "program": "${workspaceFolder}/read-music-metadata.js",
+      "program": "${workspaceFolder}/node_modules/jest/bin/jest",
       "args": [
-        "M:/iTunes/iTunes Media/Music/Compilations/Baldakinen Bugglåtar/03 Underbara Söta Rara Sambo.mp3"
+        "--runInBand"
       ],
-      "skipFiles": [
-        "<node_internals>/**"
-      ]
+      "cwd": "${workspaceFolder}/tests",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "disableOptimisticBPs": true
     },
     {
       "name": "Electron: Main",
@@ -45,6 +46,22 @@
       "sourceMapPathOverrides": {
         "webpack:///./*": "${webRoot}/*"
       }
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Read Music Metadata for file",
+      "program": "${workspaceFolder}/read-music-metadata.js",
+      "args": [
+        "--no-timeouts",
+        "--colors",
+        "${file}",
+        "--require",
+        "ts-node/register"
+      ],
+      "console": "integratedTerminal",
+      "sourceMaps": true,
+      "internalConsoleOptions": "neverOpen"
     }
   ],
   "compounds": [

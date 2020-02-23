@@ -27,7 +27,7 @@ Filtering & Sorting:
             ☐ Incrementally filter on input in text field
 
 Playing:
-    ☐ Playing timer (how much of a tune should play before moving to next)
+    ✔ Playing timer (how much of a tune should play before moving to next) @done(20-02-23 10:53)
     Random:
         ☐ Random (any in list)
         Random groups:

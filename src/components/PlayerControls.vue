@@ -11,7 +11,7 @@
       <v-icon>skip_next</v-icon>
     </v-btn>
     <v-spacer></v-spacer>
-    <v-btn-toggle v-model="playTime" dense mandatory>
+    <v-btn-toggle v-model="playTimeModel" dense mandatory>
       <v-btn
         v-for="time in playTimes"
         :key="time"
@@ -20,7 +20,6 @@
         @click="playTimeChange(time)"
       >{{time}}</v-btn>
     </v-btn-toggle>
-    <v-spacer></v-spacer>
   </v-toolbar>
 </template>
 <script lang="ts">
@@ -32,8 +31,7 @@ export default class PlayerControls extends Vue {
   @Prop() private playing = false;
 
   private playTimes: string[] = ["15s", "30s", "60s", "90s", "120s", "All"];
-  private playTime: number = 5;
-  private timer!: ReturnType<typeof setTimeout>;
+  private playTimeModel: number = 5;
 
   get playOrPauseIcon() {
     return this.playing ? "pause" : "play_arrow";

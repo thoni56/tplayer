@@ -44,7 +44,7 @@
         />
       </v-flex>
       <v-flex align-self-center shrink>
-        <v-btn color="primary" @click="$emit('sort-tunes')">
+        <v-btn small color="primary" @click="$emit('sort-tunes')">
           <v-icon>{{ sortIcon }}</v-icon>
         </v-btn>
       </v-flex>

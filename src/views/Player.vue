@@ -39,7 +39,7 @@ function sleep(millis: number): Promise<any> {
 let self: Player;
 
 const fadeStep = 0.1;
-const fadeTime = 50;
+const fadeTime = 100;
 async function fadeOut() {
   while (audio.volume > fadeStep) {
     audio.volume -= fadeStep;

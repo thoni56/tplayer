@@ -10,6 +10,7 @@
           @play-pause="playOrPause"
           @next-tune="nextTune"
           @play-timeout="setPlayTimer"
+          @shuffle-tunes-toggle="toggleShuffle"
         />
         <TuneList
           :tunes="currentTunes"
@@ -87,6 +88,10 @@ export default class Player extends Vue {
   private playTimeout: number = 0;
   private playTimer!: ReturnType<typeof setTimeout>;
 
+  private shuffle: boolean = false;
+  private currentShufflePartition: number = 0;
+  private shufflePartitionCount: number = 4;
+
   public mounted() {
     self = this;
     audio.addEventListener("playing", () => {
@@ -120,7 +125,7 @@ export default class Player extends Vue {
     if (!this.anyTuneSelected()) this.loadTune(0);
     await fadeIn(); // async
 
-    // TODO Using times is probably not a good idea
+    // TODO Using timers is probably not a good idea
     // We should probably hook into the time keeping
     // timer instead, but that can't call nextTune()
     // directly. So how to do that?
@@ -138,25 +143,37 @@ export default class Player extends Vue {
   }
 
   public async nextTune() {
-    if (this.anyTuneSelected()) {
-      const playingIndex = this.currentTunes.findIndex(
-        tune => tune === this.playingTune
-      );
-      if (playingIndex < this.currentTunes.length - 1) {
-        this.moveToNextTune(playingIndex, +1);
+    if (this.shuffle) {
+      this.moveToNextTune(this.randomTune(), 0);
+    } else {
+      if (this.anyTuneSelected()) {
+        const playingIndex = this.currentTunes.findIndex(
+          tune => tune === this.playingTune
+        );
+        if (playingIndex < this.currentTunes.length - 1) {
+          this.moveToNextTune(playingIndex, +1);
+        }
       }
     }
   }
 
   public async previousTune() {
-    if (this.anyTuneSelected()) {
-      const playingIndex = this.currentTunes.findIndex(
-        tune => tune === this.playingTune
-      );
-      if (playingIndex > 0) {
-        this.moveToNextTune(playingIndex, -1);
+    if (this.shuffle) {
+      this.moveToNextTune(this.randomTune(), 0);
+    } else {
+      if (this.anyTuneSelected()) {
+        const playingIndex = this.currentTunes.findIndex(
+          tune => tune === this.playingTune
+        );
+        if (playingIndex > 0) {
+          this.moveToNextTune(playingIndex, -1);
+        }
       }
     }
+  }
+
+  public toggleShuffle() {
+    this.shuffle = !this.shuffle;
   }
 
   // :onClick from TuneList
@@ -238,6 +255,43 @@ export default class Player extends Vue {
     this.playingTune = this.currentTunes[index];
     this.timePlayed = 0;
     this.timeTotal = audio.duration;
+  }
+
+  private randomBetween(min: number, max: number): number {
+    return min + Math.floor(Math.random() * Math.floor(max));
+  }
+
+  private randomTune(): number {
+    // Round-robin over partitions
+    const currentPartition: number = this.currentShufflePartition++;
+    this.currentShufflePartition =
+      this.currentShufflePartition % this.shufflePartitionCount;
+
+    // Partition list of tunes into four sets of evenly distributed BPMs
+    const tmin: TuneInfo = this.currentTunes.reduce(
+      (t1: TuneInfo, t2: TuneInfo) => (t1.bpm! < t2.bpm! ? t1 : t2)
+    );
+    const tmax: TuneInfo = this.currentTunes.reduce(
+      (t1: TuneInfo, t2: TuneInfo) => (t1.bpm! > t2.bpm! ? t1 : t2)
+    );
+
+    const bpmMin: number = tmin.bpm!;
+    const bpmMax: number = tmax.bpm!;
+    const bpmRange: number = bpmMax - bpmMin;
+    const partitionSize: number = Math.floor(
+      bpmRange / this.shufflePartitionCount
+    );
+
+    const partitionMin: number = bpmMin + currentPartition * partitionSize;
+    const partitionMax: number = partitionMin + partitionSize;
+
+    // Select a random tune in that partition
+    const partition = this.currentTunes.filter(
+      (t: TuneInfo) => t.bpm! >= partitionMin && t.bpm! <= partitionMax
+    );
+    const randomTune = partition[this.randomBetween(0, partition.length)];
+
+    return this.currentTunes.findIndex(tune => tune.file === randomTune.file);
   }
 }
 </script>

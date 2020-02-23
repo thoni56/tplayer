@@ -1,5 +1,10 @@
 <template>
   <v-toolbar>
+    <v-btn-toggle>
+      <v-btn small depressed class="text-none" @click="$emit('shuffle-tunes-toggle')">
+        <v-icon>shuffle</v-icon>
+      </v-btn>
+    </v-btn-toggle>
     <v-spacer></v-spacer>
     <v-btn rounded medium color="primary" @click="$emit('previous-tune')">
       <v-icon>skip_previous</v-icon>

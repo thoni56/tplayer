@@ -35,8 +35,16 @@ import colors from "vuetify/es5/util/colors";
 export default class PlayerControls extends Vue {
   @Prop() private playing = false;
 
-  private playTimes: string[] = ["15s", "30s", "60s", "90s", "120s", "All"];
-  private playTimeModel: number = 5;
+  private playTimes: string[] = [
+    "15s",
+    "30s",
+    "60s",
+    "75s",
+    "90s",
+    "120s",
+    "All"
+  ];
+  private playTimeModel: number = this.playTimes.length - 1;
 
   get playOrPauseIcon() {
     return this.playing ? "pause" : "play_arrow";

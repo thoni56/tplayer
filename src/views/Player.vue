@@ -122,7 +122,10 @@ export default class Player extends Vue {
     if (this.currentTunes.length === 0) {
       return;
     }
-    if (!this.anyTuneSelected()) this.loadTune(0);
+    // If no tune selected we should pick any song in the list and play
+    if (!this.anyTuneSelected()) {
+      this.loadTune(this.randomBetween(0, this.currentTunes.length));
+    }
     await fadeIn(); // async
 
     // TODO Using timers is probably not a good idea
@@ -150,7 +153,15 @@ export default class Player extends Vue {
         const playingIndex = this.currentTunes.findIndex(
           tune => tune === this.playingTune
         );
-        if (playingIndex < this.currentTunes.length - 1) {
+        if (playingIndex === -1) {
+          // If not found, the list has changed so pick any tune
+          // in the new list
+          this.moveToNextTune(
+            this.randomBetween(0, this.currentTunes.length - 1),
+            0
+          );
+        } else if (playingIndex < this.currentTunes.length - 1) {
+          // More songs to play, so go to next
           this.moveToNextTune(playingIndex, +1);
         }
       }

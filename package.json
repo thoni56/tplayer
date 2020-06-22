@@ -29,7 +29,7 @@
     "vue-class-component": "^7.1.0",
     "vue-numeric-input": "^1.0.6",
     "vue-property-decorator": "^8.3.0",
-    "vuetify": "^2.1.15",
+    "vuetify": "^2.3.1",
     "walkdir": "^0.4.1"
   },
   "devDependencies": {
@@ -60,6 +60,6 @@
     "vue-cli-plugin-electron-builder": "^1.4.4",
     "vue-cli-plugin-vuetify": "^2.0.2",
     "vue-template-compiler": "^2.6.11",
-    "vuetify-loader": "^1.4.3"
+    "vuetify-loader": "^1.5.0"
   }
 }

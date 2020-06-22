@@ -82,11 +82,17 @@ export default class Filtering extends Vue {
 }
 </script>
 <style>
-div.vue-numeric-input.updown button.btn {
+div.vue-numeric-input.updown {
   background: var(--v-primary-base);
 }
-
 div.vue-numeric-input.updown input.numeric-input {
   border: 0;
+  color: white;
+}
+div.vue-numeric-input.updown button.btn.btn-increment i.btn-icon {
+  border-bottom-color: white;
+}
+div.vue-numeric-input.updown button.btn.btn-decrement i.btn-icon {
+  border-top-color: white;
 }
 </style>

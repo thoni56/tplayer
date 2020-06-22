@@ -24,7 +24,7 @@
     "@fortawesome/fontawesome-free": "^5.13.1",
     "@types/jest": "^25.2.3",
     "file-to-datauri": "^1.0.1",
-    "music-metadata": "^5.4.3",
+    "music-metadata": "^6.4.0",
     "vue": "^2.6.11",
     "vue-class-component": "^7.1.0",
     "vue-numeric-input": "^1.0.6",

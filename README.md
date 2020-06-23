@@ -9,7 +9,12 @@ A music player specifically designed for dance classes. It (will) support
   - random
   - circulating (a few tunes in one BPM range, then a few tunes in another)
 
-This is a budding project, but it can now find tunes, do trivial filtering and play them.
+This is a budding project, but it can now find tunes in a predefined directory, do trivial
+filtering and play tunes. It also automatically fades in and out for smooth listening.
+
+## Release 0.5.4
+
+- Better BPM filtering
 
 ## Release 0.5.1
 

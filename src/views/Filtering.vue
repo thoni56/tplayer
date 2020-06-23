@@ -5,7 +5,10 @@
         shrink
         style="font-size:3vh;padding-right:3vh;"
         class="col-3 pl-0 pr-0 pb-0 pt-0 text-left"
-      >Filtered: {{ currentCount }}({{ totalCount }})</v-flex>
+      >
+        <v-btn>Filtered:</v-btn>
+        {{ currentCount }}({{ totalCount }})
+      </v-flex>
       <v-layout wrap justify-start>
         <v-btn-toggle v-model="genresSelected" multiple dense>
           <v-btn
@@ -18,7 +21,7 @@
         </v-btn-toggle>
       </v-layout>
     </v-layout>
-    <v-layout style="margin-top:-3vh;">
+    <v-layout style="margin-top:-2vh;">
       <v-flex align-self-center shrink style="font-size:2vh;padding-right:0.5vw;">BPM:</v-flex>
       <v-flex align-self-center grow style="margin-top:2vh;">
         <v-slider

@@ -6,7 +6,7 @@
         style="font-size:3vh;padding-right:3vh;"
         class="col-3 pl-0 pr-0 pb-0 pt-0 text-left"
       >
-        <v-btn>Filtered:</v-btn>
+        <v-btn @click="$emit('load-files')">Filtered:</v-btn>
         {{ currentCount }}({{ totalCount }})
       </v-flex>
       <v-layout wrap justify-start>

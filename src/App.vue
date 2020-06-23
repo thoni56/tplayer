@@ -8,6 +8,7 @@
       @sort-tunes="sortTunes"
       @change-bpm="changeBpm"
       @change-bpmRange="changeBpmRange"
+      @load-files="loadFiles"
     />
     <Player :currentTunes="currentTunes" />
   </v-app>
@@ -34,16 +35,6 @@ export default class App extends Vue {
   private bpm: number = 0;
   private bpmRange: number = 5;
   private keyListener: any;
-
-  public mounted() {
-    const self = this;
-
-    // Discover tunes over IPC
-    ipcRenderer.on("discoveredTunes", (event: any, tunes: TuneInfo[]) => {
-      self.addTunes(tunes);
-    });
-    ipcRenderer.send("discoverTunes");
-  }
 
   get totalCount() {
     return this.allTunes.length;
@@ -98,6 +89,15 @@ export default class App extends Vue {
 
   private changeBpmRange(range: number) {
     this.bpmRange = range;
+  }
+
+  // Discover tunes over IPC
+  private loadFiles() {
+    const self = this;
+    ipcRenderer.on("discoveredTunes", (event: any, tunes: TuneInfo[]) => {
+      self.addTunes(tunes);
+    });
+    ipcRenderer.send("discoverTunes");
   }
 }
 </script>

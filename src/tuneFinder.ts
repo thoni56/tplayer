@@ -10,10 +10,8 @@ function info(field: any): any {
   return field ? field : "unknown";
 }
 
-const files: string[] = [];
-
-export function discoverTunes(renderer: BrowserWindow) {
-  const directory = existsSync("testdata") ? "testdata" : join(homedir(), "Music");
+export function discoverTunes(renderer: BrowserWindow, directory: string) {
+  const files: string[] = [];
   const emitter = walk(
     directory,
     { follow_symlinks: true }
@@ -28,7 +26,7 @@ export function discoverTunes(renderer: BrowserWindow) {
     }
   });
   emitter.on("end", () => {
-    readMetadataForAllFiles(renderer);
+    readMetadataForAllFiles(renderer, files);
   });
   emitter.on("error", (path: string) => {
     // tslint:disable-next-line:no-console
@@ -42,8 +40,8 @@ function sleep(ms: number) {
   })
 }
 
-async function readMetadataForAllFiles(renderer: BrowserWindow) {
-  let all = new Array;
+async function readMetadataForAllFiles(renderer: BrowserWindow, files: string[]) {
+  let all = [];
   for (let index = 0; index < files.length; index++) {
     try {
       await sleep(1);
@@ -53,7 +51,7 @@ async function readMetadataForAllFiles(renderer: BrowserWindow) {
       all.push(tuneInfo);
       if (index > 0 && index % 10 === 0) {
         renderer.webContents.send('discoveredTunes', all);
-        all = new Array;
+        all = [];
       }
     } catch (e) {
       // tslint:disable-next-line: no-console

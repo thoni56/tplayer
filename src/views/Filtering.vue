@@ -87,6 +87,7 @@ export default class Filtering extends Vue {
 <style>
 div.vue-numeric-input.updown {
   background: var(--v-primary-base);
+  border-radius: 3px;
 }
 div.vue-numeric-input.updown input.numeric-input {
   border: 0;

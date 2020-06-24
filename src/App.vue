@@ -8,7 +8,7 @@
       @sort-tunes="sortTunes"
       @change-bpm="changeBpm"
       @change-bpmRange="changeBpmRange"
-      @load-files="loadFiles"
+      @load-files="initiateDiscoveringFiles"
     />
     <Player :currentTunes="currentTunes" />
   </v-app>
@@ -27,7 +27,12 @@ function getBPM(tune: TuneInfo) {
 
 Vue.config.productionTip = false;
 
-@Component({ components: { Filtering, Player } })
+@Component({
+  components: {
+    Filtering,
+    Player
+  }
+})
 export default class App extends Vue {
   private genres: string[] = [];
   private allTunes: TuneInfo[] = [];
@@ -56,6 +61,11 @@ export default class App extends Vue {
     this.sortingUp = !this.sortingUp;
   }
 
+  public mounted() {
+    ipcRenderer.on("discoveredTunes", (event: any, newTunes: TuneInfo[]) => {
+      this.addTunes(newTunes);
+    });
+  }
   private genreFilter(t: TuneInfo): boolean {
     return t.genre ? t.genre.some(g => this.genres.includes(g)) : false;
   }
@@ -92,15 +102,13 @@ export default class App extends Vue {
   }
 
   // Discover tunes over IPC
-  private loadFiles() {
-    const self = this;
-    ipcRenderer.on("discoveredTunes", (event: any, tunes: TuneInfo[]) => {
-      self.addTunes(tunes);
-    });
+  private initiateDiscoveringFiles() {
+    this.allTunes = [];
     ipcRenderer.send("discoverTunes");
   }
 }
 </script>
+
 <style>
 html {
   height: 100%;

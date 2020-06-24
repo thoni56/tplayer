@@ -99,7 +99,10 @@ if (isDevelopment) {
 }
 
 ipcMain.on('discoverTunes', () => {
-  discoverTunes(win!);
+  const dir: string[] | undefined = dialog.showOpenDialogSync({ properties: ['openDirectory'] });
+  if (dir) {
+    discoverTunes(win!, dir[0]);
+  }
 })
 
 function convertToUri(filePath: string) {

@@ -1,15 +1,15 @@
 <template>
-  <v-layout scrollable style="height:40vh">
+  <v-layout scrollable style="height: 40vh">
     <v-flex>
       <v-list dense>
         <template v-for="(tune, index) in tunes">
           <v-list-item
             :key="tune.file"
-            :class="{'highlighted': playingTune.file == tune.file}"
+            :class="{ highlighted: playingTune.file == tune.file }"
             @click="clicked(tune.file)"
           >
-            <v-list-item-avatar tile>
-              <img :src="tune.cover" style="border-radius:10%;" />
+            <v-list-item-avatar tile size="20">
+              <img :src="tune.cover" style="border-radius: 10%" />
             </v-list-item-avatar>
 
             <v-list-item-content>
@@ -17,16 +17,17 @@
                 <span class="tune-title">{{ tune.title }}</span>
                 <span class="tune-artist">{{ tune.artist }}</span>
                 <span class="tune-album">{{ tune.album }}</span>
-                <span class="tune-track">{{ tune.track?'#'+tune.track:"" }}</span>
+                <span class="tune-track">{{
+                  tune.track ? "#" + tune.track : ""
+                }}</span>
               </v-list-item-title>
-              <v-list-item-subtitle>
-                <span class="tune-genres">{{ genres(tune) }}</span>
-              </v-list-item-subtitle>
             </v-list-item-content>
             <v-spacer></v-spacer>
-            {{ formattedDuration(tune) }}
+            <div class="tune-duration">
+              {{ formattedDuration(tune) }}
+            </div>
             <v-list-item-action>
-              <v-chip small>{{ tune.bpm }}</v-chip>
+              <v-chip x-small>{{ tune.bpm }}</v-chip>
             </v-list-item-action>
           </v-list-item>
 
@@ -95,7 +96,7 @@ export default class TuneList extends Vue {
 }
 
 .tune-artist {
-  font-size: 0.9em;
+  font-size: 1em;
   font-style: italic;
 }
 
@@ -104,7 +105,7 @@ export default class TuneList extends Vue {
 }
 
 .tune-album {
-  font-size: 0.8em;
+  font-size: 1em;
 }
 
 .tune-album:after {
@@ -112,8 +113,12 @@ export default class TuneList extends Vue {
 }
 
 .tune-track {
-  font-size: 0.7em;
+  font-size: 0.8em;
   font-style: italic;
+}
+
+.tune-duration {
+  font-size: 1em;
 }
 
 .tune-genres {

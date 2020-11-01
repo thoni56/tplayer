@@ -36,6 +36,7 @@ Playing:
             ☐ Random count within groups
 
 Settings:
+    ☐ Settings dialog
     ☐ Select directory to (re-)load tunes from
     ☐ Persist path to tunes directory
     ☐ Fade settings
@@ -66,7 +67,7 @@ Player:
     ☐ Shortcuts
         ✔ Space for Play/Pause @done(20-01-01 14:52)
         ✔ N/P for Next/Previous @done(20-01-01 14:52)
-        ☐ F/S for Faster/Slower
+        ☐ F/S (PageUp/PageDown?) for Faster/Slower
     ☐ Remote control
         ✔ Play and pause using remote control @done(20-01-30 09:48)
         ✔ Next and previous using remote control @done(20-01-30 09:49)
@@ -91,7 +92,8 @@ Refactoring:
     ☐ Move components up to App, maybe?
 
 System:
-    ✔ Give progress feedback when loading tunes (load a batch of tunes at a time? progress bar?) @done(19-03-20 22:27)
+    ✔ Give progress feedback when loading tunes (load a batch of tunes at a time? progress bar?) @done(20-11-01 16:13)
+    ☐ Speed up load of tunes, especially if it is the same directory as before
     ☐ Prevent screen lock (https://ourcodeworld.com/articles/read/539/how-to-prevent-that-the-system-enters-in-suspension-sleep-mode-in-electron-framework)
     ☐ Unlock @types/node@12.12.22 depending on https://github.com/DefinitelyTyped/DefinitelyTyped/issues/41224
     ☐ Move Filtering to components/

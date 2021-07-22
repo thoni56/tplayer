@@ -2,12 +2,17 @@
   <v-container fluid>
     <v-layout align-start>
       <div>
-        <img
-          v-if="cover"
-          :src="cover"
-          style="object-fit:cover;height:25vh;width:25vh;border-radius:5%;"
-        />
-        <div v-else style="object-fit:cover;height:25vh;width:25vh;"></div>
+        <v-tooltip right>
+          <template v-slot:activator="{ on, attrs }">
+            <img v-bind="attrs" v-on="on"
+              v-if="cover"
+              :src="cover"
+              style="object-fit:cover;height:25vh;width:25vh;border-radius:5%;"
+            />
+            <div v-else style="object-fit:cover;height:25vh;width:25vh;"></div>
+          </template>
+          {{ file }}
+        </v-tooltip>
       </div>
       <div style="margin-left:1%;width:100%;">
         <div style="font-size:8vh;" class="overflow">{{ title }}</div>
@@ -37,6 +42,10 @@ export default class TuneDisplay extends Vue {
 
   get title() {
     return this.tune ? this.tune.title : "";
+  }
+
+  get file() {
+    return this.tune ? this.tune.file : "";
   }
 
   get artist() {

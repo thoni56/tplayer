@@ -26,7 +26,7 @@ protocol.registerSchemesAsPrivileged([{
 function createWindow() {
   // Create the browser window.
   win = new BrowserWindow({
-    title: "Tplayer - v0.6.0", width: 800, height: 600,
+    title: "Tplayer - v0.6.1", width: 800, height: 600,
     webPreferences: { nodeIntegration: true }
   });
   win.setMenu(null);
@@ -74,7 +74,7 @@ app.on('ready', async () => {
   if (isDevelopment && !process.env.IS_TEST) {
     // Install Vue Devtools
     try {
-      await installVueDevtools();
+      // await installVueDevtools();
     } catch (e) {
       // tslint:disable-next-line: no-console
       console.error('Vue Devtools failed to install:', e.toString());

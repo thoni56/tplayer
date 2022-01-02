@@ -24,9 +24,9 @@ protocol.registerSchemesAsPrivileged([{
 }]);
 
 function createWindow() {
-  // Create the browser window.
+    // Create the browser window.
   win = new BrowserWindow({
-    title: "Tplayer - v0.6.1", width: 800, height: 600,
+    title: "Tplayer - v0.7.0", width: 800, height: 600,
     webPreferences: { nodeIntegration: true }
   });
   win.setMenu(null);

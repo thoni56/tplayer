@@ -135,10 +135,24 @@ export default class Player extends Vue {
     clearTimeout(this.playTimer);
     if (this.playTimeout !== 0) {
       this.playTimer = setTimeout(
-        () => self.nextTune(),
-        this.playTimeout * 1000
+        () => self.checkTimeout(),
+        400
       );
     }
+  }
+
+  public checkTimeout() {
+    console.log("checkTimeout", audio.currentTime, this.playTimeout)
+    if (audio.currentTime < this.playTimeout) {
+      console.log("checkTimeout");
+      this.playTimer = setTimeout(
+        () => self.checkTimeout(),
+        1000
+      );
+    } else {
+      self.nextTune();
+    }
+
   }
 
   public async pauseTune() {
@@ -163,6 +177,9 @@ export default class Player extends Vue {
         } else if (playingIndex < this.currentTunes.length - 1) {
           // More songs to play, so go to next
           this.moveToNextTune(playingIndex, +1);
+        } else {
+          // At last song, restart list
+          this.moveToNextTune(0, 0);
         }
       }
     }

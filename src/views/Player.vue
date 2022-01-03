@@ -142,7 +142,6 @@ export default class Player extends Vue {
   }
 
   public checkTimeout() {
-    console.log("checkTimeout", audio.currentTime, this.playTimeout)
     if (audio.currentTime < this.playTimeout) {
       this.playTimer = setTimeout(
         () => self.checkTimeout(),

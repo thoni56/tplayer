@@ -42,9 +42,9 @@
       "port": 9223,
       "urlFilter": "http://localhost:*",
       "timeout": 30000,
-      "webRoot": "${workspaceFolder}",
+      "webRoot": "${workspaceFolder}/src",
       "sourceMapPathOverrides": {
-        "webpack:///./*": "${webRoot}/*"
+        "webpack:///./src/*": "${webRoot}/*"
       }
     },
     {

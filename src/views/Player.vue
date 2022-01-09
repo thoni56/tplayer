@@ -9,7 +9,7 @@
           @previous-tune="previousTune"
           @play-pause="playOrPause"
           @next-tune="nextTune"
-          @play-timeout="setPlayTimer"
+          @play-timeout="setPlayTimeout"
           @shuffle-tunes-toggle="toggleShuffle"
         />
         <TuneList
@@ -24,14 +24,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
+import { Component, Vue, Prop } from "vue-property-decorator";
 import { TuneInfo } from "@/models/TuneInfo";
 import TuneList from "@/components/TuneList.vue";
 import TuneDisplay from "@/components/TuneDisplay.vue";
 import PlayerControls from "@/components/PlayerControls.vue";
 import Playbar from "@/components/Playbar.vue";
-
-import { ipcRenderer } from "electron";
 
 function sleep(millis: number): Promise<any> {
   return new Promise(resolve => setTimeout(resolve, millis));
@@ -47,7 +45,7 @@ async function fadeOut() {
     await sleep(fadeTime);
   }
   audio.volume = 0;
-  await audio.pause();
+  audio.pause();
   self.playing = false;
 }
 
@@ -208,7 +206,7 @@ export default class Player extends Vue {
     this.loadTune(this.currentTunes.findIndex(tune => tune.file === id));
     // This seems necessary to set the actual played time to zero
     await audio.play();
-    await audio.pause();
+    audio.pause();
   }
 
   // :onDblClick from TuneList
@@ -218,7 +216,7 @@ export default class Player extends Vue {
     this.playTune();
   }
 
-  public setPlayTimer(seconds: number) {
+  public setPlayTimeout(seconds: number) {
     this.playTimeout = seconds;
   }
 
@@ -271,12 +269,12 @@ export default class Player extends Vue {
   }
 
   private async loadTune(index: number) {
-    const uri = ipcRenderer.sendSync(
+    const uri = window.ipcRenderer.sendSync(
       "convertSongToUri",
       this.currentTunes[index].file
     );
     audio.src = uri;
-    await audio.load();
+    audio.load();
     this.playing = false;
     this.playingTune = this.currentTunes[index];
     this.timePlayed = 0;

@@ -2,13 +2,7 @@ import { BrowserWindow } from "electron";
 import walk from "walkdir";
 import * as mm from "music-metadata";
 import { TuneInfo } from "../src/models/TuneInfo";
-import { existsSync } from 'fs';
-import { join } from 'path';
-import { homedir } from 'os';
 
-function info(field: any): any {
-  return field ? field : "unknown";
-}
 
 export function discoverTunes(renderer: BrowserWindow, directory: string) {
   const files: string[] = [];

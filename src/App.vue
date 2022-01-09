@@ -15,11 +15,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 import Filtering from "@/views/Filtering.vue";
 import Player from "@/views/Player.vue";
 import { TuneInfo } from "@/models/TuneInfo";
-import { ipcRenderer } from "electron";
 
 function getBPM(tune: TuneInfo) {
   return tune.bpm ? tune.bpm : 0;
@@ -39,7 +38,6 @@ export default class App extends Vue {
   private sortingUp: boolean = true;
   private bpm: number = 0;
   private bpmRange: number = 5;
-  private keyListener: any;
 
   get totalCount() {
     return this.allTunes.length;
@@ -58,11 +56,10 @@ export default class App extends Vue {
         return getBPM(t2) - getBPM(t1);
       });
     }
-    this.sortingUp = !this.sortingUp;
   }
 
   public mounted() {
-    ipcRenderer.on("discoveredTunes", (event: any, newTunes: TuneInfo[]) => {
+    window.ipcRenderer.on("discoveredTunes", (event: any, newTunes: TuneInfo[]) => {
       this.addTunes(newTunes);
     });
   }
@@ -104,7 +101,7 @@ export default class App extends Vue {
   // Discover tunes over IPC
   private initiateDiscoveringFiles() {
     this.allTunes = [];
-    ipcRenderer.send("discoverTunes");
+    window.ipcRenderer.send("discoverTunes");
   }
 }
 </script>

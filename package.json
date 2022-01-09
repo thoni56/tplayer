@@ -30,7 +30,7 @@
     "vue-class-component": "^7.1.0",
     "vue-numeric-input": "^1.0.6",
     "vue-property-decorator": "^8.3.0",
-    "vuetify": "^2.5.0",
+    "vuetify": "^2.6.2",
     "walkdir": "^0.4.1",
     "yaku": "^0.19.3"
   },

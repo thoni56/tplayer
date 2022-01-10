@@ -12,9 +12,10 @@ export function discoverTunes(renderer: BrowserWindow, directory: string) {
   );
   emitter.on("file", (path: string) => {
     if (
-      path.endsWith(".mp3") ||
+      path.endsWith(".aac") ||
       path.endsWith(".m4a") ||
-      path.endsWith(".mp4")
+      path.endsWith(".mp3") ||
+      path.endsWith(".mpga")
     ) {
       files.push(path);
     }

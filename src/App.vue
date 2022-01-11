@@ -59,7 +59,7 @@ export default class App extends Vue {
   }
 
   public mounted() {
-    window.ipcRenderer.on("discoveredTunes", (event: any, newTunes: TuneInfo[]) => {
+    (window as any).ipcRenderer.on("discoveredTunes", (event: any, newTunes: TuneInfo[]) => {
       this.addTunes(newTunes);
     });
   }
@@ -101,7 +101,7 @@ export default class App extends Vue {
   // Discover tunes over IPC
   private initiateDiscoveringFiles() {
     this.allTunes = [];
-    window.ipcRenderer.send("discoverTunes");
+    (window as any).ipcRenderer.send("discoverTunes");
   }
 }
 </script>

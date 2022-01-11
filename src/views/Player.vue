@@ -126,10 +126,6 @@ export default class Player extends Vue {
     }
     await fadeIn(); // async
 
-    // TODO Using timers is probably not a good idea
-    // We should probably hook into the time keeping
-    // timer instead, but that can't call nextTune()
-    // directly. So how to do that?
     clearTimeout(this.playTimer);
     if (this.playTimeout !== 0) {
       this.playTimer = setTimeout(
@@ -269,7 +265,7 @@ export default class Player extends Vue {
   }
 
   private async loadTune(index: number) {
-    const uri = window.ipcRenderer.sendSync(
+    const uri = (window as any).ipcRenderer.sendSync(
       "convertSongToUri",
       this.currentTunes[index].file
     );

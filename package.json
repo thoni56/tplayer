@@ -23,7 +23,7 @@
     "@types/jest": "^27.4.0",
     "@vue/cli": "^4.5.15",
     "file-to-datauri": "^1.0.1",
-    "music-metadata": "^6.4.0",
+    "music-metadata": "^7.11.4",
     "vue": "^2.6.14",
     "vue-class-component": "^7.1.0",
     "vue-numeric-input": "^1.0.6",

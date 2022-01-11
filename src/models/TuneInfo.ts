@@ -40,7 +40,7 @@ export class TuneInfo {
   public fillFromCommonTags(metadata: IAudioMetadata) {
     this.title = metadata.common.title?metadata.common.title:"";
     this.album = metadata.common.album?metadata.common.album:"";
-    this.track = metadata.common.track.no;
+    this.track = metadata.common.track.no?metadata.common.track.no:undefined;
     this.artist = metadata.common.artist?metadata.common.artist:"";
     this.bpm = metadata.common.bpm ? Math.round(metadata.common.bpm) : undefined;
     this.genre = metadata.common.genre ? this.genresToGenres(metadata.common.genre) : undefined;

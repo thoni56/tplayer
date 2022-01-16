@@ -5,7 +5,8 @@ import { TuneInfo } from '@/models/TuneInfo';
 declare module '@vue/runtime-core' {
   // declare your own store states
   interface State {
-    allTunes: TuneInfo[]
+    allTunes: TuneInfo[],
+    selectedTune: TuneInfo
   }
 
   // provide typings for `this.$store`

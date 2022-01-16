@@ -28,44 +28,42 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
-import { TuneInfo } from "@/models/TuneInfo";
+import { Vue, Component } from "vue-property-decorator";
 import { formatTime } from "@/models/timeFormatter";
 
 @Component
 export default class TuneDisplay extends Vue {
-  @Prop() private tune!: TuneInfo;
 
   get cover() {
-    return this.tune ? this.tune.cover : "";
+    return this.$store.state.selectedTune ? this.$store.state.selectedTune.cover : "";
   }
 
   get title() {
-    return this.tune ? this.tune.title : "";
+    return this.$store.state.selectedTune ? this.$store.state.selectedTune.title : "";
   }
 
   get file() {
-    return this.tune ? this.tune.file : "";
+    return this.$store.state.selectedTune ? this.$store.state.selectedTune.file : "";
   }
 
   get artist() {
-    return this.tune ? this.tune.artist : "";
+    return this.$store.state.selectedTune ? this.$store.state.selectedTune.artist : "";
   }
 
   get album() {
-    return this.tune ? this.tune.album : "";
+    return this.$store.state.selectedTune ? this.$store.state.selectedTune.album : "";
   }
 
   get track() {
-    return this.tune ? this.tune.track : undefined;
+    return this.$store.state.selectedTune ? this.$store.state.selectedTune.track : undefined;
   }
 
   get bpm() {
-    return this.tune ? this.tune.bpm : undefined;
+    return this.$store.state.selectedTune ? this.$store.state.selectedTune.bpm : undefined;
   }
 
   get totaltime() {
-    return this.tune ? formatTime(this.tune.duration!) : undefined;
+    return this.$store.state.selectedTune ? formatTime(this.$store.state.selectedTune.duration!) : undefined;
   }
 }
 

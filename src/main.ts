@@ -11,11 +11,16 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state: {
-    allTunes: []
+    allTunes: [] as Array<TuneInfo>,
+    selectedTune: new TuneInfo("")
   },
   mutations: {
     addTune (state, tune: TuneInfo) {
       state.allTunes.push(tune);
+    },
+    selectFile (state, file: string) {
+      let tune = state.allTunes.find(tune => tune.file == file);
+      state.selectedTune = tune?tune:new TuneInfo("");
     },
     clear(state) {
       state.allTunes = [];

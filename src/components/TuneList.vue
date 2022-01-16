@@ -50,7 +50,6 @@ export default class TuneList extends Vue {
   @Prop() public tunes!: TuneInfo[];
   @Prop() public playingTune!: TuneInfo;
 
-  @Prop() public onClick!: (id: string) => void;
   @Prop() public onDblClick!: (id: string) => void;
 
   private timeoutId: NodeJS.Timer | null = null;
@@ -59,15 +58,16 @@ export default class TuneList extends Vue {
     return formatTime(tune.duration!);
   }
 
-  public clicked(tuneId: string) {
+  public clicked(file: string) {
     if (!this.timeoutId) {
       this.timeoutId = setTimeout(() => {
-        if (this.onClick) this.onClick(tuneId);
+        this.$store.commit('selectFile', file);
         this.timeoutId = null;
       }, 500);
     } else {
       clearTimeout(this.timeoutId);
-      if (this.onDblClick) this.onDblClick(tuneId);
+      this.$store.commit('selectFile', file);
+      // How to start playing?
     }
   }
 

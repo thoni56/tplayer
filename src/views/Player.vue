@@ -2,7 +2,7 @@
   <v-container id="player" fluid style="padding-top:0;">
     <v-row>
       <v-col class="pt-0">
-        <TuneDisplay :tune="playingTune" />
+        <TuneDisplay />
         <Playbar :secondsPlayed="timePlayed" :secondsTotal="timeTotal" :playingTune="playingTune" />
         <PlayerControls
           :playing="playing"
@@ -15,7 +15,6 @@
         <TuneList
           :tunes="currentTunes"
           :playingTune="playingTune"
-          :onClick="setTune"
           :onDblClick="setTuneAndPlay"
         />
       </v-col>
@@ -194,15 +193,6 @@ export default class Player extends Vue {
 
   public toggleShuffle() {
     this.shuffle = !this.shuffle;
-  }
-
-  // :onClick from TuneList
-  public async setTune(id: string) {
-    await fadeOut(); // async
-    this.loadTune(this.currentTunes.findIndex(tune => tune.file === id));
-    // This seems necessary to set the actual played time to zero
-    await audio.play();
-    audio.pause();
   }
 
   // :onDblClick from TuneList

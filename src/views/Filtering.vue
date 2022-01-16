@@ -72,7 +72,7 @@ export default class Filtering extends Vue {
     return this.$store.state.allTunes.length
   }
 
-  private genres: string[] = ["Bugg", "Boogie", "Lindy", "WCS"];
+  private genres: string[] = ["Bugg", "Boogie", "Lindy", "WCS", "Foxtrot"];
   private genresSelected: number[] = [];
   private bpm: number = 0;
   private bpmRange: number = 5;

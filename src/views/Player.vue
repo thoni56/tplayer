@@ -15,7 +15,7 @@
         <TuneList
           :tunes="currentTunes"
           :playingTune="playingTune"
-          :onDblClick="setTuneAndPlay"
+          @play-pause="setTuneAndPlay"
         />
       </v-col>
     </v-row>
@@ -79,7 +79,6 @@ export default class Player extends Vue {
   public playing = false;
   public timePlayed = 0;
   public timeTotal = 0;
-  public playingTune: TuneInfo = new TuneInfo("");
   private keyListener: any;
 
   private playTimeout: number = 0;
@@ -88,6 +87,10 @@ export default class Player extends Vue {
   private shuffle: boolean = false;
   private currentShufflePartition: number = 0;
   private shufflePartitionCount: number = 4;
+
+  private playingTune() {
+    return this.$store.state.selectedTune;
+  }
 
   public mounted() {
     self = this;
@@ -122,6 +125,8 @@ export default class Player extends Vue {
     // If no tune selected we should pick any song in the list and play
     if (!this.anyTuneSelected()) {
       this.loadTune(this.randomBetween(0, this.currentTunes.length));
+    } else {
+      this.loadTune(this.playingTune());
     }
     await fadeIn(); // async
 
@@ -143,7 +148,6 @@ export default class Player extends Vue {
     } else {
       self.nextTune();
     }
-
   }
 
   public async pauseTune() {
@@ -156,7 +160,7 @@ export default class Player extends Vue {
     } else {
       if (this.anyTuneSelected()) {
         const playingIndex = this.currentTunes.findIndex(
-          tune => tune === this.playingTune
+          tune => tune === this.playingTune()
         );
         if (playingIndex === -1) {
           // If not found, the list has changed so pick any tune
@@ -182,7 +186,7 @@ export default class Player extends Vue {
     } else {
       if (this.anyTuneSelected()) {
         const playingIndex = this.currentTunes.findIndex(
-          tune => tune === this.playingTune
+          tune => tune === this.playingTune()
         );
         if (playingIndex > 0) {
           this.moveToNextTune(playingIndex, -1);
@@ -196,9 +200,9 @@ export default class Player extends Vue {
   }
 
   // :onDblClick from TuneList
-  public async setTuneAndPlay(id: string) {
+  public async setTuneAndPlay(file: string) {
     await fadeOut(); // async
-    this.loadTune(this.currentTunes.findIndex(tune => tune.file === id));
+    this.loadTune(this.currentTunes.findIndex(tune => tune.file === file));
     this.playTune();
   }
 
@@ -241,7 +245,7 @@ export default class Player extends Vue {
   }
 
   private anyTuneSelected(): boolean {
-    return this.playingTune.file !== "";
+    return this.$store.state.selectedTune.file !== "";
   }
 
   private async moveToNextTune(playingIndex: number, direction: number) {
@@ -257,12 +261,11 @@ export default class Player extends Vue {
   private async loadTune(index: number) {
     const uri = (window as any).ipcRenderer.sendSync(
       "convertSongToUri",
-      this.currentTunes[index].file
+      this.$store.state.selectedTune.file
     );
     audio.src = uri;
     audio.load();
     this.playing = false;
-    this.playingTune = this.currentTunes[index];
     this.timePlayed = 0;
     this.timeTotal = audio.duration;
   }

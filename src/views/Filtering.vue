@@ -57,9 +57,8 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { Component, Prop, Emit, Mixins } from "vue-property-decorator";
+import { Component, Prop } from "vue-property-decorator";
 import VueNumericInput from "vue-numeric-input";
-import { TuneInfo } from "@/models/TuneInfo";
 
 @Component({
   components: { VueNumericInput }

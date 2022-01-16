@@ -65,9 +65,13 @@ import { TuneInfo } from "@/models/TuneInfo";
   components: { VueNumericInput }
 })
 export default class Filtering extends Vue {
-  @Prop() public totalCount!: number;
   @Prop() public currentCount!: number;
   @Prop() public sortingUp!: boolean;
+
+  // Store
+  get totalCount() {
+    return this.$store.state.allTunes.length
+  }
 
   private genres: string[] = ["Bugg", "Boogie", "Lindy", "WCS"];
   private genresSelected: number[] = [];

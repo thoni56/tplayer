@@ -1,7 +1,6 @@
 <template>
   <v-app id="Application" dark>
     <Filtering
-      :totalCount="totalCount"
       :currentCount="currentTunes.length"
       :sortingUp="sortingUp"
       @toggle-genre="toggleGenre"
@@ -79,6 +78,7 @@ export default class App extends Vue {
 
   private addTunes(tunes: TuneInfo[]) {
     this.allTunes.push(...tunes);
+    this.$store.state.allTunes.push(...tunes);
   }
 
   private toggleGenre(genre: string) {
@@ -100,7 +100,6 @@ export default class App extends Vue {
 
   // Discover tunes over IPC
   private initiateDiscoveringFiles() {
-    this.allTunes = [];
     (window as any).ipcRenderer.send("discoverTunes");
   }
 }

@@ -24,26 +24,28 @@
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
 import { formatTime } from "@/models/timeFormatter";
-import { TuneInfo } from "@/models/TuneInfo";
 
 @Component
 export default class Playbar extends Vue {
   @Prop() private secondsPlayed!: number;
   @Prop() private secondsTotal!: number;
-  @Prop() private playingTune!: TuneInfo;
+
+  private playingTune() {
+    return this.$store.state.selectedTune;
+  }
 
   get playingTitle() {
-    return this.playingTune
-      ? this.playingTune.title
-        ? this.playingTune.title
+    return this.playingTune()
+      ? this.playingTune().title
+        ? this.playingTune().title
         : ""
       : "";
   }
 
   get playingArtist() {
-    return this.playingTune
-      ? this.playingTune.artist
-        ? this.playingTune.artist
+    return this.playingTune()
+      ? this.playingTune().artist
+        ? this.playingTune().artist
         : ""
       : "";
   }

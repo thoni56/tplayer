@@ -3,7 +3,7 @@
     <v-row>
       <v-col class="pt-0">
         <TuneDisplay />
-        <Playbar :secondsPlayed="timePlayed" :secondsTotal="timeTotal" :playingTune="playingTune" />
+        <Playbar :secondsPlayed="timePlayed" :secondsTotal="timeTotal" />
         <PlayerControls
           :playing="playing"
           @previous-tune="previousTune"

@@ -29,6 +29,7 @@
     "vue-numeric-input": "^1.0.6",
     "vue-property-decorator": "^8.3.0",
     "vuetify": "^2.6.2",
+    "vuex": "^3.6.2",
     "walkdir": "^0.4.1",
     "yaku": "^0.19.3"
   },
@@ -38,6 +39,7 @@
     "@vue/cli-plugin-e2e-cypress": "~4.5.15",
     "@vue/cli-plugin-typescript": "~4.5.15",
     "@vue/cli-service": "~4.5.15",
+    "cypress": "^9.2.1",
     "electron": "^11.5.0",
     "electron-builder": "^21.2.0",
     "electron-devtools-installer": "^3.2.0",
@@ -50,7 +52,6 @@
     "eslint-plugin-vue": "^6.2.2",
     "eslint-plugin-vuetify": "^1.0.0-beta.6",
     "jest": "^27.4.7",
-    "cypress": "^9.2.1",
     "release-it": "^13.6.3",
     "sass": "^1.26.8",
     "sass-loader": "^8.0.2",

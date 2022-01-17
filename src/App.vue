@@ -61,7 +61,11 @@ export default class App extends Vue {
     (window as any).ipcRenderer.on("discoveredTunes", (event: any, newTunes: TuneInfo[]) => {
       this.addTunes(newTunes);
     });
+    (window as any).ipcRenderer.on("clearTunes", (event: any, args: any[]) => {
+      this.$store.commit('clear');
+    });
   }
+
   private genreFilter(t: TuneInfo): boolean {
     return t.genre ? t.genre.some(g => this.genres.includes(g)) : false;
   }

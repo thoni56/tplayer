@@ -37,6 +37,7 @@ function sleep(ms: number) {
 
 async function readMetadataForAllFiles(renderer: BrowserWindow, files: string[]) {
   let all = [];
+  await sleep(100); // To allow clear to finish, this should really be ensured some other way
   for (let index = 0; index < files.length; index++) {
     try {
       await sleep(1);

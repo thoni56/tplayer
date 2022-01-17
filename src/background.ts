@@ -102,6 +102,7 @@ if (isDevelopment) {
 ipcMain.on('discoverTunes', () => {
   const dir: string[] | undefined = dialog.showOpenDialogSync({ properties: ['openDirectory'] });
   if (dir) {
+    win?.webContents.send('clearTunes', []);
     discoverTunes(win!, dir[0]);
   }
 })

@@ -14,7 +14,7 @@
         />
         <TuneList
           :tunes="currentTunes"
-          :playingTune="playingTune"
+          :selectedTune="selectedTune"
           @click="loadSelectedTuneAndPlay"
         />
       </v-col>
@@ -88,7 +88,7 @@ export default class Player extends Vue {
   private currentShufflePartition: number = 0;
   private shufflePartitionCount: number = 4;
 
-  private playingTune() {
+  private selectedTune() {
     return this.$store.state.selectedTune;
   }
 
@@ -120,7 +120,7 @@ export default class Player extends Vue {
 
   public async playSelectedTune() {
     // Have to have an actual tune selected...
-    if (this.playingTune().file === "")
+    if (this.selectedTune().file === "")
       return;
     await fadeIn(); // Start playing
 
@@ -154,7 +154,7 @@ export default class Player extends Vue {
     } else {
       if (this.anyTuneSelected()) {
         const playingIndex = this.currentTunes.findIndex(
-          tune => tune === this.playingTune()
+          tune => tune === this.selectedTune()
         );
         if (playingIndex === -1) {
           // If not found, the list has changed so pick any tune
@@ -180,7 +180,7 @@ export default class Player extends Vue {
     } else {
       if (this.anyTuneSelected()) {
         const playingIndex = this.currentTunes.findIndex(
-          tune => tune === this.playingTune()
+          tune => tune === this.selectedTune()
         );
         if (playingIndex > 0) {
           this.moveToNextTune(playingIndex, -1);
@@ -197,7 +197,7 @@ export default class Player extends Vue {
   // Expects a tune to be selected
   public async loadSelectedTuneAndPlay() {
     await fadeOut();
-    this.loadTune(this.playingTune());
+    this.loadTune(this.selectedTune());
     this.playSelectedTune();
   }
 

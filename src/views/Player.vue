@@ -122,13 +122,16 @@ export default class Player extends Vue {
     if (this.currentTunes.length === 0) {
       return;
     }
-    // If no tune selected we should pick any song in the list and play
-    if (!this.anyTuneSelected()) {
-      this.loadTune(this.randomBetween(0, this.currentTunes.length));
-    } else {
-      this.loadTune(this.playingTune());
+    if (isNaN(audio.duration)) {
+        // Then we have only selected it, so load it before starting playing
+      if (!this.anyTuneSelected()) {
+        // If no tune selected we should pick any song in the list and play
+        this.loadTune(this.randomBetween(0, this.currentTunes.length));
+      } else {
+        this.loadTune(this.playingTune());
+      }
     }
-    await fadeIn(); // async
+    await fadeIn(); // Start playing
 
     clearTimeout(this.playTimer);
     if (this.playTimeout !== 0) {
@@ -143,7 +146,7 @@ export default class Player extends Vue {
     if (audio.currentTime < this.playTimeout) {
       this.playTimer = setTimeout(
         () => self.checkTimeout(),
-        1000
+        400
       );
     } else {
       self.nextTune();

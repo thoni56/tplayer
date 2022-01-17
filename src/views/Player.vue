@@ -13,8 +13,6 @@
           @shuffle-tunes-toggle="toggleShuffle"
         />
         <TuneList
-          :tunes="currentTunes"
-          :selectedTune="selectedTune"
           @click="loadSelectedTuneAndPlay"
         />
       </v-col>
@@ -74,7 +72,9 @@ const audio = new Audio();
   }
 })
 export default class Player extends Vue {
-  @Prop() public currentTunes!: TuneInfo[];
+  public currentTunes(): TuneInfo[] {
+    return this.$store.getters.filteredTunes;
+  }
 
   public playing = false;
   public timePlayed = 0;
@@ -153,7 +153,7 @@ export default class Player extends Vue {
       this.moveToNextTune(this.randomTune(), 0);
     } else {
       if (this.anyTuneSelected()) {
-        const playingIndex = this.currentTunes.findIndex(
+        const playingIndex = this.currentTunes().findIndex(
           tune => tune === this.selectedTune()
         );
         if (playingIndex === -1) {
@@ -179,7 +179,7 @@ export default class Player extends Vue {
       this.moveToNextTune(this.randomTune(), 0);
     } else {
       if (this.anyTuneSelected()) {
-        const playingIndex = this.currentTunes.findIndex(
+        const playingIndex = this.currentTunes().findIndex(
           tune => tune === this.selectedTune()
         );
         if (playingIndex > 0) {
@@ -249,7 +249,7 @@ export default class Player extends Vue {
     this.timePlayed = 0;
     const nextTuneToPlay = playingIndex + direction;
     await this.loadTune(nextTuneToPlay);
-    this.timeTotal = this.currentTunes[nextTuneToPlay].duration!;
+    this.timeTotal = this.currentTunes()[nextTuneToPlay].duration!;
     if (wasPlaying) await this.playSelectedTune();
   }
 
@@ -276,10 +276,10 @@ export default class Player extends Vue {
       this.currentShufflePartition % this.shufflePartitionCount;
 
     // Partition list of tunes into four sets of evenly distributed BPMs
-    const tmin: TuneInfo = this.currentTunes.reduce(
+    const tmin: TuneInfo = this.currentTunes().reduce(
       (t1: TuneInfo, t2: TuneInfo) => (t1.bpm! < t2.bpm! ? t1 : t2)
     );
-    const tmax: TuneInfo = this.currentTunes.reduce(
+    const tmax: TuneInfo = this.currentTunes().reduce(
       (t1: TuneInfo, t2: TuneInfo) => (t1.bpm! > t2.bpm! ? t1 : t2)
     );
 
@@ -294,12 +294,12 @@ export default class Player extends Vue {
     const partitionMax: number = partitionMin + partitionSize;
 
     // Select a random tune in that partition
-    const partition = this.currentTunes.filter(
+    const partition = this.currentTunes().filter(
       (t: TuneInfo) => t.bpm! >= partitionMin && t.bpm! <= partitionMax
     );
     const randomTune = partition[this.randomBetween(0, partition.length)];
 
-    return this.currentTunes.findIndex(tune => tune.file === randomTune.file);
+    return this.currentTunes().findIndex(tune => tune.file === randomTune.file);
   }
 }
 </script>

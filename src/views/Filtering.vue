@@ -64,12 +64,15 @@ import VueNumericInput from "vue-numeric-input";
   components: { VueNumericInput }
 })
 export default class Filtering extends Vue {
-  @Prop() public currentCount!: number;
   @Prop() public sortingUp!: boolean;
 
   // Store
   get totalCount() {
     return this.$store.state.allTunes.length
+  }
+
+  get currentCount() {
+    return this.$store.getters.filteredTunes.length;
   }
 
   private genres: string[] = ["Bugg", "Boogie", "Lindy", "WCS", "Foxtrot"];

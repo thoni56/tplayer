@@ -12,7 +12,13 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
   state: {
     allTunes: [] as Array<TuneInfo>,
-    selectedTune: new TuneInfo("")
+    selectedTune: new TuneInfo(""),
+    genres: [] as Array<string>
+  },
+  getters: {
+    filteredTunes: state => {
+      return state.allTunes.filter(t => t.genre?.some(g => state.genres.includes(g)));
+    }
   },
   mutations: {
     addTune (state, tune: TuneInfo) {

@@ -2,10 +2,10 @@
   <v-layout scrollable style="height: 40vh">
     <v-flex>
       <v-list dense>
-        <template v-for="(tune, index) in tunes">
+        <template v-for="(tune, index) in tunes()">
           <v-list-item
             :key="tune.file"
-            :class="{ highlighted: playingTune().file == tune.file }"
+            :class="{ highlighted: selectedTune().file == tune.file }"
             @click="clicked(tune.file)"
           >
             <v-list-item-avatar tile size="20">
@@ -47,8 +47,14 @@ const ft = formatTime; // To ensure a reference exists
 
 @Component
 export default class TuneList extends Vue {
-  @Prop() public tunes!: TuneInfo[];
-  @Prop() public playingTune!: TuneInfo;
+
+  public tunes(): TuneInfo[] {
+    return this.$store.getters.filteredTunes;
+  }
+
+  private selectedTune() {
+    return this.$store.state.selectedTune;
+  }
 
   public formattedDuration(tune: TuneInfo): string {
     return formatTime(tune.duration!);

@@ -35,35 +35,35 @@ import { formatTime } from "@/models/timeFormatter";
 export default class TuneDisplay extends Vue {
 
   get cover() {
-    return this.$store.state.selectedTune ? this.$store.state.selectedTune.cover : "";
+    return this.$store.state.selectedTune.cover;
   }
 
   get title() {
-    return this.$store.state.selectedTune ? this.$store.state.selectedTune.title : "";
+    return this.$store.state.selectedTune.title;
   }
 
   get file() {
-    return this.$store.state.selectedTune ? this.$store.state.selectedTune.file : "";
+    return this.$store.state.selectedTune.file;
   }
 
   get artist() {
-    return this.$store.state.selectedTune ? this.$store.state.selectedTune.artist : "";
+    return this.$store.state.selectedTune.artist;
   }
 
   get album() {
-    return this.$store.state.selectedTune ? this.$store.state.selectedTune.album : "";
+    return this.$store.state.selectedTune.album;
   }
 
   get track() {
-    return this.$store.state.selectedTune ? this.$store.state.selectedTune.track : undefined;
+    return this.$store.state.selectedTune.track;
   }
 
   get bpm() {
-    return this.$store.state.selectedTune ? this.$store.state.selectedTune.bpm : undefined;
+    return this.$store.state.selectedTune.bpm;
   }
 
   get totaltime() {
-    return this.$store.state.selectedTune ? formatTime(this.$store.state.selectedTune.duration!) : undefined;
+    return formatTime(this.$store.state.selectedTune.duration!);
   }
 }
 

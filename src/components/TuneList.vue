@@ -56,7 +56,7 @@ export default class TuneList extends Vue {
 
   public clicked(file: string) {
     this.$store.commit('selectFile', file);
-    this.$emit('play-pause');
+    this.$emit('click');
   }
 
   public genres(tune: TuneInfo) {

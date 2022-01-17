@@ -15,7 +15,7 @@
         <TuneList
           :tunes="currentTunes"
           :playingTune="playingTune"
-          @play-pause="setTuneAndPlay"
+          @click="loadSelectedTuneAndPlay"
         />
       </v-col>
     </v-row>
@@ -114,23 +114,14 @@ export default class Player extends Vue {
     if (this.playing) {
       this.pauseTune();
     } else {
-      this.playTune();
+      this.playSelectedTune();
     }
   }
 
-  public async playTune() {
-    if (this.currentTunes.length === 0) {
+  public async playSelectedTune() {
+    // Have to have an actual tune selected...
+    if (this.playingTune().file === "")
       return;
-    }
-    if (isNaN(audio.duration)) {
-        // Then we have only selected it, so load it before starting playing
-      if (!this.anyTuneSelected()) {
-        // If no tune selected we should pick any song in the list and play
-        this.loadTune(this.randomBetween(0, this.currentTunes.length));
-      } else {
-        this.loadTune(this.playingTune());
-      }
-    }
     await fadeIn(); // Start playing
 
     clearTimeout(this.playTimer);
@@ -154,7 +145,7 @@ export default class Player extends Vue {
   }
 
   public async pauseTune() {
-    await fadeOut(); // async
+    await fadeOut();
   }
 
   public async nextTune() {
@@ -202,11 +193,12 @@ export default class Player extends Vue {
     this.shuffle = !this.shuffle;
   }
 
-  // :onDblClick from TuneList
-  public async setTuneAndPlay(file: string) {
-    await fadeOut(); // async
-    this.loadTune(this.currentTunes.findIndex(tune => tune.file === file));
-    this.playTune();
+  // :click from TuneList
+  // Expects a tune to be selected
+  public async loadSelectedTuneAndPlay() {
+    await fadeOut();
+    this.loadTune(this.playingTune());
+    this.playSelectedTune();
   }
 
   public setPlayTimeout(seconds: number) {
@@ -258,7 +250,7 @@ export default class Player extends Vue {
     const nextTuneToPlay = playingIndex + direction;
     await this.loadTune(nextTuneToPlay);
     this.timeTotal = this.currentTunes[nextTuneToPlay].duration!;
-    if (wasPlaying) await this.playTune();
+    if (wasPlaying) await this.playSelectedTune();
   }
 
   private async loadTune(index: number) {

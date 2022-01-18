@@ -2,9 +2,6 @@
   <v-app id="Application" dark>
     <Filtering
       @toggle-genre="toggleGenre"
-      @sort-tunes="sortTunes"
-      @change-bpm="changeBpm"
-      @change-bpmRange="changeBpmRange"
       @load-files="initiateDiscoveringFiles"
     />
     <Player />
@@ -30,8 +27,6 @@ Vue.config.productionTip = false;
   }
 })
 export default class App extends Vue {
-  private bpm: number = 0;
-  private bpmRange: number = 5;
 
   get filteredTunes() {
     return this.$store.getters.filteredTunes;
@@ -41,16 +36,8 @@ export default class App extends Vue {
     return this.$store.state.allTunes;
   }
 
-  get totalCount() {
-    return this.$store.state.length;
-  }
-
-  get currentCount() {
-    return this.$store.getters.filteredTunes.length;
-  }
-
   get currentGenres() {
-    return this.$store.state.genres;
+    return this.$store.state.selectedGenres;
   }
 
   public mounted() {
@@ -62,20 +49,6 @@ export default class App extends Vue {
     });
   }
 
-  private genreFilter(t: TuneInfo): boolean {
-    return t.genre ? t.genre.some(g => this.currentGenres.includes(g)) : false;
-  }
-
-  private bpmFilter(t: TuneInfo): boolean {
-    const result: boolean =
-      this.bpm <= getBPM(t) && getBPM(t) <= this.bpm + this.bpmRange;
-    return this.bpm === 0 || result;
-  }
-
-  private currentFilter(t: TuneInfo): boolean {
-    return this.genreFilter(t) && this.bpmFilter(t);
-  }
-
   private addTunes(tunes: TuneInfo[]) {
     this.allTunes.push(...tunes);
   }
@@ -83,18 +56,6 @@ export default class App extends Vue {
   private toggleGenre(genre: string) {
     if (!this.currentGenres.includes(genre)) this.currentGenres.push(genre);
     else this.currentGenres.splice(this.currentGenres.indexOf(genre), 1);
-  }
-
-  private sortTunes() {
-    this.$store.commit('flipSorting');
-  }
-
-  private changeBpm(bpm: number) {
-    this.bpm = bpm;
-  }
-
-  private changeBpmRange(range: number) {
-    this.bpmRange = range;
   }
 
   // Discover tunes over IPC

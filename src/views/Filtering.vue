@@ -27,7 +27,7 @@
         <v-slider
           grow
           :hide-details="true"
-          @change="$emit('change-bpm', bpm)"
+          @change="changeBpm()"
           v-model="bpm"
           :max="300"
         />
@@ -42,12 +42,12 @@
           controls-type="updown"
           v-model="bpmRange"
           :min="0"
-          @change="$emit('change-bpmRange', bpmRange);"
+          @change="changeBpmRange()"
           style="font-size:3.5vh;width:3em;margin-right:1vw;padding-right:1vw;"
         />
       </v-flex>
       <v-flex align-self-center shrink>
-        <v-btn small color="primary" @click="$emit('sort-tunes')">
+        <v-btn small color="primary" @click="sortTunes()">
           <v-icon>{{ sortIcon }}</v-icon>
         </v-btn>
       </v-flex>
@@ -82,10 +82,24 @@ export default class Filtering extends Vue {
     if (this.sortingUp) return "fas fa-sort-amount-up";
     else return "fas fa-sort-amount-down";
   }
+
+  private sortTunes() {
+    this.$store.commit('flipSorting');
+  }
+
   private genres: string[] = ["Bugg", "Boogie", "Lindy", "WCS", "Foxtrot"];
   private genresSelected: number[] = [];
+
   private bpm: number = 0;
   private bpmRange: number = 5;
+
+  private changeBpm() {
+    this.$store.commit('changeBpm', this.bpm);
+  }
+
+  private changeBpmRange() {
+    this.$store.commit('changeBpmRange', this.bpmRange);
+  }
 
   private mounted() {
     this.genresSelected = [];

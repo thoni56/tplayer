@@ -13,16 +13,35 @@ function getBPM(tune: TuneInfo) {
   return tune.bpm ? tune.bpm : 0;
 }
 
+function genreFilter(t: TuneInfo): boolean {
+  return t.genre ? t.genre.some(g => store.state.selectedGenres.includes(g)) : false;
+}
+
+function bpmFilter(t: TuneInfo): boolean {
+  const bpm = store.state.selectedBpm;
+  const bpmRange = store.state.selectedBpmRange;
+  const result: boolean =
+    bpm <= getBPM(t) && getBPM(t) <= bpm + bpmRange;
+  return bpm === 0 || result;
+}
+
+function currentFilter(t: TuneInfo): boolean {
+  return genreFilter(t) && bpmFilter(t);
+}
+
+
 const store = new Vuex.Store({
   state: {
     allTunes: [] as Array<TuneInfo>,
     selectedTune: new TuneInfo(""),
-    genres: [] as Array<string>,
+    selectedGenres: [] as Array<string>,
+    selectedBpm: 0,
+    selectedBpmRange: 5,
     sortingUp: true
   },
   getters: {
     filteredTunes: state => {
-      const tunes = state.allTunes.filter(t => t.genre?.some(g => state.genres.includes(g)));
+      const tunes = state.allTunes.filter(t => currentFilter(t));
       if (state.sortingUp) {
         return tunes.sort((tune1, tune2) => {
           return getBPM(tune1) - getBPM(tune2);
@@ -39,7 +58,7 @@ const store = new Vuex.Store({
       state.allTunes.push(tune);
     },
     selectFile (state, file: string) {
-      let tune = state.allTunes.find(tune => tune.file == file);
+      const tune = state.allTunes.find(tune => tune.file == file);
       state.selectedTune = tune?tune:new TuneInfo("");
     },
     selectTune (state, tune: TuneInfo) {
@@ -50,6 +69,12 @@ const store = new Vuex.Store({
     },
     flipSorting (state) {
       state.sortingUp = !state.sortingUp;
+    },
+    changeBpm (state, bpm: number) {
+      state.selectedBpm = bpm;
+    },
+    changeBpmRange (state, bpm: number) {
+      state.selectedBpmRange = bpm;
     }
   }
 });

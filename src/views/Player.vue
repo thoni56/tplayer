@@ -73,7 +73,7 @@ const audio = new Audio();
 })
 export default class Player extends Vue {
 
-  public currentTunes(): TuneInfo[] {
+  get currentTunes(): TuneInfo[] {
     return this.$store.getters.filteredTunes;
   }
 
@@ -89,7 +89,7 @@ export default class Player extends Vue {
   private currentShufflePartition: number = 0;
   private shufflePartitionCount: number = 4;
 
-  private selectedTune() {
+  get selectedTune() {
     return this.$store.state.selectedTune;
   }
 
@@ -121,7 +121,7 @@ export default class Player extends Vue {
 
   public async playSelectedTune() {
     // Have to have an actual tune selected...
-    if (this.selectedTune().file === "")
+    if (this.selectedTune.file === "")
       return;
     await fadeIn(); // Start playing
 
@@ -154,17 +154,17 @@ export default class Player extends Vue {
       this.moveToNextTune(this.randomTune(), 0);
     } else {
       if (this.anyTuneSelected()) {
-        const playingIndex = this.currentTunes().findIndex(
-          tune => tune === this.selectedTune()
+        const playingIndex = this.currentTunes.findIndex(
+          tune => tune === this.selectedTune
         );
         if (playingIndex === -1) {
           // If not found, the list has changed so pick any tune
           // in the new list
           this.moveToNextTune(
-            this.randomBetween(0, this.currentTunes().length - 1),
+            this.randomBetween(0, this.currentTunes.length - 1),
             0
           );
-        } else if (playingIndex < this.currentTunes().length - 1) {
+        } else if (playingIndex < this.currentTunes.length - 1) {
           // More songs to play, so go to next
           this.moveToNextTune(playingIndex, +1);
         } else {
@@ -180,20 +180,20 @@ export default class Player extends Vue {
       this.moveToNextTune(this.randomTune(), 0);
     } else {
       if (this.anyTuneSelected()) {
-        const playingIndex = this.currentTunes().findIndex(
-          tune => tune === this.selectedTune()
+        const playingIndex = this.currentTunes.findIndex(
+          tune => tune === this.selectedTune
         );
         if (playingIndex === -1) {
           // If not found, the list has changed so pick any tune
           // in the new list
           this.moveToNextTune(
-            this.randomBetween(0, this.currentTunes().length - 1),
+            this.randomBetween(0, this.currentTunes.length - 1),
             0
           );
         } else if (playingIndex > 0) {
           this.moveToNextTune(playingIndex, -1);
         } else {
-          this.moveToNextTune(this.currentTunes().length-1, 0);
+          this.moveToNextTune(this.currentTunes.length-1, 0);
         }
       }
     }
@@ -272,7 +272,7 @@ export default class Player extends Vue {
   private async loadSelectedTune() {
     const uri = (window as any).ipcRenderer.sendSync(
       "convertSongToUri",
-      this.selectedTune().file
+      this.selectedTune.file
     );
     audio.src = uri;
     audio.load();
@@ -292,10 +292,10 @@ export default class Player extends Vue {
       this.currentShufflePartition % this.shufflePartitionCount;
 
     // Partition list of tunes into four sets of evenly distributed BPMs
-    const tmin: TuneInfo = this.currentTunes().reduce(
+    const tmin: TuneInfo = this.currentTunes.reduce(
       (t1: TuneInfo, t2: TuneInfo) => (t1.bpm! < t2.bpm! ? t1 : t2)
     );
-    const tmax: TuneInfo = this.currentTunes().reduce(
+    const tmax: TuneInfo = this.currentTunes.reduce(
       (t1: TuneInfo, t2: TuneInfo) => (t1.bpm! > t2.bpm! ? t1 : t2)
     );
 
@@ -310,12 +310,12 @@ export default class Player extends Vue {
     const partitionMax: number = partitionMin + partitionSize;
 
     // Select a random tune in that partition
-    const partition = this.currentTunes().filter(
+    const partition = this.currentTunes.filter(
       (t: TuneInfo) => t.bpm! >= partitionMin && t.bpm! <= partitionMax
     );
     const randomTune = partition[this.randomBetween(0, partition.length)];
 
-    return this.currentTunes().findIndex(tune => tune.file === randomTune.file);
+    return this.currentTunes.findIndex(tune => tune.file === randomTune.file);
   }
 }
 </script>

@@ -1,7 +1,6 @@
 <template>
   <v-app id="Application" dark>
     <Filtering
-      :sortingUp="sortingUp"
       @toggle-genre="toggleGenre"
       @sort-tunes="sortTunes"
       @change-bpm="changeBpm"
@@ -31,14 +30,14 @@ Vue.config.productionTip = false;
   }
 })
 export default class App extends Vue {
-  private genres: string[] = [];
-  private sortingUp: boolean = true;
   private bpm: number = 0;
   private bpmRange: number = 5;
 
-  private filteredTunes = this.$store.getters.filteredTunes;
+  get filteredTunes() {
+    return this.$store.getters.filteredTunes;
+  }
 
-  private allTunes(): TuneInfo[] {
+  get allTunes(): TuneInfo[] {
     return this.$store.state.allTunes;
   }
 
@@ -50,19 +49,8 @@ export default class App extends Vue {
     return this.$store.getters.filteredTunes.length;
   }
 
-  get currentTunes() {
-    const filteredTunes = this.allTunes
-      ? this.allTunes().filter(this.currentFilter)
-      : [];
-    if (this.sortingUp) {
-      return filteredTunes.sort((t1, t2) => {
-        return getBPM(t1) - getBPM(t2);
-      });
-    } else {
-      return filteredTunes.sort((t1, t2) => {
-        return getBPM(t2) - getBPM(t1);
-      });
-    }
+  get currentGenres() {
+    return this.$store.state.genres;
   }
 
   public mounted() {
@@ -75,7 +63,7 @@ export default class App extends Vue {
   }
 
   private genreFilter(t: TuneInfo): boolean {
-    return t.genre ? t.genre.some(g => this.genres.includes(g)) : false;
+    return t.genre ? t.genre.some(g => this.currentGenres.includes(g)) : false;
   }
 
   private bpmFilter(t: TuneInfo): boolean {
@@ -89,16 +77,16 @@ export default class App extends Vue {
   }
 
   private addTunes(tunes: TuneInfo[]) {
-    this.$store.state.allTunes.push(...tunes);
+    this.allTunes.push(...tunes);
   }
 
   private toggleGenre(genre: string) {
-    if (!this.$store.state.genres.includes(genre)) this.$store.state.genres.push(genre);
-    else this.$store.state.genres.splice(this.$store.state.genres.indexOf(genre), 1);
+    if (!this.currentGenres.includes(genre)) this.currentGenres.push(genre);
+    else this.currentGenres.splice(this.currentGenres.indexOf(genre), 1);
   }
 
   private sortTunes() {
-    this.sortingUp = !this.sortingUp;
+    this.$store.commit('flipSorting');
   }
 
   private changeBpm(bpm: number) {

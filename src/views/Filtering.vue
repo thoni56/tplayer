@@ -64,7 +64,6 @@ import VueNumericInput from "vue-numeric-input";
   components: { VueNumericInput }
 })
 export default class Filtering extends Vue {
-  @Prop() public sortingUp!: boolean;
 
   // Store
   get totalCount() {
@@ -75,6 +74,14 @@ export default class Filtering extends Vue {
     return this.$store.getters.filteredTunes.length;
   }
 
+  get sortingUp() {
+    return this.$store.state.sortingUp;
+  }
+
+  get sortIcon() {
+    if (this.sortingUp) return "fas fa-sort-amount-up";
+    else return "fas fa-sort-amount-down";
+  }
   private genres: string[] = ["Bugg", "Boogie", "Lindy", "WCS", "Foxtrot"];
   private genresSelected: number[] = [];
   private bpm: number = 0;
@@ -84,10 +91,6 @@ export default class Filtering extends Vue {
     this.genresSelected = [];
   }
 
-  get sortIcon() {
-    if (this.sortingUp) return "fas fa-sort-amount-up";
-    else return "fas fa-sort-amount-down";
-  }
 }
 </script>
 <style>

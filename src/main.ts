@@ -28,6 +28,9 @@ const store = new Vuex.Store({
       let tune = state.allTunes.find(tune => tune.file == file);
       state.selectedTune = tune?tune:new TuneInfo("");
     },
+    selectTune (state, tune: TuneInfo) {
+      state.selectedTune = tune;
+    },
     clear(state) {
       state.allTunes = [];
     }

@@ -56,9 +56,9 @@ async function fadeIn() {
   self.playing = true;
 }
 
-function remainingTimer() {
+function timerForPlayedTime() {
   self.timePlayed = audio.currentTime;
-  setTimeout(remainingTimer, 200);
+  setTimeout(timerForPlayedTime, 200);
 }
 
 const audio = new Audio();
@@ -72,6 +72,7 @@ const audio = new Audio();
   }
 })
 export default class Player extends Vue {
+
   public currentTunes(): TuneInfo[] {
     return this.$store.getters.filteredTunes;
   }
@@ -101,7 +102,7 @@ export default class Player extends Vue {
       self.nextTune();
     });
 
-    setTimeout(remainingTimer, 200);
+    setTimeout(timerForPlayedTime, 200);
     this.setUpShortkeys();
   }
 
@@ -160,10 +161,10 @@ export default class Player extends Vue {
           // If not found, the list has changed so pick any tune
           // in the new list
           this.moveToNextTune(
-            this.randomBetween(0, this.currentTunes.length - 1),
+            this.randomBetween(0, this.currentTunes().length - 1),
             0
           );
-        } else if (playingIndex < this.currentTunes.length - 1) {
+        } else if (playingIndex < this.currentTunes().length - 1) {
           // More songs to play, so go to next
           this.moveToNextTune(playingIndex, +1);
         } else {
@@ -182,27 +183,39 @@ export default class Player extends Vue {
         const playingIndex = this.currentTunes().findIndex(
           tune => tune === this.selectedTune()
         );
-        if (playingIndex > 0) {
+        if (playingIndex === -1) {
+          // If not found, the list has changed so pick any tune
+          // in the new list
+          this.moveToNextTune(
+            this.randomBetween(0, this.currentTunes().length - 1),
+            0
+          );
+        } else if (playingIndex > 0) {
           this.moveToNextTune(playingIndex, -1);
+        } else {
+          this.moveToNextTune(this.currentTunes().length-1, 0);
         }
       }
     }
   }
 
+  // Events:
+  // select shuffle from PlayerControls
   public toggleShuffle() {
     this.shuffle = !this.shuffle;
+  }
+
+  // select timeout from PlayerControls
+  public setPlayTimeout(seconds: number) {
+    this.playTimeout = seconds;
   }
 
   // :click from TuneList
   // Expects a tune to be selected
   public async loadSelectedTuneAndPlay() {
     await fadeOut();
-    this.loadTune(this.selectedTune());
+    this.loadSelectedTune();
     this.playSelectedTune();
-  }
-
-  public setPlayTimeout(seconds: number) {
-    this.playTimeout = seconds;
   }
 
   // Internal functions
@@ -248,15 +261,18 @@ export default class Player extends Vue {
     if (this.playing) await fadeOut();
     this.timePlayed = 0;
     const nextTuneToPlay = playingIndex + direction;
-    await this.loadTune(nextTuneToPlay);
-    this.timeTotal = this.currentTunes()[nextTuneToPlay].duration!;
+    this.$store.commit('selectTune', this.$store.getters.filteredTunes[nextTuneToPlay]);
+    await this.loadSelectedTune();
     if (wasPlaying) await this.playSelectedTune();
   }
 
-  private async loadTune(index: number) {
+  // TODO: should we send in the index? We set the Vuex:selectedTune...
+  // because we don't need the index in this function...
+  // If not, this should be called loadSelectedSong()...
+  private async loadSelectedTune() {
     const uri = (window as any).ipcRenderer.sendSync(
       "convertSongToUri",
-      this.$store.state.selectedTune.file
+      this.selectedTune().file
     );
     audio.src = uri;
     audio.load();

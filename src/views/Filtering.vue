@@ -6,7 +6,7 @@
         style="font-size:3vh;padding-right:3vh;"
         class="col-3 pl-0 pr-0 pb-0 pt-0 text-left"
       >
-        <v-btn @click="$emit('load-files')">Filtered:</v-btn>
+        <v-btn @click="initiateDiscoveringFiles()">Filtered:</v-btn>
         {{ currentCount }}({{ totalCount }})
       </v-flex>
       <v-layout wrap justify-start>
@@ -16,7 +16,7 @@
             :key="genre"
             color="primary"
             class="white--text"
-            @click="$emit('toggle-genre', genre)"
+            @click="toggleGenre(genre)"
           >{{genre}}</v-btn>
         </v-btn-toggle>
       </v-layout>
@@ -87,9 +87,20 @@ export default class Filtering extends Vue {
     this.$store.commit('flipSorting');
   }
 
+  // Genres
   private genres: string[] = ["Bugg", "Boogie", "Lindy", "WCS", "Foxtrot"];
-  private genresSelected: number[] = [];
+  private genresSelected: number[] = [];  // Model
 
+  get currentGenres() {
+    return this.$store.state.selectedGenres;
+  }
+
+  private toggleGenre(genre: string) {
+    if (!this.currentGenres.includes(genre)) this.currentGenres.push(genre);
+    else this.currentGenres.splice(this.currentGenres.indexOf(genre), 1);
+  }
+
+  // Tempo bpm & range
   private bpm: number = 0;
   private bpmRange: number = 5;
 
@@ -103,6 +114,11 @@ export default class Filtering extends Vue {
 
   private mounted() {
     this.genresSelected = [];
+  }
+
+    // Discover tunes over IPC
+  private initiateDiscoveringFiles() {
+    (window as any).ipcRenderer.send("discoverTunes");
   }
 
 }

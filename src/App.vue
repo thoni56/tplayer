@@ -1,9 +1,6 @@
 <template>
   <v-app id="Application" dark>
-    <Filtering
-      @toggle-genre="toggleGenre"
-      @load-files="initiateDiscoveringFiles"
-    />
+    <Filtering />
     <Player />
   </v-app>
 </template>
@@ -13,10 +10,6 @@ import { Component, Vue } from "vue-property-decorator";
 import Filtering from "@/views/Filtering.vue";
 import Player from "@/views/Player.vue";
 import { TuneInfo } from "@/models/TuneInfo";
-
-function getBPM(tune: TuneInfo) {
-  return tune.bpm ? tune.bpm : 0;
-}
 
 Vue.config.productionTip = false;
 
@@ -36,10 +29,6 @@ export default class App extends Vue {
     return this.$store.state.allTunes;
   }
 
-  get currentGenres() {
-    return this.$store.state.selectedGenres;
-  }
-
   public mounted() {
     (window as any).ipcRenderer.on("discoveredTunes", (event: any, newTunes: TuneInfo[]) => {
       this.addTunes(newTunes);
@@ -53,15 +42,6 @@ export default class App extends Vue {
     this.allTunes.push(...tunes);
   }
 
-  private toggleGenre(genre: string) {
-    if (!this.currentGenres.includes(genre)) this.currentGenres.push(genre);
-    else this.currentGenres.splice(this.currentGenres.indexOf(genre), 1);
-  }
-
-  // Discover tunes over IPC
-  private initiateDiscoveringFiles() {
-    (window as any).ipcRenderer.send("discoverTunes");
-  }
 }
 </script>
 

@@ -34,36 +34,40 @@ import { formatTime } from "@/models/timeFormatter";
 @Component
 export default class TuneDisplay extends Vue {
 
+  get selectedTune() {
+    return this.$store.state.selectedTune;
+  }
+
   get cover() {
-    return this.$store.state.selectedTune.cover;
+    return this.selectedTune.cover;
   }
 
   get title() {
-    return this.$store.state.selectedTune.title;
+    return this.selectedTune.title;
   }
 
   get file() {
-    return this.$store.state.selectedTune.file;
+    return this.selectedTune.file;
   }
 
   get artist() {
-    return this.$store.state.selectedTune.artist;
+    return this.selectedTune.artist;
   }
 
   get album() {
-    return this.$store.state.selectedTune.album;
+    return this.selectedTune.album;
   }
 
   get track() {
-    return this.$store.state.selectedTune.track;
+    return this.selectedTune.track;
   }
 
   get bpm() {
-    return this.$store.state.selectedTune.bpm;
+    return this.selectedTune.bpm;
   }
 
   get totaltime() {
-    return formatTime(this.$store.state.selectedTune.duration!);
+    return formatTime(this.selectedTune.duration!);
   }
 }
 

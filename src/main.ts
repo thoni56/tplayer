@@ -24,12 +24,12 @@ const store = new Vuex.Store({
     filteredTunes: state => {
       const tunes = state.allTunes.filter(t => t.genre?.some(g => state.genres.includes(g)));
       if (state.sortingUp) {
-        return tunes.sort((t1, t2) => {
-          return getBPM(t1) - getBPM(t2);
+        return tunes.sort((tune1, tune2) => {
+          return getBPM(tune1) - getBPM(tune2);
         });
       } else {
-        return tunes.sort((t1, t2) => {
-          return getBPM(t2) - getBPM(t1);
+        return tunes.sort((tune1, tune2) => {
+          return getBPM(tune2) - getBPM(tune1);
         });
       }
     }

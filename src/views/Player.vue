@@ -121,8 +121,8 @@ export default class Player extends Vue {
 
   public async playSelectedTune() {
     // Have to have an actual tune selected...
-    if (this.selectedTune.file === "")
-      return;
+    if (!this.anyTuneSelected())
+      this.nextTune();
     await fadeIn(); // Start playing
 
     clearTimeout(this.playTimer);
@@ -150,25 +150,29 @@ export default class Player extends Vue {
   }
 
   public async nextTune() {
-    if (this.shuffle) {
-      this.moveToNextTune(this.randomTune(), 0);
-    } else {
-      if (this.anyTuneSelected()) {
-        const playingIndex = this.currentTunes.findIndex(
-          tune => tune === this.selectedTune
-        );
-        if (playingIndex === -1) {
-          // If not found, the list has changed so pick any tune
-          // in the new list
-          this.moveToNextTune(
-            this.randomBetween(0, this.currentTunes.length - 1),
-            0
+    if (this.currentTunes.length >  0) {
+      if (this.shuffle) {
+        this.moveToNextTune(this.randomTune(), 0);
+      } else {
+        if (this.anyTuneSelected()) {
+          const playingIndex = this.currentTunes.findIndex(
+            tune => tune === this.selectedTune
           );
-        } else if (playingIndex < this.currentTunes.length - 1) {
-          // More songs to play, so go to next
-          this.moveToNextTune(playingIndex, +1);
+          if (playingIndex === -1) {
+            // If not found, the list has changed so pick any tune
+            // in the new list
+            this.moveToNextTune(
+              this.randomBetween(0, this.currentTunes.length - 1),
+              0
+            );
+          } else if (playingIndex < this.currentTunes.length - 1) {
+            // More songs to play, so go to next
+            this.moveToNextTune(playingIndex, +1);
+          } else {
+            // At last song, restart list
+            this.moveToNextTune(0, 0);
+          }
         } else {
-          // At last song, restart list
           this.moveToNextTune(0, 0);
         }
       }
@@ -176,24 +180,26 @@ export default class Player extends Vue {
   }
 
   public async previousTune() {
-    if (this.shuffle) {
-      this.moveToNextTune(this.randomTune(), 0);
-    } else {
-      if (this.anyTuneSelected()) {
-        const playingIndex = this.currentTunes.findIndex(
-          tune => tune === this.selectedTune
-        );
-        if (playingIndex === -1) {
-          // If not found, the list has changed so pick any tune
-          // in the new list
-          this.moveToNextTune(
-            this.randomBetween(0, this.currentTunes.length - 1),
-            0
+    if (this.currentTunes.length >  0) {
+      if (this.shuffle) {
+        this.moveToNextTune(this.randomTune(), 0);
+      } else {
+        if (this.anyTuneSelected()) {
+          const playingIndex = this.currentTunes.findIndex(
+            tune => tune === this.selectedTune
           );
-        } else if (playingIndex > 0) {
-          this.moveToNextTune(playingIndex, -1);
-        } else {
-          this.moveToNextTune(this.currentTunes.length-1, 0);
+          if (playingIndex === -1) {
+            // If not found, the list has changed so pick any tune
+            // in the new list
+            this.moveToNextTune(
+              this.randomBetween(0, this.currentTunes.length - 1),
+              0
+            );
+          } else if (playingIndex > 0) {
+            this.moveToNextTune(playingIndex, -1);
+          } else {
+            this.moveToNextTune(this.currentTunes.length-1, 0);
+          }
         }
       }
     }
@@ -253,7 +259,7 @@ export default class Player extends Vue {
   }
 
   private anyTuneSelected(): boolean {
-    return this.$store.state.selectedTune.file !== "";
+    return this.selectedTune.file !== "";
   }
 
   private async moveToNextTune(playingIndex: number, direction: number) {

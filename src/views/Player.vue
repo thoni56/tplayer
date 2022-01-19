@@ -119,7 +119,15 @@ export default class Player extends Vue {
     }
   }
 
-  public async playSelectedTune() {
+  public nextTune() {
+    this.advanceTune(+1);
+  }
+
+  public previousTune() {
+    this.advanceTune(-1);
+  }
+
+  private async playSelectedTune() {
     // Have to have an actual tune selected...
     if (!this.anyTuneSelected())
       this.nextTune();
@@ -134,7 +142,7 @@ export default class Player extends Vue {
     }
   }
 
-  public checkTimeout() {
+  private checkTimeout() {
     if (audio.currentTime < this.playTimeout) {
       this.playTimer = setTimeout(
         () => self.checkTimeout(),
@@ -145,62 +153,61 @@ export default class Player extends Vue {
     }
   }
 
-  public async pauseTune() {
+  private async pauseTune() {
     await fadeOut();
   }
 
-  public async nextTune() {
-    if (this.currentTunes.length >  0) {
+  private advanceTune(direction: number) {
+    if (this.currentTunes.length > 0) {
       if (this.shuffle) {
-        this.moveToNextTune(this.randomTune(), 0);
+        this.moveToTune(this.randomTune());
       } else {
         if (this.anyTuneSelected()) {
-          const playingIndex = this.currentTunes.findIndex(
+          const indexOfPlayingTune = this.currentTunes.findIndex(
             tune => tune === this.selectedTune
           );
-          if (playingIndex === -1) {
-            // If not found, the list has changed so pick any tune
-            // in the new list
-            this.moveToNextTune(
-              this.randomBetween(0, this.currentTunes.length - 1),
-              0
-            );
-          } else if (playingIndex < this.currentTunes.length - 1) {
-            // More songs to play, so go to next
-            this.moveToNextTune(playingIndex, +1);
+          if (direction > 0) {
+            this.pickNextTune(indexOfPlayingTune);
           } else {
-            // At last song, restart list
-            this.moveToNextTune(0, 0);
+            this.pickPreviousTune(indexOfPlayingTune);
           }
         } else {
-          this.moveToNextTune(0, 0);
+          this.moveToTune(0);
         }
       }
     }
   }
 
-  public async previousTune() {
-    if (this.currentTunes.length >  0) {
-      if (this.shuffle) {
-        this.moveToNextTune(this.randomTune(), 0);
+  private pickNextTune(indexOfPlayingTune: number) {
+    if (indexOfPlayingTune === -1) {
+      // If not found, the list has changed so start from beginning
+      if (this.currentTunes.length > 0) {
+        this.moveToTune(0);
+      }
+    } else {
+      if (indexOfPlayingTune<this.currentTunes.length-1) {
+        // More songs to play, so just pick next
+        this.moveToTune(indexOfPlayingTune+1);
       } else {
-        if (this.anyTuneSelected()) {
-          const playingIndex = this.currentTunes.findIndex(
-            tune => tune === this.selectedTune
-          );
-          if (playingIndex === -1) {
-            // If not found, the list has changed so pick any tune
-            // in the new list
-            this.moveToNextTune(
-              this.randomBetween(0, this.currentTunes.length - 1),
-              0
-            );
-          } else if (playingIndex > 0) {
-            this.moveToNextTune(playingIndex, -1);
-          } else {
-            this.moveToNextTune(this.currentTunes.length-1, 0);
-          }
-        }
+        // At last song, restart from beginning
+        this.moveToTune(0);
+      }
+    }
+  }
+
+  private pickPreviousTune(indexOfPlayingTune: number) {
+    if (indexOfPlayingTune === -1) {
+      // If not found, the list has changed so play last tune
+      if (this.currentTunes.length > 0) {
+        this.moveToTune(this.currentTunes.length-1);
+      }
+    } else {
+      if (indexOfPlayingTune > 0) {
+        // More songs to play, so just pick previous
+        this.moveToTune(indexOfPlayingTune-1);
+      } else {
+        // At first tune so move to end of list
+        this.moveToTune(this.currentTunes.length-1);
       }
     }
   }
@@ -262,12 +269,12 @@ export default class Player extends Vue {
     return this.selectedTune.file !== "";
   }
 
-  private async moveToNextTune(playingIndex: number, direction: number) {
+  private async moveToTune(nextIndexToPlay: number) {
+    // Assumes the index is valid
     const wasPlaying = this.playing;
     if (this.playing) await fadeOut();
     this.timePlayed = 0;
-    const nextTuneToPlay = playingIndex + direction;
-    this.$store.commit('selectTune', this.$store.getters.filteredTunes[nextTuneToPlay]);
+    this.$store.commit('selectTune', this.currentTunes[nextIndexToPlay]);
     await this.loadSelectedTune();
     if (wasPlaying) await this.playSelectedTune();
   }

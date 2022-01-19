@@ -28,7 +28,7 @@
   </v-toolbar>
 </template>
 <script lang="ts">
-import { Vue, Component, Emit, Prop } from "vue-property-decorator";
+import { Vue, Component, Prop } from "vue-property-decorator";
 import colors from "vuetify/es5/util/colors";
 
 @Component

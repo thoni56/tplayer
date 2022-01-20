@@ -83,7 +83,6 @@ export default class Player extends Vue {
   private keyListener: any;
 
   private playTimeout: number = 0;
-  private playTimer!: ReturnType<typeof setTimeout>;
 
   private shuffle: boolean = false;
   private currentShufflePartition: number = 0;
@@ -102,7 +101,9 @@ export default class Player extends Vue {
       self.nextTune();
     });
 
-    setTimeout(timerForPlayedTime, 200);
+    setTimeout(timerForPlayedTime, 300);
+    setTimeout(() => self.checkTimeout(), 400);
+
     this.setUpShortkeys();
   }
 
@@ -132,25 +133,13 @@ export default class Player extends Vue {
     if (!this.anyTuneSelected())
       this.nextTune();
     await fadeIn(); // Start playing
-
-    clearTimeout(this.playTimer);
-    if (this.playTimeout !== 0) {
-      this.playTimer = setTimeout(
-        () => self.checkTimeout(),
-        400
-      );
-    }
   }
 
   private checkTimeout() {
-    if (audio.currentTime < this.playTimeout) {
-      this.playTimer = setTimeout(
-        () => self.checkTimeout(),
-        400
-      );
-    } else {
+    if (this.playTimeout > 0 && this.timePlayed >= this.playTimeout) {
       self.nextTune();
     }
+    setTimeout(() => self.checkTimeout(), 400);
   }
 
   private async pauseTune() {

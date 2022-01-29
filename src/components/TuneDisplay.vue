@@ -7,9 +7,9 @@
             <img v-bind="attrs" v-on="on"
               v-if="cover"
               :src="cover"
-              style="object-fit:cover;height:25vh;width:25vh;border-radius:5%;"
+              style="object-fit:cover;height:40vh;width:40vh;border-radius:5%;"
             />
-            <div v-else style="object-fit:cover;height:25vh;width:25vh;"></div>
+            <div v-else style="object-fit:cover;height:40vh;width:40vh;"></div>
           </template>
           {{ file }}
         </v-tooltip>

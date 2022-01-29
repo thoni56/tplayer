@@ -71,12 +71,6 @@ export default class TuneDisplay extends Vue {
   }
 }
 
-function isOverflown(element: HTMLElement) {
-  return (
-    element.scrollHeight > element.clientHeight ||
-    element.scrollWidth > element.clientWidth
-  );
-}
 </script>
 
 <style>

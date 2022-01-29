@@ -58,7 +58,7 @@ async function fadeIn() {
 
 function timerForPlayedTime() {
   self.timePlayed = audio.currentTime;
-  setTimeout(timerForPlayedTime, 200);
+  setTimeout(timerForPlayedTime, 333);
 }
 
 const audio = new Audio();

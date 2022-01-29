@@ -17,12 +17,21 @@
             color="primary"
             class="white--text"
             @click="toggleGenre(genre)"
-          >{{genre}}</v-btn>
+            >{{ genre }}</v-btn
+          >
         </v-btn-toggle>
       </v-layout>
+      <v-flex>
+        <h2 class="float-right">{{ currentTime }}</h2>
+      </v-flex>
     </v-layout>
     <v-layout style="margin-top:-2vh;">
-      <v-flex align-self-center shrink style="font-size:2vh;padding-right:0.5vw;">BPM:</v-flex>
+      <v-flex
+        align-self-center
+        shrink
+        style="font-size:2vh;padding-right:0.5vw;"
+        >BPM:</v-flex
+      >
       <v-flex align-self-center grow style="margin-top:2vh;">
         <v-slider
           grow
@@ -36,7 +45,8 @@
         shrink
         align-self-center
         style="font-size:5vh;padding-left:0.3vw;padding-right:0;"
-      >{{ bpm }} +</v-flex>
+        >{{ bpm }} +</v-flex
+      >
       <v-flex shrink align-self-center>
         <vue-numeric-input
           controls-type="updown"
@@ -56,18 +66,17 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
-import VueNumericInput from "vue-numeric-input";
+import Vue from 'vue';
+import { Component, Prop } from 'vue-property-decorator';
+import VueNumericInput from 'vue-numeric-input';
 
 @Component({
-  components: { VueNumericInput }
+  components: { VueNumericInput },
 })
 export default class Filtering extends Vue {
-
   // Store
   get totalCount() {
-    return this.$store.state.allTunes.length
+    return this.$store.state.allTunes.length;
   }
 
   get currentCount() {
@@ -79,17 +88,38 @@ export default class Filtering extends Vue {
   }
 
   get sortIcon() {
-    if (this.sortingUp) return "fas fa-sort-amount-up";
-    else return "fas fa-sort-amount-down";
+    if (this.sortingUp) return 'fas fa-sort-amount-up';
+    else return 'fas fa-sort-amount-down';
   }
 
   private sortTunes() {
     this.$store.commit('flipSorting');
   }
 
+  private date = new Date();
+  private currentTime = "";
+
+  private tickTime = 333;
+  private tick() {
+    this.date = new Date();
+    this.currentTime = ('0' + this.date.getHours()).slice(-2) + ':' +
+                       ('0' + this.date.getMinutes()).slice(-2) + ':' +
+                       ('0' + this.date.getSeconds()).slice(-2);
+    setTimeout(() => {
+      this.tick();
+    }, this.tickTime);
+  }
+
+  public mounted() {
+    this.genresSelected = [];
+    setTimeout(() => {
+      this.tick();
+    }, this.tickTime);
+  }
+
   // Genres
-  private genres: string[] = ["Bugg", "Boogie", "Lindy", "WCS", "Foxtrot"];
-  private genresSelected: number[] = [];  // Model
+  private genres: string[] = ['Bugg', 'Boogie', 'Lindy', 'WCS', 'Foxtrot'];
+  private genresSelected: number[] = []; // Model
 
   get currentGenres() {
     return this.$store.state.selectedGenres;
@@ -112,15 +142,10 @@ export default class Filtering extends Vue {
     this.$store.commit('changeBpmRange', this.bpmRange);
   }
 
-  private mounted() {
-    this.genresSelected = [];
-  }
-
-    // Discover tunes over IPC
+  // Discover tunes over IPC
   private initiateDiscoveringFiles() {
-    (window as any).ipcRenderer.send("discoverTunes");
+    (window as any).ipcRenderer.send('discoverTunes');
   }
-
 }
 </script>
 <style>

@@ -1,7 +1,7 @@
 <template>
   <v-toolbar>
     <v-btn-toggle>
-      <v-btn small depressed class="text-none" @click="$emit('shuffle-tunes-toggle')">
+      <v-btn small color="primary" class="text-none" @click="$emit('shuffle-tunes-toggle')">
         <v-icon>shuffle</v-icon>
       </v-btn>
     </v-btn-toggle>
@@ -20,6 +20,7 @@
       <v-btn
         v-for="time in playTimes"
         :key="time"
+        color="primary"
         class="text-none"
         small
         @click="playTimeChange(time)"
@@ -29,7 +30,6 @@
 </template>
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
-import colors from "vuetify/es5/util/colors";
 
 @Component
 export default class PlayerControls extends Vue {

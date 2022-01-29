@@ -1,5 +1,5 @@
 <template>
-  <v-layout scrollable style="height: 40vh">
+  <v-layout scrollable style="height: 30vh">
     <v-flex>
       <v-list dense>
         <template v-for="(tune, index) in tunes()">
@@ -39,7 +39,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 import { TuneInfo } from "@/models/TuneInfo";
 import { formatTime } from "@/models/timeFormatter";
 

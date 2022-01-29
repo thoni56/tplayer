@@ -6,7 +6,7 @@
         style="font-size:3vh;padding-right:3vh;"
         class="col-3 pl-0 pr-0 pb-0 pt-0 text-left"
       >
-        <v-btn @click="initiateDiscoveringFiles()">Filtered:</v-btn>
+        <v-btn color="primary" @click="initiateDiscoveringFiles()">Filtered:</v-btn>
         {{ currentCount }}({{ totalCount }})
       </v-flex>
       <v-layout wrap justify-start>
@@ -15,7 +15,6 @@
             v-for="genre in genres"
             :key="genre"
             color="primary"
-            class="white--text"
             @click="toggleGenre(genre)"
             >{{ genre }}</v-btn
           >
@@ -67,7 +66,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { Component, Prop } from 'vue-property-decorator';
+import { Component } from 'vue-property-decorator';
 import VueNumericInput from 'vue-numeric-input';
 
 @Component({
@@ -111,7 +110,6 @@ export default class Filtering extends Vue {
   }
 
   public mounted() {
-    this.genresSelected = [];
     setTimeout(() => {
       this.tick();
     }, this.tickTime);

@@ -23,10 +23,12 @@ protocol.registerSchemesAsPrivileged([{
   }
 }]);
 
+const title = "Tplayer - " + app.getVersion();
+
 async function createWindow() {
     // Create the browser window.
   win = new BrowserWindow({
-    title: "Tplayer - v0.8.1", width: 800, height: 600,
+    title: title, width: 800, height: 600,
     webPreferences: { 
       nodeIntegration : (process.env.ELECTRON_NODE_INTEGRATION as unknown) as boolean,
       preload: path.join(__dirname, 'preload.js')}

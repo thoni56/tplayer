@@ -20,6 +20,7 @@
           >
         </v-btn-toggle>
       </v-layout>
+      <v-text-field></v-text-field>
       <v-flex>
         <h2 class="float-right">{{ currentTime }}</h2>
       </v-flex>

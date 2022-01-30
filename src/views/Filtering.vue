@@ -20,7 +20,7 @@
           >
         </v-btn-toggle>
       </v-layout>
-      <v-text-field dense placeholder="Search" clearable @focus="doSearch()" @blur="finishSearch()"></v-text-field>
+      <v-text-field dense v-model="searchString" placeholder="Search" clearable @change="startSearch()" @blur="finishSearch()"></v-text-field>
       <v-flex>
         <h2 class="float-right">{{ currentTime }}</h2>
       </v-flex>
@@ -72,7 +72,7 @@ import VueNumericInput from 'vue-numeric-input';
 import { UsedGenres } from '../genres';
 
 @Component({
-  components: { VueNumericInput },
+  components: { VueNumericInput }
 })
 export default class Filtering extends Vue {
   // Store
@@ -93,22 +93,23 @@ export default class Filtering extends Vue {
     else return 'fas fa-sort-amount-down';
   }
 
+  // Text searching
   public searchString = "";
 
-  private doSearch() {
-    this.$store.commit('startSearching', this.searchString);
+  private startSearch() {
+    this.$store.commit('startSearch', this.searchString);
   }
   
   private finishSearch() {
-    this.$store.commit('finishSearching');
-    this.$emit('reset-hotkeys');
+    this.$store.commit('finishSearch');
   }
 
+  // Sorting
   private flipSorting() {
     this.$store.commit('flipSorting');
   }
 
-
+  // Clock
   private date = new Date();
   private currentTime = "";
 

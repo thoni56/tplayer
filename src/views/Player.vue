@@ -2,7 +2,7 @@
   <v-container id="player" fluid style="padding-top:0;">
     <v-row>
       <v-col class="pt-0">
-        <Filtering />
+        <Filtering @reset-hotkeys="setUpHotkeys" />
         <TuneDisplay />
         <Playbar :secondsPlayed="timePlayed" :secondsTotal="timeTotal" />
         <PlayerControls
@@ -86,7 +86,6 @@ export default class Player extends Vue {
   public playing = false;
   public timePlayed = 0;
   public timeTotal = 0;
-  private keyListener: any;
 
   private playTimeout: number = 0;
 
@@ -239,7 +238,9 @@ export default class Player extends Vue {
     this.playSelectedTune();
   }
 
-  // Internal functions
+  // Hotkeys
+  private keyListener: any;
+
   private setUpHotkeys() {
     this.keyListener = (e: KeyboardEvent) => {
       // if (!this.$store.state.searching) {
@@ -267,12 +268,12 @@ export default class Player extends Vue {
           // Maybe "Menu" on Apple remote
         }
       //}
-      document.addEventListener("keydown", this.keyListener.bind(this));
     }
+    document.addEventListener("keyup", this.keyListener.bind(this));
   }
 
   private tearDownShortkeys() {
-    document.removeEventListener("keydown", this.keyListener);
+    document.removeEventListener("keyup", this.keyListener);
   }
 
   private anyTuneSelected(): boolean {

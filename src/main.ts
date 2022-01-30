@@ -69,21 +69,22 @@ const store = new Vuex.Store({
     clear(state) {
       state.allTunes = [];
     },
-    flipSorting (state) {
+    flipSorting(state) {
       state.sortingUp = !state.sortingUp;
     },
-    changeBpm (state, bpm: number) {
+    changeBpm(state, bpm: number) {
       state.selectedBpm = bpm;
     },
-    changeBpmRange (state, bpm: number) {
+    changeBpmRange(state, bpm: number) {
       state.selectedBpmRange = bpm;
     },
-    doSearching (state, string) {
+    startSearch(state, string) {
       state.searching = true;
       state.searchString = string;
     },
-    finishSearching(state) {
+    finishSearch(state) {
       state.searching = false;
+      state.searchString = "";
     }
   }
 });

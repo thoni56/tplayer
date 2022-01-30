@@ -277,7 +277,7 @@ export default class Player extends Vue {
       this.selectedTune.file
     );
     audio.src = uri;
-    audio.load();
+    await audio.load();
     this.playing = false;
     this.timePlayed = 0;
     this.timeTotal = audio.duration;

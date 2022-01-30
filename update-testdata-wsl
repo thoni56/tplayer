@@ -1,3 +1,0 @@
-#!/bin/bash
-sudo mount -t drvfs '\\junovagen\music' /mnt/music/
-rsync -rv /mnt/music//iTunes/iTunes\ Media/Music/Compilations/ testdata/

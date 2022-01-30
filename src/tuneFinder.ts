@@ -4,7 +4,7 @@ import * as mm from "music-metadata";
 import { TuneInfo } from "../src/models/TuneInfo";
 
 
-export function discoverTunes(renderer: BrowserWindow, directory: string) {
+export function discoverTunes(renderer: BrowserWindow, directory: string, genres: string []) {
   const files: string[] = [];
   const emitter = walk(
     directory,
@@ -21,7 +21,7 @@ export function discoverTunes(renderer: BrowserWindow, directory: string) {
     }
   });
   emitter.on("end", () => {
-    readMetadataForAllFiles(renderer, files);
+    readMetadataForAllFiles(renderer, files, genres);
   });
   emitter.on("error", (path: string) => {
     // tslint:disable-next-line:no-console
@@ -35,7 +35,7 @@ function sleep(ms: number) {
   })
 }
 
-async function readMetadataForAllFiles(renderer: BrowserWindow, files: string[]) {
+async function readMetadataForAllFiles(renderer: BrowserWindow, files: string[], genres: string[]) {
   let all = [];
   await sleep(100); // To allow clear to finish, this should really be ensured some other way
   for (let index = 0; index < files.length; index++) {
@@ -44,7 +44,7 @@ async function readMetadataForAllFiles(renderer: BrowserWindow, files: string[])
       const metadata = await mm.parseFile(files[index]);
       const tuneInfo = new TuneInfo(files[index]);
       tuneInfo.fillFromCommonTags(metadata);
-      if (["Bugg", "Boogie", "Lindy", "WCS", "Foxtrot"].some(g => tuneInfo.genre && tuneInfo.genre.includes(g))) {
+      if (genres.some(g => tuneInfo.genre && tuneInfo.genre.includes(g))) {
         all.push(tuneInfo);
       }
       if (index > 0 && index % 10 === 0) {

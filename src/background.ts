@@ -6,6 +6,7 @@ import { discoverTunes } from './tuneFinder';
 import datauri from 'file-to-datauri';
 import installExtension, {VUEJS_DEVTOOLS} from 'electron-devtools-installer';
 import path from 'path';
+import { UsedGenres } from './genres';
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
@@ -103,7 +104,7 @@ ipcMain.on('discoverTunes', () => {
   const dir: string[] | undefined = dialog.showOpenDialogSync({ properties: ['openDirectory'] });
   if (dir) {
     win?.webContents.send('clearTunes', []);
-    discoverTunes(win!, dir[0]);
+    discoverTunes(win!, dir[0], UsedGenres);
   }
 })
 

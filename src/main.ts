@@ -58,7 +58,7 @@ const store = new Vuex.Store({
       state.allTunes.push(tune);
     },
     selectFile (state, file: string) {
-      const tune = state.allTunes.find(tune => tune.file == file);
+      const tune = state.allTunes.find(t => t.file == file);
       state.selectedTune = tune?tune:new TuneInfo("");
     },
     selectTune (state, tune: TuneInfo) {

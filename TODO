@@ -64,6 +64,7 @@ Player:
     ✔ Tune out and in when forwarding to next song @done(19-12-21 09:55)
     ✔ Previous @done(19-12-29 13:38)
     ✔ Double-click on tune to play @done(19-12-29 16:45)
+    ☐ Scroll inside playing tune @started(22-01-30 12:51)
     ☐ Shortcuts
         ✔ Space for Play/Pause @done(20-01-01 14:52)
         ✔ N/P for Next/Previous @done(20-01-01 14:52)
@@ -78,7 +79,6 @@ Player:
     ☐ Next - just move so that playing needs a play press? (requires change in PlayerControls?)
     ☐ Formatting of PlayDisplay is wonky if any(?) field (except BPM) is empty or too long
     ☐ Normalize volume (is the volume info from iTunes available?)
-    ☐ Scroll inside playing tune
 
 Graphics:
     ✔ Add image for tunes not having embedded cover art @done(19-03-21 07:50)
@@ -98,6 +98,7 @@ System:
     ✔ Unlock @types/node@12.12.22 depending on https://github.com/DefinitelyTyped/DefinitelyTyped/issues/41224 @done(22-01-11 19:41)
     ☐ Move Filtering to components/
     ☐ Move TuneFinder.vue to some other directory (helpers?)
+    ✔ Only load tunes which have a genre that is used @done(22-01-30 12:50)
         
 Bugs:
     ✔ Is loading of cover art from tunes broken? @done(19-03-21 09:18)

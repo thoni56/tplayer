@@ -29,7 +29,7 @@ async function createWindow() {
     // Create the browser window.
   win = new BrowserWindow({
     title: title, width: 800, height: 600,
-    webPreferences: { 
+    webPreferences: {
       nodeIntegration : (process.env.ELECTRON_NODE_INTEGRATION as unknown) as boolean,
       preload: path.join(__dirname, 'preload.js')}
   });
@@ -85,6 +85,8 @@ app.on('ready', async () => {
     }
   }
   await createWindow();
+  // Works on my machine ;-) Should actually be converted to some setting that can be read here for auto-loading...
+  discoverTunes(win!, "C:\\Users\\Thomas\\Music\\iTunes\\iTunes Media\\Music\\Compilations", UsedGenres);
 });
 
 // Exit cleanly on request from parent process in development mode.

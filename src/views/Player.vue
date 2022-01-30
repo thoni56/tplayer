@@ -2,6 +2,7 @@
   <v-container id="player" fluid style="padding-top:0;">
     <v-row>
       <v-col class="pt-0">
+        <Filtering />
         <TuneDisplay />
         <Playbar :secondsPlayed="timePlayed" :secondsTotal="timeTotal" />
         <PlayerControls
@@ -25,6 +26,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { TuneInfo } from "@/models/TuneInfo";
+import Filtering from "@/views/Filtering.vue";
 import TuneList from "@/components/TuneList.vue";
 import TuneDisplay from "@/components/TuneDisplay.vue";
 import PlayerControls from "@/components/PlayerControls.vue";
@@ -68,6 +70,7 @@ const audio = new Audio();
 
 @Component({
   components: {
+    Filtering,
     TuneDisplay,
     PlayerControls,
     Playbar,

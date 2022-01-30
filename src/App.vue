@@ -1,13 +1,11 @@
 <template>
   <v-app id="Application" dark>
-    <Filtering />
     <Player />
   </v-app>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import Filtering from "@/views/Filtering.vue";
 import Player from "@/views/Player.vue";
 import { TuneInfo } from "@/models/TuneInfo";
 
@@ -15,7 +13,6 @@ Vue.config.productionTip = false;
 
 @Component({
   components: {
-    Filtering,
     Player
   }
 })
@@ -47,7 +44,7 @@ export default class App extends Vue {
 
 <style>
 html {
-  height: 100%;
+  height: 100vh;
   overflow: hidden;
 }
 </style>

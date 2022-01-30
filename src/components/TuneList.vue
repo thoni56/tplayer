@@ -9,7 +9,7 @@
             @click="clicked(tune.file)"
           >
             <v-list-item-avatar tile size="20">
-              <img :src="tune.cover" style="border-radius: 10%" />
+              <img :src="tune.cover" alt="cover" style="border-radius: 10%" />
             </v-list-item-avatar>
 
             <v-list-item-content>

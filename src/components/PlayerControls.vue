@@ -10,13 +10,13 @@
       <v-icon>skip_previous</v-icon>
     </v-btn>
     <v-btn rounded small color="primary" @click="$emit('skip-backward')">
-      <v-icon>fast_rewind</v-icon>
+      -10
     </v-btn>
     <v-btn rounded large color="primary" @click="$emit('play-pause');">
       <v-icon>{{ playOrPauseIcon }}</v-icon>
     </v-btn>
     <v-btn rounded small color="primary" @click="$emit('skip-forward')">
-      <v-icon>fast_forward</v-icon>
+      +10
     </v-btn>
     <v-btn rounded medium color="primary" @click="$emit('next-tune')">
       <v-icon>skip_next</v-icon>

@@ -29,6 +29,7 @@ import TuneList from "@/components/TuneList.vue";
 import TuneDisplay from "@/components/TuneDisplay.vue";
 import PlayerControls from "@/components/PlayerControls.vue";
 import Playbar from "@/components/Playbar.vue";
+import scrollIntoView from 'scroll-into-view-if-needed'
 
 function sleep(millis: number): Promise<any> {
   return new Promise(resolve => setTimeout(resolve, millis));
@@ -281,6 +282,7 @@ export default class Player extends Vue {
     this.$store.commit('selectTune', this.currentTunes[nextIndexToPlay]);
     await this.loadSelectedTune();
     if (wasPlaying) await this.playSelectedTune();
+    scrollIntoView(document.getElementById(this.currentTunes[nextIndexToPlay].file)!, {scrollMode: "if-needed"});
   }
 
   // TODO: should we send in the index? We set the Vuex:selectedTune...

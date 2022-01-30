@@ -8,7 +8,7 @@ function pictureToHTML(picture: IPicture) {
 const defaultCover: string = "/vinyl.png";
 
 export class TuneInfo {
-  public file?: string;
+  public file: string;
   public title?: string;
   public artist?: string;
   public album?: string;

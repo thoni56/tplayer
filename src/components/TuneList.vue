@@ -5,6 +5,7 @@
         <template v-for="(tune, index) in tunes()">
           <v-list-item
             :key="tune.file"
+            :id="tune.file"
             :class="{ highlighted: selectedTune().file == tune.file }"
             @click="clicked(tune.file)"
           >

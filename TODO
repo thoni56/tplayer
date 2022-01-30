@@ -64,7 +64,7 @@ Player:
     ✔ Tune out and in when forwarding to next song @done(19-12-21 09:55)
     ✔ Previous @done(19-12-29 13:38)
     ✔ Double-click on tune to play @done(19-12-29 16:45)
-    ☐ Scroll inside playing tune @started(22-01-30 12:51)
+    ✔ Scroll inside playing tune @started(22-01-30 12:51) @done(22-01-30 15:23) @lasted(2h32m29s)
     ☐ Shortcuts
         ✔ Space for Play/Pause @done(20-01-01 14:52)
         ✔ N/P for Next/Previous @done(20-01-01 14:52)
@@ -74,9 +74,8 @@ Player:
         ✔ Next and previous using remote control @done(20-01-30 09:49)
         ☐ Change tempo using remote control
     ✔ If playing, <Next> (manual and auto) should pick a song and play even if selection has changed @done(20-02-02 20:09)
-    ☐ Center playlist so that playing song is visible
+    ✔ Center playlist so that playing song is visible @done(22-01-30 15:23)
     ☐ Scroll overflowed text (title, album, etc) horizontally
-    ☐ Next - just move so that playing needs a play press? (requires change in PlayerControls?)
     ☐ Formatting of PlayDisplay is wonky if any(?) field (except BPM) is empty or too long
     ☐ Normalize volume (is the volume info from iTunes available?)
 
@@ -86,7 +85,7 @@ Graphics:
 
 Layout:
     ✔ Place counts side by side to make that component a bit lower @done(20-01-30 09:46)
-    ☐ The tune list should fill rest of available space @started(20-01-30 11:12)
+    ☐ The tune list should always just fill rest of available space @started(20-01-30 11:12)
     
 Refactoring:
     ☐ Move components up to App, maybe?

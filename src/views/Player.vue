@@ -7,8 +7,10 @@
         <PlayerControls
           :playing="playing"
           @previous-tune="previousTune"
+          @skip-backward="skipBackward"
           @play-pause="playOrPause"
           @next-tune="nextTune"
+          @skip-forward="skipForward"
           @play-timeout="setPlayTimeout"
           @shuffle-tunes-toggle="toggleShuffle"
         />
@@ -202,7 +204,20 @@ export default class Player extends Vue {
   }
 
   // Events:
-  // select shuffle from PlayerControls
+
+  public skipBackward() {
+    if (this.playing) {
+      audio.currentTime = Math.max(0, audio.currentTime-10);
+    }
+  }
+
+  public skipForward() {
+    if (this.playing) {
+      audio.currentTime = Math.min(audio.currentTime+10, audio.duration-10);
+    }
+  }
+
+// select shuffle from PlayerControls
   public toggleShuffle() {
     this.shuffle = !this.shuffle;
   }

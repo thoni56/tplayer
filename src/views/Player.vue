@@ -245,23 +245,24 @@ export default class Player extends Vue {
     this.keyListener = (e: KeyboardEvent) => {
       e.preventDefault();
       switch (e.key) {
-        case "p":
+        case "p": // Previous
         case "ArrowLeft":
         case "BrowserBack":
           this.previousTune();
           break;
-        case "n":
+        case "n": // Next
         case "ArrowRight":
         case "BrowserForward":
           this.nextTune();
           break;
-        case " ":
+        case " ": // Toogle Play/Pause
         case "Enter":
           this.playOrPause();
           break;
-        case "f":
+        // Don't know how to implement these, since bpm is inside Filtering...
+        case "f": // Faster
           break;
-        case "s":
+        case "s": // Slower
           break;
         case "Unidentified":
         // Maybe "Menu" on Apple remote

@@ -4,6 +4,7 @@ import '@fortawesome/fontawesome-free/css/all.css';
 import vuetify from './plugins/vuetify';
 import Vuex from 'vuex';
 import { TuneInfo } from './models/TuneInfo';
+import { Z_ASCII } from 'zlib';
 
 Vue.config.productionTip = false;
 
@@ -25,8 +26,15 @@ function bpmFilter(t: TuneInfo): boolean {
   return bpm === 0 || result;
 }
 
+function searchMatch(whole : string|undefined) {
+  return store.state.searchString == "" || (whole?whole.toUpperCase().includes(store.state.searchString.toUpperCase()):false);
+}
+function textFilter(t: TuneInfo): boolean {
+  return searchMatch(t.title)||searchMatch(t.artist)||searchMatch(t.album);
+}
+
 function currentFilter(t: TuneInfo): boolean {
-  return genreFilter(t) && bpmFilter(t);
+  return genreFilter(t) && bpmFilter(t) && textFilter(t);
 }
 
 
@@ -38,7 +46,6 @@ const store = new Vuex.Store({
     selectedBpm: 0,
     selectedBpmRange: 5,
     sortingUp: true,
-    searching: false,
     searchString: ""
   },
   getters: {
@@ -79,11 +86,9 @@ const store = new Vuex.Store({
       state.selectedBpmRange = bpm;
     },
     startSearch(state, string) {
-      state.searching = true;
       state.searchString = string;
     },
     finishSearch(state) {
-      state.searching = false;
       state.searchString = "";
     }
   }

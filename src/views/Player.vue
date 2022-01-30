@@ -243,31 +243,29 @@ export default class Player extends Vue {
 
   private setUpHotkeys() {
     this.keyListener = (e: KeyboardEvent) => {
-      // if (!this.$store.state.searching) {
-        e.preventDefault();
-        switch (e.key) {
-          case "p":
-          case "ArrowLeft":
-          case "BrowserBack":
-            this.previousTune();
-            break;
-          case "n":
-          case "ArrowRight":
-          case "BrowserForward":
-            this.nextTune();
-            break;
-          case " ":
-          case "Enter":
-            this.playOrPause();
-            break;
-          case "f":
-            break;
-          case "s":
-            break;
-          case "Unidentified":
-          // Maybe "Menu" on Apple remote
-        }
-      //}
+      e.preventDefault();
+      switch (e.key) {
+        case "p":
+        case "ArrowLeft":
+        case "BrowserBack":
+          this.previousTune();
+          break;
+        case "n":
+        case "ArrowRight":
+        case "BrowserForward":
+          this.nextTune();
+          break;
+        case " ":
+        case "Enter":
+          this.playOrPause();
+          break;
+        case "f":
+          break;
+        case "s":
+          break;
+        case "Unidentified":
+        // Maybe "Menu" on Apple remote
+      }
     }
     document.addEventListener("keyup", this.keyListener.bind(this));
   }

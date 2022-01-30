@@ -21,7 +21,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 import { TuneInfo } from "@/models/TuneInfo";
 import TuneList from "@/components/TuneList.vue";
 import TuneDisplay from "@/components/TuneDisplay.vue";

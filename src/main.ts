@@ -37,7 +37,8 @@ const store = new Vuex.Store({
     selectedGenres: [] as Array<string>,
     selectedBpm: 0,
     selectedBpmRange: 5,
-    sortingUp: true
+    sortingUp: true,
+    searching: false
   },
   getters: {
     filteredTunes: state => {
@@ -75,6 +76,9 @@ const store = new Vuex.Store({
     },
     changeBpmRange (state, bpm: number) {
       state.selectedBpmRange = bpm;
+    },
+    toggleSearching (state) {
+      state.searching = !state.searching;
     }
   }
 });

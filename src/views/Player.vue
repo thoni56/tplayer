@@ -107,7 +107,7 @@ export default class Player extends Vue {
     setTimeout(timerForPlayedTime, 300);
     setTimeout(() => self.checkTimeout(), 400);
 
-    this.setUpShortkeys();
+    this.setUpHotkeys();
   }
 
   public beforeDestroyed() {
@@ -237,33 +237,35 @@ export default class Player extends Vue {
   }
 
   // Internal functions
-  private setUpShortkeys() {
+  private setUpHotkeys() {
     this.keyListener = (e: KeyboardEvent) => {
-      e.preventDefault();
-      switch (e.key) {
-        case "p":
-        case "ArrowLeft":
-        case "BrowserBack":
-          this.previousTune();
-          break;
-        case "n":
-        case "ArrowRight":
-        case "BrowserForward":
-          this.nextTune();
-          break;
-        case " ":
-        case "Enter":
-          this.playOrPause();
-          break;
-        case "f":
-          break;
-        case "s":
-          break;
-        case "Unidentified":
-        // Maybe "Menu" on Apple remote
-      }
-    };
-    document.addEventListener("keydown", this.keyListener.bind(this));
+      // if (!this.$store.state.searching) {
+        e.preventDefault();
+        switch (e.key) {
+          case "p":
+          case "ArrowLeft":
+          case "BrowserBack":
+            this.previousTune();
+            break;
+          case "n":
+          case "ArrowRight":
+          case "BrowserForward":
+            this.nextTune();
+            break;
+          case " ":
+          case "Enter":
+            this.playOrPause();
+            break;
+          case "f":
+            break;
+          case "s":
+            break;
+          case "Unidentified":
+          // Maybe "Menu" on Apple remote
+        }
+      //}
+      document.addEventListener("keydown", this.keyListener.bind(this));
+    }
   }
 
   private tearDownShortkeys() {

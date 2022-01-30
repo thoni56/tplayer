@@ -20,7 +20,7 @@
           >
         </v-btn-toggle>
       </v-layout>
-      <v-text-field></v-text-field>
+      <v-text-field dense placeholder="Search" clearable @focus="toggleSearch()" @blur="toggleSearch()"></v-text-field>
       <v-flex>
         <h2 class="float-right">{{ currentTime }}</h2>
       </v-flex>
@@ -93,9 +93,17 @@ export default class Filtering extends Vue {
     else return 'fas fa-sort-amount-down';
   }
 
+  public searchString = "";
+
+  private toggleSearch() {
+    this.$store.commit('toogleSearching');
+    console.log("toggle searching");
+  }
+
   private sortTunes() {
     this.$store.commit('flipSorting');
   }
+
 
   private date = new Date();
   private currentTime = "";

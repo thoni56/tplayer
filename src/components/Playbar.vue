@@ -12,8 +12,8 @@
       </v-container>
     </v-layout>
     <v-progress-linear height="5vh" :value="percent" style="padding:0;margin:0">
-      <span style="padding-left:1vh;font-size:3.5vh;">{{playingTitle}}</span>
-      <span
+      <span class="overflow" style="padding-left:1vh;font-size:3.5vh;">{{playingTitle}}</span>
+      <span class="overflow" 
         v-if="playingArtist!=''"
         style="font-style:italic;padding-left:1vh;font-size:3vh;"
       >- {{playingArtist}}</span>

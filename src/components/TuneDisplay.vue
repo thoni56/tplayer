@@ -77,7 +77,7 @@ export default class TuneDisplay extends Vue {
 .overflow {
   white-space: nowrap;
   overflow-x: hidden;
-  text-overflow: clip;
+  text-overflow: ellipsis;
 }
 
 .overflow-scroll {

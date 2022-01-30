@@ -20,7 +20,7 @@
           >
         </v-btn-toggle>
       </v-layout>
-      <v-text-field dense placeholder="Search" clearable @focus="toggleSearch()" @blur="toggleSearch()"></v-text-field>
+      <v-text-field dense placeholder="Search" clearable @focus="doSearch()" @blur="finishSearch()"></v-text-field>
       <v-flex>
         <h2 class="float-right">{{ currentTime }}</h2>
       </v-flex>
@@ -57,7 +57,7 @@
         />
       </v-flex>
       <v-flex align-self-center shrink>
-        <v-btn small color="primary" @click="sortTunes()">
+        <v-btn small color="primary" @click="flipSorting()">
           <v-icon>{{ sortIcon }}</v-icon>
         </v-btn>
       </v-flex>
@@ -95,12 +95,16 @@ export default class Filtering extends Vue {
 
   public searchString = "";
 
-  private toggleSearch() {
-    this.$store.commit('toogleSearching');
-    console.log("toggle searching");
+  private doSearch() {
+    this.$store.commit('startSearching', this.searchString);
+  }
+  
+  private finishSearch() {
+    this.$store.commit('finishSearching');
+    this.$emit('reset-hotkeys');
   }
 
-  private sortTunes() {
+  private flipSorting() {
     this.$store.commit('flipSorting');
   }
 

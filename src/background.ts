@@ -8,6 +8,9 @@ import installExtension, {VUEJS_DEVTOOLS} from 'electron-devtools-installer';
 import path from 'path';
 import { UsedGenres } from './genres';
 
+var settings = require('user-settings').file('.tplayerrc');
+var autoload = settings.get('autoload')[0];
+
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -85,8 +88,9 @@ app.on('ready', async () => {
     }
   }
   await createWindow();
-  // Works on my machine ;-) Should actually be converted to some setting that can be read here for auto-loading...
-  discoverTunes(win!, "C:\\Users\\Thomas\\Music\\iTunes\\iTunes Media\\Music\\Compilations", UsedGenres);
+  if (autoload) {
+    discoverTunes(win!, autoload, UsedGenres);
+  }
 });
 
 // Exit cleanly on request from parent process in development mode.
@@ -109,6 +113,7 @@ ipcMain.on('discoverTunes', () => {
   if (dir) {
     win?.webContents.send('clearTunes', []);
     discoverTunes(win!, dir[0], UsedGenres);
+    settings.set('autoload', dir);
   }
 })
 

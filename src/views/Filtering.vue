@@ -20,7 +20,7 @@
           >
         </v-btn-toggle>
       </v-layout>
-      <v-text-field dense v-model="searchString" placeholder="Search" clearable @keyup="keypress($event)" @blur="finishSearch()"></v-text-field>
+      <v-text-field dense v-model="searchString" placeholder="Search" clearable @keyup="keypress($event)" @focus="startSearch" @blur="finishSearch()"></v-text-field>
       <v-flex>
         <h2 class="float-right">{{ currentTime }}</h2>
       </v-flex>
@@ -104,9 +104,14 @@ export default class Filtering extends Vue {
     }
   }
   
+  private startSearch() {
+    this.$emit("got-focus");
+  }
+
   private finishSearch() {
     this.searchString = "";
     this.$store.commit('finishSearch');
+    this.$emit("lost-focus");
   }
 
   // Sorting

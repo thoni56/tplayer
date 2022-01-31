@@ -2,21 +2,22 @@
   <v-container id="player" fluid style="padding-top:0;">
     <v-row>
       <v-col class="pt-0">
-        <Filtering @reset-hotkeys="setUpHotkeys" />
+        <Filtering @reset-hotkeys="setUpHotkeys"
+          @got-focus="removeKeylistner()" @lost-focus="installKeylistner()" />
         <TuneDisplay />
         <Playbar :secondsPlayed="timePlayed" :secondsTotal="timeTotal" />
         <PlayerControls
           :playing="playing"
-          @previous-tune="previousTune"
-          @skip-backward="skipBackward"
-          @play-pause="playOrPause"
-          @next-tune="nextTune"
-          @skip-forward="skipForward"
-          @play-timeout="setPlayTimeout"
-          @shuffle-tunes-toggle="toggleShuffle"
+          @previous-tune="previousTune()"
+          @skip-backward="skipBackward()"
+          @play-pause="playOrPause()"
+          @next-tune="nextTune()"
+          @skip-forward="skipForward()"
+          @play-timeout="setPlayTimeout()"
+          @shuffle-tunes-toggle="toggleShuffle()"
         />
         <TuneList
-          @click="loadSelectedTuneAndPlay"
+          @click="loadSelectedTuneAndPlay()"
         />
       </v-col>
     </v-row>
@@ -113,7 +114,7 @@ export default class Player extends Vue {
   }
 
   public beforeDestroyed() {
-    this.tearDownShortkeys();
+    this.tearDownHotkeys();
   }
 
   // Public events
@@ -239,41 +240,50 @@ export default class Player extends Vue {
   }
 
   // Hotkeys
-  private keyListener: any;
+  private keyListener(e: KeyboardEvent) {
+    e.preventDefault();
+    switch (e.key) {
+      case "p": // Previous
+      case "ArrowLeft":
+      case "BrowserBack":
+        this.previousTune();
+        break;
+      case "n": // Next
+      case "ArrowRight":
+      case "BrowserForward":
+        this.nextTune();
+        break;
+      case " ": // Toogle Play/Pause
+      case "Enter":
+        this.playOrPause();
+        break;
+      // Don't know how to implement these, since bpm is inside Filtering...
+      case "f": // Faster
+        break;
+      case "s": // Slower
+        break;
+      case "Unidentified":
+      // Maybe "Menu" on Apple remote
+    }
+  }
 
   private setUpHotkeys() {
-    this.keyListener = (e: KeyboardEvent) => {
-      e.preventDefault();
-      switch (e.key) {
-        case "p": // Previous
-        case "ArrowLeft":
-        case "BrowserBack":
-          this.previousTune();
-          break;
-        case "n": // Next
-        case "ArrowRight":
-        case "BrowserForward":
-          this.nextTune();
-          break;
-        case " ": // Toogle Play/Pause
-        case "Enter":
-          this.playOrPause();
-          break;
-        // Don't know how to implement these, since bpm is inside Filtering...
-        case "f": // Faster
-          break;
-        case "s": // Slower
-          break;
-        case "Unidentified":
-        // Maybe "Menu" on Apple remote
-      }
-    }
-    document.addEventListener("keyup", this.keyListener.bind(this));
+    document.addEventListener("keyup", this.keyListener);
   }
 
-  private tearDownShortkeys() {
+  private tearDownHotkeys() {
     document.removeEventListener("keyup", this.keyListener);
   }
+
+  private installKeylistner() {
+    this.setUpHotkeys();
+  }
+
+  private removeKeylistner() {
+    this.tearDownHotkeys();
+  }
+
+
 
   private anyTuneSelected(): boolean {
     return this.selectedTune.file !== "";

@@ -3,21 +3,21 @@
     <v-row>
       <v-col class="pt-0">
         <Filtering @reset-hotkeys="setUpHotkeys"
-          @got-focus="removeKeylistner()" @lost-focus="installKeylistner()" />
+          @got-focus="removeKeylistner" @lost-focus="installKeylistner" />
         <TuneDisplay />
         <Playbar :secondsPlayed="timePlayed" :secondsTotal="timeTotal" />
         <PlayerControls
           :playing="playing"
-          @previous-tune="previousTune()"
-          @skip-backward="skipBackward()"
-          @play-pause="playOrPause()"
-          @next-tune="nextTune()"
-          @skip-forward="skipForward()"
-          @play-timeout="setPlayTimeout()"
-          @shuffle-tunes-toggle="toggleShuffle()"
+          @previous-tune="previousTune"
+          @skip-backward="skipBackward"
+          @play-pause="playOrPause"
+          @next-tune="nextTune"
+          @skip-forward="skipForward"
+          @play-timeout="setPlayTimeout"
+          @shuffle-tunes-toggle="toggleShuffle"
         />
         <TuneList
-          @click="loadSelectedTuneAndPlay()"
+          @click="loadSelectedTuneAndPlay"
         />
       </v-col>
     </v-row>

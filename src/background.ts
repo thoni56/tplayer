@@ -9,7 +9,7 @@ import path from 'path';
 import { UsedGenres } from './genres';
 
 var settings = require('user-settings').file('.tplayerrc');
-var autoload = settings.get('autoload')[0];
+var autoload = settings.get('autoload')?settings.get('autoload')[0]:undefined;
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 

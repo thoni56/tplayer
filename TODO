@@ -25,7 +25,7 @@ Filtering & Sorting:
             ✔ Display text field @done(22-01-31 19:25)
             ✔ Filter on text field @done(22-01-31 19:25)
             ✔ Incrementally filter on input in text field @done(22-01-31 19:26)
-            ☐ Bug: input space, or other hotkey in search field without triggering action
+            ✔ Bug: input space, or other hotkey in search field without triggering action @done(22-01-31 21:24)
 
 Playing:
     ✔ Playing timer (how much of a tune should play before moving to next) @done(20-02-23 10:53)
@@ -38,10 +38,10 @@ Playing:
 
 Settings:
     ☐ Config file
-        ☐ auto-load: <dir>
+        ✔ auto-load: <dir> @done(22-01-31 21:25)
     ☐ Settings dialog
     ☐ Select directory to (re-)load tunes from
-    ☐ Persist path to tunes directory
+    ✔ Persist path to tunes directory @done(22-01-31 22:20)
     ☐ Fade settings
         ☐ Fade out on pause
         ☐ Fade in on play

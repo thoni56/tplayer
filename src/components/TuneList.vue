@@ -1,5 +1,5 @@
 <template>
-  <v-layout scrollable style="height: 30vh">
+  <v-layout scrollable style="height: 25vh">
     <v-flex>
       <v-list dense>
         <template v-for="(tune, index) in tunes()">

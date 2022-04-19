@@ -89,6 +89,8 @@ export default class Player extends Vue {
   public timeTotal = 0;
 
   private playTimeout: number = 0;
+  private playTimeoutInhibited: boolean = false;
+
 
   private shuffle: boolean = false;
   private currentShufflePartition: number = 0;
@@ -142,7 +144,8 @@ export default class Player extends Vue {
   }
 
   private checkTimeout() {
-    if (this.playTimeout > 0 && this.timePlayed >= this.playTimeout) {
+    if (!this.playTimeoutInhibited && this.playTimeout > 0 && this.timePlayed >= this.playTimeout) {
+      this.playTimeoutInhibited = true;
       self.nextTune();
     }
     setTimeout(() => self.checkTimeout(), 400);
@@ -297,6 +300,7 @@ export default class Player extends Vue {
     this.$store.commit('selectTune', this.currentTunes[nextIndexToPlay]);
     await this.loadSelectedTune();
     if (wasPlaying) await this.playSelectedTune();
+    this.playTimeoutInhibited = false;
     scrollIntoView(document.getElementById(this.currentTunes[nextIndexToPlay].file)!, {scrollMode: "if-needed"});
   }
 

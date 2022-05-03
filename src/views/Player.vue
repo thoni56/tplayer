@@ -234,6 +234,16 @@ export default class Player extends Vue {
     this.playTimeout = seconds;
   }
 
+  private faster() {
+    let bpm = this.$store.state.selectedBpm;
+    this.$store.commit('changeBpm', bpm+4);
+  }
+  
+  private slower() {
+    let bpm = this.$store.getters.currentBpm;
+    this.$store.commit('changeBpm', bpm-3);
+  }
+
   // :click from TuneList
   // Expects a tune to be selected
   public async loadSelectedTuneAndPlay() {
@@ -262,8 +272,12 @@ export default class Player extends Vue {
         break;
       // Don't know how to implement these, since bpm is inside Filtering...
       case "f": // Faster
+      case "PageUp":
+        this.faster();
         break;
       case "s": // Slower
+      case "PageDown":
+        this.slower();
         break;
       case "Unidentified":
       // Maybe "Menu" on Apple remote

@@ -36,7 +36,6 @@
         <v-slider
           grow
           :hide-details="true"
-          @change="changeBpm()"
           v-model="bpm"
           :max="300"
         />
@@ -156,8 +155,10 @@ export default class Filtering extends Vue {
   }
 
   // Tempo bpm & range
-  private bpm: number = 0;
-  private bpmRange: number = 5;
+  get bpm(){ return this.$store.state.selectedBpm; }
+  set bpm(val) { this.$store.commit('changeBpm', val); }
+
+  private bpmRange: number = this.$store.state.selectedBpmRange;
 
   private changeBpm() {
     this.$store.commit('changeBpm', this.bpm);

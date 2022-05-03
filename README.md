@@ -25,6 +25,8 @@ Hotkeys:
 - `n`, `right arrow` - next tune
 - `p`, `left arrow` - previous tune
 - `space`, `enter` - toggle play/pause
+- `f`, `page up` - faster tempo
+- `s`, `page down` - slower tempo
 
 You can also hook up a remote control to access those functions.
 

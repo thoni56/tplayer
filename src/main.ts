@@ -4,7 +4,6 @@ import '@fortawesome/fontawesome-free/css/all.css';
 import vuetify from './plugins/vuetify';
 import Vuex from 'vuex';
 import { TuneInfo } from './models/TuneInfo';
-import { Z_ASCII } from 'zlib';
 
 Vue.config.productionTip = false;
 
@@ -60,6 +59,9 @@ const store = new Vuex.Store({
           return getBPM(tune2) - getBPM(tune1);
         });
       }
+    },
+    currentBpm: state => {
+      return state.selectedBpm;
     }
   },
   mutations: {

@@ -20,7 +20,7 @@
           >
         </v-btn-toggle>
       </v-layout>
-      <v-text-field dense v-model="searchString" placeholder="Search" clearable @keyup="keypress($event)" @focus="startSearch" @blur="finishSearch()"></v-text-field>
+      <v-text-field dense v-model="searchString" placeholder="Search" clearable dark @keyup="keypress($event)" hide-details="auto" @focus="startSearch"></v-text-field>
       <v-flex>
         <h2 class="float-right">{{ currentTime }}</h2>
       </v-flex>

@@ -33,12 +33,15 @@
         >BPM:</v-flex
       >
       <v-flex align-self-center grow style="margin-top:2vh;">
-        <v-slider
-          grow
-          :hide-details="true"
-          v-model="bpm"
-          :max="300"
-        />
+          <div @keydown.capture="onKeydown">
+            <v-slider
+              @keypress.prevent
+              grow
+              :hide-details="true"
+              v-model="bpm"
+              :max="300"
+            />
+            </div>
       </v-flex>
       <v-flex
         shrink

@@ -40,17 +40,13 @@ async function readMetadataForAllFiles(renderer: BrowserWindow, files: string[],
   await sleep(100); // To allow clear to finish, this should really be ensured some other way
   for (let index = 0; index < files.length; index++) {
     try {
-      await sleep(1);
       const metadata = await mm.parseFile(files[index]);
       const tuneInfo = new TuneInfo(files[index]);
       tuneInfo.fillFromCommonTags(metadata);
       if (genres.some(g => tuneInfo.genre && tuneInfo.genre.includes(g))) {
         all.push(tuneInfo);
       }
-      if (index > 0 && index % 10 === 0) {
-        renderer.webContents.send('discoveredTunes', all);
-        all = [];
-      }
+
     } catch (e) {
       // tslint:disable-next-line: no-console
       console.log("*** Could not read metadata from ", files[index])

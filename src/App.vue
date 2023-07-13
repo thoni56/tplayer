@@ -1,5 +1,6 @@
 <template>
   <v-app id="Application" dark>
+    <LoadingSpinner />
     <Player />
   </v-app>
 </template>
@@ -8,12 +9,14 @@
 import { Component, Vue } from "vue-property-decorator";
 import Player from "@/views/Player.vue";
 import { TuneInfo } from "@/models/TuneInfo";
+import LoadingSpinner from "./views/LoadingSpinner.vue";
 
 Vue.config.productionTip = false;
 
 @Component({
   components: {
-    Player
+    Player,
+    LoadingSpinner
   }
 })
 export default class App extends Vue {

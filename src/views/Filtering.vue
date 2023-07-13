@@ -173,6 +173,7 @@ export default class Filtering extends Vue {
 
   // Discover tunes over IPC
   private initiateDiscoveringFiles() {
+    this.$store.commit('START_LOADING');
     (window as any).ipcRenderer.send('discoverTunes');
   }
 }

@@ -62,7 +62,7 @@ export default class TuneList extends Vue {
   }
 
   public clicked(file: string) {
-    this.$store.commit('selectFile', file);
+    this.$store.commit('SELECT_FILE', file);
     this.$emit('click');
   }
 

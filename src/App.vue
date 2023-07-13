@@ -34,7 +34,7 @@ export default class App extends Vue {
       this.addTunes(newTunes);
     });
     (window as any).ipcRenderer.on("clearTunes", (event: any, args: any[]) => {
-      this.$store.commit('clear');
+      this.$store.commit('CLEAR');
     });
   }
 

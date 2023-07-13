@@ -236,12 +236,12 @@ export default class Player extends Vue {
 
   private faster() {
     let bpm = this.$store.state.selectedBpm;
-    this.$store.commit('changeBpm', bpm+4);
+    this.$store.commit('CHANGE_BPM', bpm+4);
   }
   
   private slower() {
     let bpm = this.$store.getters.currentBpm;
-    this.$store.commit('changeBpm', bpm-3);
+    this.$store.commit('CHANGE_BPM', bpm-3);
   }
 
   // :click from TuneList
@@ -311,7 +311,7 @@ export default class Player extends Vue {
     const wasPlaying = this.playing;
     if (this.playing) await fadeOut();
     this.timePlayed = 0;
-    this.$store.commit('selectTune', this.currentTunes[nextIndexToPlay]);
+    this.$store.commit('SELECT_TUNE', this.currentTunes[nextIndexToPlay]);
     await this.loadSelectedTune();
     if (wasPlaying) await this.playSelectedTune();
     this.playTimeoutInhibited = false;

@@ -100,9 +100,9 @@ export default class Filtering extends Vue {
 
   private keypress(e: any) {
     if (e.key === "Backspace" || e.key === "Delete") {
-      this.$store.commit('startSearch', this.searchString);
+      this.$store.commit('START_SEARCH', this.searchString);
     } else {
-      this.$store.commit('startSearch', this.searchString);
+      this.$store.commit('START_SEARCH', this.searchString);
     }
   }
   
@@ -112,13 +112,13 @@ export default class Filtering extends Vue {
 
   private finishSearch() {
     this.searchString = "";
-    this.$store.commit('finishSearch');
+    this.$store.commit('FINISHED_SEARCH');
     this.$emit("lost-focus");
   }
 
   // Sorting
   private flipSorting() {
-    this.$store.commit('flipSorting');
+    this.$store.commit('FLIP_SORTING');
   }
 
   // Clock
@@ -159,16 +159,16 @@ export default class Filtering extends Vue {
 
   // Tempo bpm & range
   get bpm(){ return this.$store.state.selectedBpm; }
-  set bpm(val) { this.$store.commit('changeBpm', val); }
+  set bpm(val) { this.$store.commit('CHANGE_BPM', val); }
 
   private bpmRange: number = this.$store.state.selectedBpmRange;
 
   private changeBpm() {
-    this.$store.commit('changeBpm', this.bpm);
+    this.$store.commit('CHANGE_BPM', this.bpm);
   }
 
   private changeBpmRange() {
-    this.$store.commit('changeBpmRange', this.bpmRange);
+    this.$store.commit('CHANGE_BPM_RANGE', this.bpmRange);
   }
 
   // Discover tunes over IPC

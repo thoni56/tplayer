@@ -39,6 +39,7 @@ function currentFilter(t: TuneInfo): boolean {
 
 const store = new Vuex.Store({
   state: {
+    loading: false,
     allTunes: [] as Array<TuneInfo>,
     selectedTune: new TuneInfo(""),
     selectedGenres: [] as Array<string>,
@@ -65,33 +66,36 @@ const store = new Vuex.Store({
     }
   },
   mutations: {
-    addTune (state, tune: TuneInfo) {
-      state.allTunes.push(tune);
-    },
-    selectFile (state, file: string) {
+    SELECT_FILE (state, file: string) {
       const tune = state.allTunes.find(t => t.file == file);
       state.selectedTune = tune?tune:new TuneInfo("");
     },
-    selectTune (state, tune: TuneInfo) {
+    SELECT_TUNE (state, tune: TuneInfo) {
       state.selectedTune = tune;
     },
-    clear(state) {
+    CLEAR(state) {
       state.allTunes = [];
     },
-    flipSorting(state) {
+    FLIP_SORTING(state) {
       state.sortingUp = !state.sortingUp;
     },
-    changeBpm(state, bpm: number) {
+    CHANGE_BPM(state, bpm: number) {
       state.selectedBpm = bpm;
     },
-    changeBpmRange(state, bpm: number) {
+    CHANGE_BPM_RANGE(state, bpm: number) {
       state.selectedBpmRange = bpm;
     },
-    startSearch(state, string) {
+    START_SEARCH(state, string) {
       state.searchString = string;
     },
-    finishSearch(state) {
+    FINISHED_SEARCH(state) {
       state.searchString = "";
+    },
+    START_LOADING(state) {
+      state.loading = true;
+    },
+    FINISHED_LOADING(state) {
+      state.loading = false;
     }
   }
 });

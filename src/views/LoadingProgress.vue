@@ -1,17 +1,16 @@
 <template>
   <div class="loading-overlay" v-if="loading">
-    <Spinner message="Loading..." size="huge" />
+    <v-flex xs10 class="mx-auto">
+      Loading tunes...
+    <v-progress-linear indeterminate />
+  </v-flex>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import Spinner from 'vue-simple-spinner';
 
 @Component({
-  components: {
-    Spinner
-  },
   computed: {
     loading: function() {
       return this.$store.state.loading;

@@ -1,16 +1,16 @@
 <template>
   <div class="loading-overlay" v-if="loading">
-    <spinner></spinner>
+    <Spinner message="Loading..." size="huge" />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { PulseLoader } from 'vue-spinners';
+import Spinner from 'vue-simple-spinner';
 
 @Component({
   components: {
-    spinner: PulseLoader
+    Spinner
   },
   computed: {
     loading: function() {

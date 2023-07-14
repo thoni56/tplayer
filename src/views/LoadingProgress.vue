@@ -2,7 +2,7 @@
   <div class="loading-overlay" v-if="loading">
     <v-flex xs10 class="mx-auto">
       Loading tunes...
-    <v-progress-linear indeterminate />
+    <v-progress-linear indeterminate height="30" />
   </v-flex>
   </div>
 </template>
@@ -17,7 +17,7 @@ import { Component, Vue } from 'vue-property-decorator';
     }
   }
 })
-export default class LoadingSpinner extends Vue {}
+export default class LoadingProgress extends Vue {}
 </script>
 
 <style scoped>

@@ -73,8 +73,9 @@ const store = new Vuex.Store({
     SELECT_TUNE (state, tune: TuneInfo) {
       state.selectedTune = tune;
     },
-    CLEAR(state) {
+    CLEAR_TUNES(state) {
       state.allTunes = [];
+      console.log("clear tunes");
     },
     FLIP_SORTING(state) {
       state.sortingUp = !state.sortingUp;
@@ -93,6 +94,7 @@ const store = new Vuex.Store({
     },
     START_LOADING(state) {
       state.loading = true;
+      console.log("start loading");
     },
     FINISHED_LOADING(state) {
       state.loading = false;

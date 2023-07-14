@@ -10,6 +10,7 @@ export function discoverTunes(renderer: BrowserWindow, directory: string, genres
     directory,
     { follow_symlinks: true }
   );
+  renderer.webContents.send('startLoading');
   emitter.on("file", (path: string) => {
     if (
       path.endsWith(".aac") ||
@@ -53,4 +54,5 @@ async function readMetadataForAllFiles(renderer: BrowserWindow, files: string[],
     }
   }
   renderer.webContents.send('discoveredTunes', all);
+  renderer.webContents.send('finishedLoading');
 }

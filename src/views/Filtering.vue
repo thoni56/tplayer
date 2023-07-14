@@ -33,7 +33,7 @@
         >BPM:</v-flex
       >
       <v-flex align-self-center grow style="margin-top:2vh;">
-          <div @keydown.capture="onKeydown">
+          <div @keydown.capture="onKeyDown">
             <v-slider
               @keypress.prevent
               grow
@@ -98,15 +98,19 @@ export default class Filtering extends Vue {
   // Text searching
   public searchString = "";
 
-  private keypress(e: any) {
+  public keypress(e: any) {
     if (e.key === "Backspace" || e.key === "Delete") {
       this.$store.commit('START_SEARCH', this.searchString);
     } else {
       this.$store.commit('START_SEARCH', this.searchString);
     }
   }
+
+  public onKeyDown(e : any) {
+    // Don't do anything on keypresses with the bpm-slider in focus
+  }
   
-  private startSearch() {
+  public startSearch() {
     this.$emit("got-focus");
   }
 
@@ -117,13 +121,13 @@ export default class Filtering extends Vue {
   }
 
   // Sorting
-  private flipSorting() {
+  public flipSorting() {
     this.$store.commit('FLIP_SORTING');
   }
 
   // Clock
   private date = new Date();
-  private currentTime = "";
+  public currentTime = "";
 
   private tickTime = 333;
   private tick() {
@@ -146,13 +150,13 @@ export default class Filtering extends Vue {
   get genres() {
     return UsedGenres;
   }
-  private genresSelected: number[] = []; // Model
+  public genresSelected: number[] = []; // Model
 
   get currentGenres() {
     return this.$store.state.selectedGenres;
   }
 
-  private toggleGenre(genre: string) {
+  public toggleGenre(genre: string) {
     if (!this.currentGenres.includes(genre)) this.currentGenres.push(genre);
     else this.currentGenres.splice(this.currentGenres.indexOf(genre), 1);
   }
@@ -161,19 +165,18 @@ export default class Filtering extends Vue {
   get bpm(){ return this.$store.state.selectedBpm; }
   set bpm(val) { this.$store.commit('CHANGE_BPM', val); }
 
-  private bpmRange: number = this.$store.state.selectedBpmRange;
+  public bpmRange: number = this.$store.state.selectedBpmRange;
 
   private changeBpm() {
     this.$store.commit('CHANGE_BPM', this.bpm);
   }
 
-  private changeBpmRange() {
+  public changeBpmRange() {
     this.$store.commit('CHANGE_BPM_RANGE', this.bpmRange);
   }
 
   // Discover tunes over IPC
-  private initiateDiscoveringFiles() {
-    this.$store.commit('START_LOADING');
+  public initiateDiscoveringFiles() {
     (window as any).ipcRenderer.send('discoverTunes');
   }
 }

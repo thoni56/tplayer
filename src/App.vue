@@ -35,7 +35,13 @@ export default class App extends Vue {
       this.$store.commit('FINISHED_LOADING');
     });
     (window as any).ipcRenderer.on("clearTunes", (event: any, args: any[]) => {
-      this.$store.commit('CLEAR');
+      this.$store.commit('CLEAR_TUNES');
+    });
+    (window as any).ipcRenderer.on("startLoading", (event: any, args: any[]) => {
+      this.$store.commit('START_LOADING');
+    });
+    (window as any).ipcRenderer.on("finishedLoading", (event: any, args: any[]) => {
+      this.$store.commit('FINISHED_LOADING');
     });
   }
 

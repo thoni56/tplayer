@@ -31,12 +31,6 @@ export function discoverTunes(renderer: BrowserWindow, directory: string, genres
   });
 }
 
-function sleep(ms: number) {
-  return new Promise(resolve => {
-    setTimeout(resolve, ms)
-  })
-}
-
 async function readMetadataForAllFiles(renderer: BrowserWindow, files: string[], genres: string[]) {
   let all = [];
   let fullProgress = files.length;

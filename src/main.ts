@@ -46,7 +46,8 @@ const store = new Vuex.Store({
     selectedBpm: 0,
     selectedBpmRange: 5,
     sortingUp: true,
-    searchString: ""
+    searchString: "",
+    progress: 0
   },
   getters: {
     filteredTunes: state => {
@@ -93,6 +94,9 @@ const store = new Vuex.Store({
     },
     START_LOADING(state) {
       state.loading = true;
+    },
+    PROGRESS(state, progress: number) {
+      state.progress = progress;
     },
     FINISHED_LOADING(state) {
       state.loading = false;

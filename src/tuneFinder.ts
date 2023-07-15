@@ -10,6 +10,7 @@ export function discoverTunes(renderer: BrowserWindow, directory: string, genres
     directory,
     { follow_symlinks: true }
   );
+  renderer.webContents.send('progress', 0);
   renderer.webContents.send('startLoading');
   emitter.on("file", (path: string) => {
     if (
@@ -38,7 +39,9 @@ function sleep(ms: number) {
 
 async function readMetadataForAllFiles(renderer: BrowserWindow, files: string[], genres: string[]) {
   let all = [];
-  await sleep(100); // To allow clear to finish, this should really be ensured some other way
+  let fullProgress = files.length;
+  let doneProgress = 0;
+
   for (let index = 0; index < files.length; index++) {
     try {
       const metadata = await mm.parseFile(files[index]);
@@ -46,12 +49,16 @@ async function readMetadataForAllFiles(renderer: BrowserWindow, files: string[],
       tuneInfo.fillFromCommonTags(metadata);
       if (genres.some(g => tuneInfo.genre && tuneInfo.genre.includes(g))) {
         all.push(tuneInfo);
+        doneProgress++;
+      } else {
+        fullProgress--;
       }
 
     } catch (e) {
       // tslint:disable-next-line: no-console
       console.log("*** Could not read metadata from ", files[index])
     }
+    renderer.webContents.send('progress', Math.round(doneProgress/fullProgress*100));
   }
   renderer.webContents.send('discoveredTunes', all);
   renderer.webContents.send('finishedLoading');

@@ -1,23 +1,26 @@
 <template>
-  <div class="loading-overlay" v-if="loading">
-    <v-flex xs10 class="mx-auto">
-      Loading tunes...
+<div class="loading-overlay" v-if="loading">
+  <v-flex md2 />
+  <v-flex class="display-4">
+    Loading tunes...
     <v-progress-linear indeterminate height="30" />
   </v-flex>
-  </div>
+  <v-flex md2 />
+</div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import {
+  Component,
+  Vue
+} from 'vue-property-decorator';
 
-@Component({
-  computed: {
-    loading: function() {
-      return this.$store.state.loading;
-    }
+@Component({})
+export default class LoadingProgress extends Vue {
+  get loading() {
+    return this.$store.state.loading;
   }
-})
-export default class LoadingProgress extends Vue {}
+}
 </script>
 
 <style scoped>
@@ -30,7 +33,7 @@ export default class LoadingProgress extends Vue {}
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(255,255,255,0.7);
+  background-color: rgba(255, 255, 255, 0.7);
   z-index: 10000;
 }
 </style>

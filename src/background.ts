@@ -88,9 +88,6 @@ app.on('ready', async () => {
     }
   }
   await createWindow();
-  if (autoload) {
-    discoverTunes(win!, autoload, UsedGenres);
-  }
 });
 
 // Exit cleanly on request from parent process in development mode.
@@ -107,6 +104,13 @@ if (isDevelopment) {
     });
   }
 }
+
+
+ipcMain.on('renderer-ready', () => {
+  if (autoload) {
+    discoverTunes(win!, autoload, UsedGenres);
+  }
+});
 
 ipcMain.on('discoverTunes', () => {
   const dir: string[] | undefined = dialog.showOpenDialogSync({ properties: ['openDirectory'] });

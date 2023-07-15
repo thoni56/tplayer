@@ -43,6 +43,7 @@ export default class App extends Vue {
     (window as any).ipcRenderer.on("finishedLoading", (event: any, args: any[]) => {
       this.$store.commit('FINISHED_LOADING');
     });
+    (window as any).ipcRenderer.send('renderer-ready');
   }
 
   private addTunes(tunes: TuneInfo[]) {

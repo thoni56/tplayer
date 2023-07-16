@@ -3,6 +3,7 @@ import walk from "walkdir";
 import * as mm from "music-metadata";
 import { TuneInfo } from "../src/models/TuneInfo";
 
+var settings = require('user-settings').file('.tplayerrc');
 
 export function discoverTunes(renderer: BrowserWindow, directory: string, genres: string []) {
   const files: string[] = [];
@@ -56,4 +57,5 @@ async function readMetadataForAllFiles(renderer: BrowserWindow, files: string[],
   }
   renderer.webContents.send('discoveredTunes', all);
   renderer.webContents.send('finishedLoading');
+  settings.set('tunes', all);
 }

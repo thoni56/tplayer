@@ -10,6 +10,7 @@ import { UsedGenres } from './genres';
 
 var settings = require('user-settings').file('.tplayerrc');
 var autoloadDirectory = settings.get('autoload')?settings.get('autoload')[0]:undefined;
+var autoloadTunes = settings.get('tunes')?settings.get('tunes'):undefined;
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
@@ -107,7 +108,9 @@ if (isDevelopment) {
 
 
 ipcMain.on('renderer-ready', () => {
-  if (autoloadDirectory) {
+  if (autoloadTunes) {
+    win?.webContents.send('discoveredTunes', autoloadTunes);
+  } else if (autoloadDirectory) {
     discoverTunes(win!, autoloadDirectory, UsedGenres);
   }
 });

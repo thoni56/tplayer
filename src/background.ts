@@ -106,7 +106,6 @@ if (isDevelopment) {
   }
 }
 
-
 ipcMain.on('renderer-ready', () => {
   if (autoloadTunes) {
     win?.webContents.send('discoveredTunes', autoloadTunes);

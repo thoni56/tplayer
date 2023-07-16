@@ -3,5 +3,9 @@
     "files.exclude": {
         "dist_electron/": true,
         "node_modules/": true
-    }
+    },
+    "editor.formatOnType": true,
+    "editor.formatOnSaveMode": "file",
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true
 }

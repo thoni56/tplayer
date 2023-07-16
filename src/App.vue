@@ -6,9 +6,14 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import {
+  Component,
+  Vue
+} from "vue-property-decorator";
 import Player from "@/views/Player.vue";
-import { TuneInfo } from "@/models/TuneInfo";
+import {
+  TuneInfo
+} from "@/models/TuneInfo";
 import LoadingProgress from "./views/LoadingProgress.vue";
 
 Vue.config.productionTip = false;

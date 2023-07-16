@@ -3,10 +3,10 @@
   <v-flex md2 />
   <v-flex class="display-4 red--text lighten-2">
     Loading tunes...
-    <v-progress-linear v-model="progress"  height="30">
-      <div class="body-2 font-weight-bold">
-     {{ progress }}%
-    </div>
+      <v-progress-linear v-model="progress" height="30">
+        <div class="body-2 font-weight-bold">
+          {{ progress }}%
+        </div>
     </v-progress-linear>
   </v-flex>
   <v-flex md2 />

@@ -1,6 +1,6 @@
 {
   "name": "tplayer",
-  "version": "0.9.5",
+  "version": "0.9.6",
   "private": true,
   "description": "A music player for dance classes with appropriate filtering",
   "author": {

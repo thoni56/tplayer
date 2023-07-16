@@ -4,13 +4,18 @@ import { app, protocol, BrowserWindow, ipcMain, dialog } from 'electron';
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib';
 import { discoverTunes } from './tuneFinder';
 import datauri from 'file-to-datauri';
-import installExtension, {VUEJS_DEVTOOLS} from 'electron-devtools-installer';
+import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer';
 import path from 'path';
+import fs from 'fs';
+import jsonfile from 'jsonfile';
 import { UsedGenres } from './genres';
 
 var settings = require('user-settings').file('.tplayerrc');
-var autoloadDirectory = settings.get('autoload')?settings.get('autoload')[0]:undefined;
-var autoloadTunes = settings.get('tunes')?settings.get('tunes'):undefined;
+var autoloadDirectory = settings.get('autoload')
+  ? settings.get('autoload')[0]
+  : undefined;
+const userHome = app.getPath('home');
+const tuneCache = userHome + '/.tplayer_cache.json';
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
@@ -19,30 +24,36 @@ const isDevelopment = process.env.NODE_ENV !== 'production';
 let win: BrowserWindow | null;
 
 // Standard scheme must be registered before the app is ready
-protocol.registerSchemesAsPrivileged([{
-  scheme: 'app',
-  privileges: {
-    standard: true,
-    secure: true
-  }
-}]);
+protocol.registerSchemesAsPrivileged([
+  {
+    scheme: 'app',
+    privileges: {
+      standard: true,
+      secure: true,
+    },
+  },
+]);
 
-const title = "Tplayer - " + app.getVersion();
+const title = 'Tplayer - ' + app.getVersion();
 
 async function createWindow() {
-    // Create the browser window.
+  // Create the browser window.
   win = new BrowserWindow({
-    title: title, width: 800, height: 600,
+    title: title,
+    width: 800,
+    height: 600,
     webPreferences: {
-      nodeIntegration : (process.env.ELECTRON_NODE_INTEGRATION as unknown) as boolean,
-      preload: path.join(__dirname, 'preload.js')}
+      nodeIntegration: process.env
+        .ELECTRON_NODE_INTEGRATION as unknown as boolean,
+      preload: path.join(__dirname, 'preload.js'),
+    },
   });
   win.setMenu(null);
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
     win.loadURL(process.env.WEBPACK_DEV_SERVER_URL);
-    win.webContents.on("did-frame-finish-load", () => {
+    win.webContents.on('did-frame-finish-load', () => {
       if (!process.env.IS_TEST) {
         win!.webContents.openDevTools();
       }
@@ -83,7 +94,7 @@ app.on('ready', async () => {
     // Install Vue Devtools
     try {
       await installExtension(VUEJS_DEVTOOLS);
-    } catch (e:any) {
+    } catch (e: any) {
       // tslint:disable-next-line: no-console
       console.error('Vue Devtools failed to install:', e.toString());
     }
@@ -94,7 +105,7 @@ app.on('ready', async () => {
 // Exit cleanly on request from parent process in development mode.
 if (isDevelopment) {
   if (process.platform === 'win32') {
-    process.on('message', data => {
+    process.on('message', (data) => {
       if (data === 'graceful-exit') {
         app.quit();
       }
@@ -107,21 +118,26 @@ if (isDevelopment) {
 }
 
 ipcMain.on('renderer-ready', () => {
-  if (autoloadTunes) {
-    win?.webContents.send('discoveredTunes', autoloadTunes);
+  if (fs.existsSync(tuneCache)) {
+    jsonfile
+      .readFile(tuneCache)
+      .then((tunes) => win?.webContents.send('discoveredTunes', tunes))
+      .catch((error) => console.log(error));
   } else if (autoloadDirectory) {
-    discoverTunes(win!, autoloadDirectory, UsedGenres);
+    discoverTunes(win!, autoloadDirectory, UsedGenres, tuneCache);
   }
 });
 
 ipcMain.on('discoverTunes', () => {
-  const dir: string[] | undefined = dialog.showOpenDialogSync({ properties: ['openDirectory'] });
+  const dir: string[] | undefined = dialog.showOpenDialogSync({
+    properties: ['openDirectory'],
+  });
   if (dir) {
     win?.webContents.send('clearTunes', []);
-    discoverTunes(win!, dir[0], UsedGenres);
+    discoverTunes(win!, dir[0], UsedGenres, tuneCache);
     settings.set('autoload', dir);
   }
-})
+});
 
 function convertToUri(filePath: string) {
   const uri: string = datauri.sync(filePath);

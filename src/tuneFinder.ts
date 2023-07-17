@@ -2,7 +2,7 @@ import { BrowserWindow, app } from 'electron';
 import walk from 'walkdir';
 import * as mm from 'music-metadata';
 import { TuneInfo } from '../src/models/TuneInfo';
-import { writeTunesToFile } from './tuneReaderWriter';
+import { writeTunesToCache } from './tuneCache';
 
 export function discoverTunes(
   renderer: BrowserWindow,
@@ -27,7 +27,7 @@ export function discoverTunes(
   emitter.on('end', () => {
     readMetadataForAllFiles(renderer, files, genres).then(async (tunes) => {
       renderer.webContents.send('discoveredTunes', tunes);
-      writeTunesToFile(tunes, tuneCache)
+      writeTunesToCache(tunes, tuneCache)
         .then(() => renderer.webContents.send('finishedLoading'))
         .catch((error) => console.log('Error caching tunes:' + error));
     });

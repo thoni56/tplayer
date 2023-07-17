@@ -117,7 +117,7 @@ if (isDevelopment) {
   }
 }
 
-import { readTuneCacheAndSend } from './tuneReaderWriter';
+import { readTuneCacheAndSend } from './tuneCache';
 ipcMain.on('renderer-ready', () => {
   if (fs.existsSync(tuneCache)) {
     readTuneCacheAndSend(win!, tuneCache);

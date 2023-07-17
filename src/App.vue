@@ -36,8 +36,11 @@ export default class App extends Vue {
 
   public mounted() {
     (window as any).ipcRenderer.on("discoveredTunes", (event: any, newTunes: TuneInfo[]) => {
-      this.addTunes(newTunes);
+      this.allTunes.push(...newTunes);
       this.$store.commit('FINISHED_LOADING');
+    });
+    (window as any).ipcRenderer.on("discoveredTune", (event: any, newTune: TuneInfo) => {
+      this.allTunes.push(newTune);
     });
     (window as any).ipcRenderer.on("clearTunes", (event: any, args: any[]) => {
       this.$store.commit('CLEAR_TUNES');
@@ -53,11 +56,6 @@ export default class App extends Vue {
     });
     (window as any).ipcRenderer.send('renderer-ready');
   }
-
-  private addTunes(tunes: TuneInfo[]) {
-    this.allTunes.push(...tunes);
-  }
-
 }
 </script>
 

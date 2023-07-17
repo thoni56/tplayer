@@ -14,9 +14,9 @@ export function readTuneCacheAndSend(
       .pipe(parser())
       .pipe(streamArray());
 
-    pipeline.on('data', (tune) => {
+    pipeline.on('data', (data) => {
       // TODO Responsibility to send should be pushed up to caller
-      renderer.webContents.send('discoveredTunes', [tune]);
+      renderer.webContents.send('discoveredTune', data.value as TuneInfo);
     });
 
     pipeline.on('end', () => resolve(result));
@@ -25,6 +25,7 @@ export function readTuneCacheAndSend(
 }
 
 import fs from 'fs';
+import { TuneInfo } from './models/TuneInfo';
 
 export async function writeTunesToCache(tunes: any[], tunesCache: string) {
   const fileStream = fs.createWriteStream(tunesCache, { encoding: 'utf8' });

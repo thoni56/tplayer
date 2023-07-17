@@ -1,10 +1,7 @@
 import { BrowserWindow, app } from 'electron';
 import walk from 'walkdir';
 import * as mm from 'music-metadata';
-import * as jsonfile from 'jsonfile';
 import { TuneInfo } from '../src/models/TuneInfo';
-
-var settings = require('user-settings').file('.tplayerrc');
 
 export function discoverTunes(
   renderer: BrowserWindow,
@@ -27,12 +24,11 @@ export function discoverTunes(
     }
   });
   emitter.on('end', () => {
-    readMetadataForAllFiles(renderer, files, genres).then((tunes) => {
+    readMetadataForAllFiles(renderer, files, genres).then(async (tunes) => {
       renderer.webContents.send('discoveredTunes', tunes);
-      jsonfile
-        .writeFile(tuneCache, tunes)
-        .catch((error) => console.error(error));
-      renderer.webContents.send('finishedLoading');
+      writeTunesToFile(tunes, tuneCache)
+        .then(() => renderer.webContents.send('finishedLoading'))
+        .catch((error) => console.log('Error caching tunes:' + error));
     });
   });
   emitter.on('error', (path: string) => {
@@ -71,4 +67,20 @@ async function readMetadataForAllFiles(
     );
   }
   return all;
+}
+
+import fs from 'fs';
+
+async function writeTunesToFile(tunes: any[], path: string) {
+  const fileStream = fs.createWriteStream(path, { encoding: 'utf8' });
+  fileStream.write('[');
+  tunes.forEach((item, index) => {
+    const itemString = JSON.stringify(item);
+    if (index !== 0) {
+      fileStream.write(',');
+    }
+    fileStream.write(itemString);
+  });
+  fileStream.write(']');
+  fileStream.end();
 }

@@ -2,6 +2,7 @@ import { BrowserWindow, app } from 'electron';
 import walk from 'walkdir';
 import * as mm from 'music-metadata';
 import { TuneInfo } from '../src/models/TuneInfo';
+import { writeTunesToFile } from './tuneReaderWriter';
 
 export function discoverTunes(
   renderer: BrowserWindow,
@@ -67,20 +68,4 @@ async function readMetadataForAllFiles(
     );
   }
   return all;
-}
-
-import fs from 'fs';
-
-async function writeTunesToFile(tunes: any[], path: string) {
-  const fileStream = fs.createWriteStream(path, { encoding: 'utf8' });
-  fileStream.write('[');
-  tunes.forEach((item, index) => {
-    const itemString = JSON.stringify(item);
-    if (index !== 0) {
-      fileStream.write(',');
-    }
-    fileStream.write(itemString);
-  });
-  fileStream.write(']');
-  fileStream.end();
 }

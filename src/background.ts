@@ -117,12 +117,10 @@ if (isDevelopment) {
   }
 }
 
+import { readTuneCacheAndSend } from './tuneReaderWriter';
 ipcMain.on('renderer-ready', () => {
   if (fs.existsSync(tuneCache)) {
-    jsonfile
-      .readFile(tuneCache)
-      .then((tunes) => win?.webContents.send('discoveredTunes', tunes))
-      .catch((error) => console.log(error));
+    readTuneCacheAndSend(win!, tuneCache);
   } else if (autoloadDirectory) {
     discoverTunes(win!, autoloadDirectory, UsedGenres, tuneCache);
   }

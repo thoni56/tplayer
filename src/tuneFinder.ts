@@ -1,6 +1,6 @@
 import { BrowserWindow, app } from 'electron';
 import walk from 'walkdir';
-import * as mm from 'music-metadata';
+import * as musicMetaData from 'music-metadata';
 import { TuneInfo } from '../src/models/TuneInfo';
 import { writeTunesToCache } from './tuneCache';
 
@@ -44,19 +44,19 @@ async function readMetadataForAllFiles(
   genres: string[]
 ) {
   let all = [];
-  let fullProgress = files.length;
-  let doneProgress = 0;
+  let totalProgress = files.length;
+  let actualProgress = 0;
 
   for (let index = 0; index < files.length; index++) {
     try {
-      const metadata = await mm.parseFile(files[index]);
+      const metadata = await musicMetaData.parseFile(files[index]);
       const tuneInfo = new TuneInfo(files[index]);
       tuneInfo.fillFromCommonTags(metadata);
       if (genres.some((g) => tuneInfo.genre && tuneInfo.genre.includes(g))) {
         all.push(tuneInfo);
-        doneProgress++;
+        actualProgress++;
       } else {
-        fullProgress--;
+        totalProgress--;
       }
     } catch (e) {
       // tslint:disable-next-line: no-console
@@ -64,7 +64,7 @@ async function readMetadataForAllFiles(
     }
     renderer.webContents.send(
       'progress',
-      Math.round((doneProgress / fullProgress) * 100)
+      Math.round((actualProgress / totalProgress) * 100)
     );
   }
   return all;

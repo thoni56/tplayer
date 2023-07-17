@@ -7,7 +7,6 @@ import datauri from 'file-to-datauri';
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer';
 import path from 'path';
 import fs from 'fs';
-import jsonfile from 'jsonfile';
 import { UsedGenres } from './genres';
 
 var settings = require('user-settings').file('.tplayerrc');

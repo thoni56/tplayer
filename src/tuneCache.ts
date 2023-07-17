@@ -1,10 +1,12 @@
 import { BrowserWindow } from 'electron';
-import jsonfile from 'jsonfile';
 import { createReadStream } from 'fs';
 import { parser } from 'stream-json';
 import { streamArray } from 'stream-json/streamers/StreamArray';
 
-export function readTuneCacheAndSend(renderer: BrowserWindow, tuneCache: string) {
+export function readTuneCacheAndSend(
+  renderer: BrowserWindow,
+  tuneCache: string
+) {
   return new Promise((resolve, reject) => {
     const result: any[] = [];
 

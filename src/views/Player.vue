@@ -284,7 +284,7 @@ export default class Player extends Vue {
     }
   }
 
-  private setUpHotkeys() {
+  public setUpHotkeys() {
     document.addEventListener("keyup", this.keyListener);
   }
 
@@ -292,11 +292,11 @@ export default class Player extends Vue {
     document.removeEventListener("keyup", this.keyListener);
   }
 
-  private installKeylistner() {
+  public installKeylistner() {
     this.setUpHotkeys();
   }
 
-  private removeKeylistner() {
+  public removeKeylistner() {
     this.tearDownHotkeys();
   }
 

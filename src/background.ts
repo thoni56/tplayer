@@ -39,8 +39,7 @@ async function createWindow() {
   // Create the browser window.
   win = new BrowserWindow({
     title: title,
-    width: 800,
-    height: 600,
+    fullscreen: true,
     webPreferences: {
       nodeIntegration: process.env
         .ELECTRON_NODE_INTEGRATION as unknown as boolean,

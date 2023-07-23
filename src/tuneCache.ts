@@ -3,23 +3,27 @@ import { createReadStream } from 'fs';
 import { parser } from 'stream-json';
 import { streamArray } from 'stream-json/streamers/StreamArray';
 
+function sleep(millis: number): Promise<any> {
+  return new Promise((resolve) => setTimeout(resolve, millis));
+}
+
 export function readTuneCacheAndSend(
   renderer: BrowserWindow,
   tuneCache: string
 ) {
   return new Promise((resolve, reject) => {
-    const result: any[] = [];
+    const tunes: TuneInfo[] = [];
 
     const pipeline = createReadStream(tuneCache)
       .pipe(parser())
       .pipe(streamArray());
 
-    pipeline.on('data', (data) => {
+    pipeline.on('data', async (data) => {
       // TODO Responsibility to send should be pushed up to caller
-      renderer.webContents.send('discoveredTune', data.value as TuneInfo);
+      tunes.push(data.value as TuneInfo);
     });
 
-    pipeline.on('end', () => resolve(result));
+    pipeline.on('end', () => resolve(tunes));
     pipeline.on('error', reject);
   });
 }

@@ -20,7 +20,7 @@ const isDevelopment = process.env.NODE_ENV !== 'production';
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let win: BrowserWindow | null;
+let window: BrowserWindow | null;
 
 // Standard scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
@@ -37,7 +37,7 @@ const title = 'Tplayer - ' + app.getVersion();
 
 async function createWindow() {
   // Create the browser window.
-  win = new BrowserWindow({
+  window = new BrowserWindow({
     title: title,
     fullscreen: true,
     webPreferences: {
@@ -46,24 +46,24 @@ async function createWindow() {
       preload: path.join(__dirname, 'preload.js'),
     },
   });
-  win.setMenu(null);
+  window.setMenu(null);
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
-    win.loadURL(process.env.WEBPACK_DEV_SERVER_URL);
-    win.webContents.on('did-frame-finish-load', () => {
+    window.loadURL(process.env.WEBPACK_DEV_SERVER_URL);
+    window.webContents.on('did-frame-finish-load', () => {
       if (!process.env.IS_TEST) {
-        win!.webContents.openDevTools();
+        window!.webContents.openDevTools();
       }
     });
   } else {
     createProtocol('app');
     // Load the index.html when not in development
-    win.loadURL('app://./index.html');
+    window.loadURL('app://./index.html');
   }
 
-  win.on('closed', () => {
-    win = null;
+  window.on('closed', () => {
+    window = null;
   });
 }
 
@@ -79,7 +79,7 @@ app.on('window-all-closed', () => {
 app.on('activate', async () => {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
-  if (win === null) {
+  if (window === null) {
     await createWindow();
   }
 });
@@ -118,9 +118,11 @@ if (isDevelopment) {
 import { readTuneCacheAndSend } from './tuneCache';
 ipcMain.on('renderer-ready', () => {
   if (fs.existsSync(tuneCache)) {
-    readTuneCacheAndSend(win!, tuneCache);
+    readTuneCacheAndSend(window!, tuneCache).then((tunes) =>
+      window?.webContents.send('discoveredTunes', tunes)
+    );
   } else if (autoloadDirectory) {
-    discoverTunes(win!, autoloadDirectory, UsedGenres, tuneCache);
+    discoverTunes(window!, autoloadDirectory, UsedGenres, tuneCache);
   }
 });
 
@@ -129,8 +131,8 @@ ipcMain.on('discoverTunes', () => {
     properties: ['openDirectory'],
   });
   if (dir) {
-    win?.webContents.send('clearTunes', []);
-    discoverTunes(win!, dir[0], UsedGenres, tuneCache);
+    window?.webContents.send('clearTunes', []);
+    discoverTunes(window!, dir[0], UsedGenres, tuneCache);
     settings.set('autoload', dir);
   }
 });

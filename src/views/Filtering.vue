@@ -173,7 +173,7 @@ export default class Filtering extends Vue {
 
   // Discover tunes over IPC
   public initiateDiscoveringFiles() {
-    (window as any).api.send('discoverTunes');
+    window.api.send('discoverTunes');
   }
 }
 </script>

@@ -35,32 +35,32 @@ export default class App extends Vue {
   }
 
   public mounted() {
-    (window as any).api.on("clearTunes", () => {
+    window.api.on("clearTunes", () => {
       this.$store.commit('CLEAR_TUNES');
       console.log('clear-tunes');
     });
-    (window as any).api.on("startLoading", () => {
+    window.api.on("startLoading", () => {
       this.$store.commit('START_LOADING');
       console.log('start-loading');
     });
-    (window as any).api.on("discoveredTune", (newTune: TuneInfo) => {
+    window.api.on("discoveredTune", (newTune: TuneInfo) => {
       this.allTunes.push(newTune);
       console.log('discoverd-tune');
     });
-    (window as any).api.on("discoveredTunes", (newTunes: TuneInfo[]) => {
+    window.api.on("discoveredTunes", (newTunes: TuneInfo[]) => {
       this.allTunes.push(...newTunes);
       this.$store.commit('FINISHED_LOADING');
       console.log('discovered-tunes');
     });
-    (window as any).api.on("progress", (progress: number) => {
+    window.api.on("progress", (progress: number) => {
       this.$store.commit('PROGRESS', progress);
       console.log('progress:' + progress);
     });
-    (window as any).api.on("finishedLoading", () => {
+    window.api.on("finishedLoading", () => {
       this.$store.commit('FINISHED_LOADING');
       console.log('finished-loading');
     });
-    (window as any).api.send('renderer-ready');
+    window.api.send('renderer-ready');
   }
 }
 </script>

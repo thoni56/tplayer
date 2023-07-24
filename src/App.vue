@@ -35,26 +35,32 @@ export default class App extends Vue {
   }
 
   public mounted() {
-    (window as any).ipcRenderer.on("discoveredTunes", (event: any, newTunes: TuneInfo[]) => {
+    (window as any).api.on("clearTunes", () => {
+      this.$store.commit('CLEAR_TUNES');
+      console.log('clear-tunes');
+    });
+    (window as any).api.on("startLoading", () => {
+      this.$store.commit('START_LOADING');
+      console.log('start-loading');
+    });
+    (window as any).api.on("discoveredTune", (newTune: TuneInfo) => {
+      this.allTunes.push(newTune);
+      console.log('discoverd-tune');
+    });
+    (window as any).api.on("discoveredTunes", (newTunes: TuneInfo[]) => {
       this.allTunes.push(...newTunes);
       this.$store.commit('FINISHED_LOADING');
+      console.log('discovered-tunes');
     });
-    (window as any).ipcRenderer.on("discoveredTune", (event: any, newTune: TuneInfo) => {
-      this.allTunes.push(newTune);
-    });
-    (window as any).ipcRenderer.on("clearTunes", (event: any, args: any[]) => {
-      this.$store.commit('CLEAR_TUNES');
-    });
-    (window as any).ipcRenderer.on("startLoading", (event: any, args: any[]) => {
-      this.$store.commit('START_LOADING');
-    });
-    (window as any).ipcRenderer.on("finishedLoading", (event: any, args: any[]) => {
-      this.$store.commit('FINISHED_LOADING');
-    });
-    (window as any).ipcRenderer.on("progress", (event: any, progress: number) => {
+    (window as any).api.on("progress", (progress: number) => {
       this.$store.commit('PROGRESS', progress);
+      console.log('progress:' + progress);
     });
-    (window as any).ipcRenderer.send('renderer-ready');
+    (window as any).api.on("finishedLoading", () => {
+      this.$store.commit('FINISHED_LOADING');
+      console.log('finished-loading');
+    });
+    (window as any).api.send('renderer-ready');
   }
 }
 </script>

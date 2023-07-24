@@ -39,8 +39,8 @@ async function createWindow() {
   // Create the browser window.
   window = new BrowserWindow({
     title: title,
-    fullscreen: true,
     webPreferences: {
+      contextIsolation: true,
       nodeIntegration: process.env
         .ELECTRON_NODE_INTEGRATION as unknown as boolean,
       preload: path.join(__dirname, 'preload.js'),
@@ -51,7 +51,7 @@ async function createWindow() {
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
     window.loadURL(process.env.WEBPACK_DEV_SERVER_URL);
-    window.webContents.on('did-frame-finish-load', () => {
+    window.webContents.on('did-finish-load', () => {
       if (!process.env.IS_TEST) {
         window!.webContents.openDevTools();
       }
@@ -59,6 +59,7 @@ async function createWindow() {
   } else {
     createProtocol('app');
     // Load the index.html when not in development
+    window.setFullScreen(true);
     window.loadURL('app://./index.html');
   }
 
@@ -115,12 +116,14 @@ if (isDevelopment) {
   }
 }
 
-import { readTuneCacheAndSend } from './tuneCache';
+import { readTunesFromCache } from './tuneCache';
 ipcMain.on('renderer-ready', () => {
+  console.log('renderer-ready');
   if (fs.existsSync(tuneCache)) {
-    readTuneCacheAndSend(window!, tuneCache).then((tunes) =>
-      window?.webContents.send('discoveredTunes', tunes)
-    );
+    readTunesFromCache(tuneCache).then((tunes) => {
+      console.log('readTunesFromCache returned tunes');
+      window!.webContents.send('discoveredTunes', tunes);
+    });
   } else if (autoloadDirectory) {
     discoverTunes(window!, autoloadDirectory, UsedGenres, tuneCache);
   }
@@ -143,6 +146,6 @@ function convertToUri(filePath: string) {
 }
 
 // Synchronous IPC call
-ipcMain.on('convertSongToUri', (event: any, filePath: string) => {
+ipcMain.handle('convertSongToUri', (event: any, filePath: string) => {
   event.returnValue = convertToUri(filePath);
 });

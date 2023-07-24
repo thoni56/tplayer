@@ -322,10 +322,19 @@ export default class Player extends Vue {
   // because we don't need the index in this function...
   // If not, this should be called loadSelectedSong()...
   private async loadSelectedTune() {
-    const uri = (window as any).ipcRenderer.sendSync(
-      "convertSongToUri",
-      this.selectedTune.file
-    );
+    let uri;
+    try {
+      uri = await (window as any).api.sendSync('convertSongToUri',
+        this.selectedTune.file);
+      console.log(uri);
+    } catch (error) {
+      console.error("Could not convert filename to URI");
+    }
+    // Old code
+    //const uri = (window as any).api.sendSync(
+    //  "convertSongToUri",
+    //  this.selectedTune.file
+    //);
     audio.src = uri;
     audio.load();
     this.playing = false;

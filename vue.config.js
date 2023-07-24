@@ -4,7 +4,7 @@ module.exports = {
   },
   pluginOptions: {
     electronBuilder: {
-      preload: 'src/ipc.js'
+      preload: 'src/preload.js'
     }
   }
 }

@@ -167,17 +167,13 @@ export default class Filtering extends Vue {
 
   public bpmRange: number = this.$store.state.selectedBpmRange;
 
-  private changeBpm() {
-    this.$store.commit('CHANGE_BPM', this.bpm);
-  }
-
   public changeBpmRange() {
     this.$store.commit('CHANGE_BPM_RANGE', this.bpmRange);
   }
 
   // Discover tunes over IPC
   public initiateDiscoveringFiles() {
-    (window as any).ipcRenderer.send('discoverTunes');
+    (window as any).api.send('discoverTunes');
   }
 }
 </script>

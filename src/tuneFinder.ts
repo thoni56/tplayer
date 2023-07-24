@@ -5,15 +5,15 @@ import { TuneInfo } from '../src/models/TuneInfo';
 import { writeTunesToCache } from './tuneCache';
 
 export function discoverTunes(
-  renderer: BrowserWindow,
+  window: BrowserWindow,
   directory: string,
   genres: string[],
   tuneCache: string
 ) {
   const files: string[] = [];
   const emitter = walk(directory, { follow_symlinks: true });
-  renderer.webContents.send('progress', 0);
-  renderer.webContents.send('startLoading');
+  window.webContents.send('progress', 0);
+  window.webContents.send('startLoading');
   emitter.on('file', (path: string) => {
     if (
       path.endsWith('.aac') ||
@@ -25,10 +25,10 @@ export function discoverTunes(
     }
   });
   emitter.on('end', () => {
-    readMetadataForAllFiles(renderer, files, genres).then(async (tunes) => {
-      renderer.webContents.send('discoveredTunes', tunes);
+    readMetadataForAllFiles(window, files, genres).then(async (tunes) => {
+      window.webContents.send('discoveredTunes', tunes);
       writeTunesToCache(tunes, tuneCache)
-        .then(() => renderer.webContents.send('finishedLoading'))
+        .then(() => window.webContents.send('finishedLoading'))
         .catch((error) => console.log('Error caching tunes:' + error));
     });
   });
@@ -39,7 +39,7 @@ export function discoverTunes(
 }
 
 async function readMetadataForAllFiles(
-  renderer: BrowserWindow,
+  window: BrowserWindow,
   files: string[],
   genres: string[]
 ) {
@@ -62,7 +62,8 @@ async function readMetadataForAllFiles(
       // tslint:disable-next-line: no-console
       console.log('*** Could not read metadata from ', files[index]);
     }
-    renderer.webContents.send(
+    (window as any).webContents.send(
+      'channel',
       'progress',
       Math.round((actualProgress / totalProgress) * 100)
     );

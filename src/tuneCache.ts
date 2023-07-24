@@ -7,10 +7,7 @@ function sleep(millis: number): Promise<any> {
   return new Promise((resolve) => setTimeout(resolve, millis));
 }
 
-export function readTuneCacheAndSend(
-  renderer: BrowserWindow,
-  tuneCache: string
-) {
+export function readTunesFromCache(tuneCache: string) {
   return new Promise((resolve, reject) => {
     const tunes: TuneInfo[] = [];
 
@@ -19,7 +16,6 @@ export function readTuneCacheAndSend(
       .pipe(streamArray());
 
     pipeline.on('data', async (data) => {
-      // TODO Responsibility to send should be pushed up to caller
       tunes.push(data.value as TuneInfo);
     });
 

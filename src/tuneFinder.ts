@@ -13,7 +13,7 @@ export function discoverTunes(
   const files: string[] = [];
   const emitter = walk(directory, { follow_symlinks: true });
   window.webContents.send('progress', 0);
-  window.webContents.send('startLoading');
+  window.webContents.send('start-loading');
   emitter.on('file', (path: string) => {
     if (
       path.endsWith('.aac') ||
@@ -26,9 +26,9 @@ export function discoverTunes(
   });
   emitter.on('end', () => {
     readMetadataForAllFiles(window, files, genres).then(async (tunes) => {
-      window.webContents.send('discoveredTunes', tunes);
+      window.webContents.send('discovered-tunes', tunes);
       writeTunesToCache(tunes, tuneCache)
-        .then(() => window.webContents.send('finishedLoading'))
+        .then(() => window.webContents.send('finished-loading'))
         .catch((error) => console.log('Error caching tunes:' + error));
     });
   });

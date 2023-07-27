@@ -14,7 +14,7 @@
       ],
       "cwd": "${workspaceFolder}/tests",
       "console": "integratedTerminal",
-      "internalConsoleOptions": "neverOpen",
+      "internalConsoleOptions": "neverOpen"
     },
     {
       "name": "Electron: Main",
@@ -28,9 +28,6 @@
       "args": [
         "--remote-debugging-port=9223",
         "./dist_electron"
-      ],
-      "outFiles": [
-        "${workspaceFolder}/dist_electron/**/*.js"
       ]
     },
     {
@@ -42,7 +39,11 @@
       "timeout": 30000,
       "webRoot": "${workspaceFolder}/src",
       "sourceMapPathOverrides": {
-        "webpack:///./src/*": "${webRoot}/*"
+        "webpack:/*": "${webRoot}/*",
+        "/./*": "${webRoot}/*",
+        "/src/*": "${webRoot}/*",
+        "/*": "*",
+        "/./~/*": "${webRoot}/node_modules/*"
       }
     },
     {

@@ -118,23 +118,22 @@ if (isDevelopment) {
 
 import { readTunesFromCache } from './tuneCache';
 ipcMain.on('renderer-ready', () => {
-  console.log('renderer-ready');
+  ('renderer-ready');
   if (fs.existsSync(tuneCache)) {
     readTunesFromCache(tuneCache).then((tunes) => {
-      console.log('readTunesFromCache returned tunes');
-      window!.webContents.send('discoveredTunes', tunes);
+      window!.webContents.send('discovered-tunes', tunes);
     });
   } else if (autoloadDirectory) {
     discoverTunes(window!, autoloadDirectory, UsedGenres, tuneCache);
   }
 });
 
-ipcMain.on('discoverTunes', () => {
+ipcMain.on('discover-tunes', () => {
   const dir: string[] | undefined = dialog.showOpenDialogSync({
     properties: ['openDirectory'],
   });
   if (dir) {
-    window?.webContents.send('clearTunes', []);
+    window?.webContents.send('clear-tunes', []);
     discoverTunes(window!, dir[0], UsedGenres, tuneCache);
     settings.set('autoload', dir);
   }

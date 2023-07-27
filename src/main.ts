@@ -14,44 +14,49 @@ function getBPM(tune: TuneInfo) {
 }
 
 function genreFilter(t: TuneInfo): boolean {
-  return t.genre ? t.genre.some(g => store.state.selectedGenres.includes(g)) : false;
+  return t.genre
+    ? t.genre.some((g) => store.state.selectedGenres.includes(g))
+    : false;
 }
 
 function bpmFilter(t: TuneInfo): boolean {
   const bpm = store.state.selectedBpm;
   const bpmRange = store.state.selectedBpmRange;
-  const result: boolean =
-    bpm <= getBPM(t) && getBPM(t) <= bpm + bpmRange;
+  const result: boolean = bpm <= getBPM(t) && getBPM(t) <= bpm + bpmRange;
   return bpm === 0 || result;
 }
 
-function searchMatch(whole : string|undefined) {
-  return store.state.searchString == "" || (whole?whole.toUpperCase().includes(store.state.searchString.toUpperCase()):false);
+function searchMatch(whole: string | undefined) {
+  return (
+    store.state.searchString == '' ||
+    (whole
+      ? whole.toUpperCase().includes(store.state.searchString.toUpperCase())
+      : false)
+  );
 }
 function textFilter(t: TuneInfo): boolean {
-  return searchMatch(t.title)||searchMatch(t.artist)||searchMatch(t.album);
+  return searchMatch(t.title) || searchMatch(t.artist) || searchMatch(t.album);
 }
 
 function currentFilter(t: TuneInfo): boolean {
   return genreFilter(t) && bpmFilter(t) && textFilter(t);
 }
 
-
 const store = new Vuex.Store({
   state: {
     loading: false,
     allTunes: [] as Array<TuneInfo>,
-    selectedTune: new TuneInfo(""),
+    selectedTune: new TuneInfo(''),
     selectedGenres: [] as Array<string>,
     selectedBpm: 0,
     selectedBpmRange: 5,
     sortingUp: true,
-    searchString: "",
-    progress: 0
+    searchString: '',
+    progress: 0,
   },
   getters: {
-    filteredTunes: state => {
-      const tunes = state.allTunes.filter(t => currentFilter(t));
+    filteredTunes: (state) => {
+      const tunes = state.allTunes.filter((t) => currentFilter(t));
       if (state.sortingUp) {
         return tunes.sort((tune1, tune2) => {
           return getBPM(tune1) - getBPM(tune2);
@@ -62,16 +67,16 @@ const store = new Vuex.Store({
         });
       }
     },
-    currentBpm: state => {
+    currentBpm: (state) => {
       return state.selectedBpm;
-    }
+    },
   },
   mutations: {
-    SELECT_FILE (state, file: string) {
-      const tune = state.allTunes.find(t => t.file == file);
-      state.selectedTune = tune?tune:new TuneInfo("");
+    SELECT_FILE(state, file: string) {
+      const tune = state.allTunes.find((t) => t.file == file);
+      state.selectedTune = tune ? tune : new TuneInfo('');
     },
-    SELECT_TUNE (state, tune: TuneInfo) {
+    SELECT_TUNE(state, tune: TuneInfo) {
       state.selectedTune = tune;
     },
     CLEAR_TUNES(state) {
@@ -90,7 +95,7 @@ const store = new Vuex.Store({
       state.searchString = string;
     },
     FINISHED_SEARCH(state) {
-      state.searchString = "";
+      state.searchString = '';
     },
     START_LOADING(state) {
       state.loading = true;
@@ -100,12 +105,12 @@ const store = new Vuex.Store({
     },
     FINISHED_LOADING(state) {
       state.loading = false;
-    }
-  }
+    },
+  },
 });
 
 new Vue({
   vuetify,
   store,
-  render: h => h(App)
+  render: (h) => h(App),
 }).$mount('#app');

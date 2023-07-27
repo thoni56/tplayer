@@ -100,7 +100,7 @@ System:
     ☐ Prevent screen lock (https://ourcodeworld.com/articles/read/539/how-to-prevent-that-the-system-enters-in-suspension-sleep-mode-in-electron-framework)
     ✔ Unlock @types/node@12.12.22 depending on https://github.com/DefinitelyTyped/DefinitelyTyped/issues/41224 @done(22-01-11 19:41)
     ☐ Move Filtering to components/
-    ☐ Move TuneFinder.vue to some other directory (helpers?)
+    ☐ Move tuneFinder.ts to some other directory (helpers?)
     ✔ Only load tunes which have a genre that is used @done(22-01-30 12:50)
         
 Bugs:

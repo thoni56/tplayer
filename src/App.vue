@@ -35,19 +35,19 @@ export default class App extends Vue {
   }
 
   public mounted() {
-    window.api.on("clearTunes", () => {
+    window.api.on("clear-tunes", () => {
       this.$store.commit('CLEAR_TUNES');
       console.log('clear-tunes');
     });
-    window.api.on("startLoading", () => {
+    window.api.on("start-loading", () => {
       this.$store.commit('START_LOADING');
       console.log('start-loading');
     });
-    window.api.on("discoveredTune", (newTune: TuneInfo) => {
+    window.api.on("discovered-tune", (newTune: TuneInfo) => {
       this.allTunes.push(newTune);
-      console.log('discoverd-tune');
+      console.log('discovered-tune');
     });
-    window.api.on("discoveredTunes", (newTunes: TuneInfo[]) => {
+    window.api.on("discovered-tunes", (newTunes: TuneInfo[]) => {
       this.allTunes.push(...newTunes);
       this.$store.commit('FINISHED_LOADING');
       console.log('discovered-tunes');
@@ -56,7 +56,7 @@ export default class App extends Vue {
       this.$store.commit('PROGRESS', progress);
       console.log('progress:' + progress);
     });
-    window.api.on("finishedLoading", () => {
+    window.api.on("finished-loading", () => {
       this.$store.commit('FINISHED_LOADING');
       console.log('finished-loading');
     });

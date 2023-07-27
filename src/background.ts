@@ -144,7 +144,8 @@ function convertToUri(filePath: string) {
   return uri;
 }
 
-// Synchronous IPC call
-ipcMain.handle('convertSongToUri', (event: any, filePath: string) => {
-  event.returnValue = convertToUri(filePath);
+// Synchronous IPC call to convert to file path to URI
+ipcMain.handle('convertSongToUri', async (event: any, filePath: string) => {
+  const uri: string = convertToUri(filePath);
+  return uri;
 });

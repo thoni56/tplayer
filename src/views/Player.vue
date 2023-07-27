@@ -120,20 +120,20 @@ export default class Player extends Vue {
   }
 
   // Public events
-  public playOrPause() {
+  public async playOrPause() {
     if (this.playing) {
-      this.pauseTune();
+      await this.pauseTune();
     } else {
-      this.playSelectedTune();
+      await this.playSelectedTune();
     }
   }
 
-  public nextTune() {
-    this.advanceTune(+1);
+  public async nextTune() {
+    await this.advanceTune(+1);
   }
 
-  public previousTune() {
-    this.advanceTune(-1);
+  public async previousTune() {
+    await this.advanceTune(-1);
   }
 
   private async playSelectedTune() {
@@ -155,10 +155,10 @@ export default class Player extends Vue {
     await fadeOut();
   }
 
-  private advanceTune(direction: number) {
+  private async advanceTune(direction: number) {
     if (this.currentTunes.length > 0) {
       if (this.shuffle) {
-        this.moveToTune(this.randomTune());
+        await this.moveToTune(this.randomTune());
       } else {
         if (this.anyTuneSelected()) {
           const indexOfPlayingTune = this.currentTunes.findIndex(
@@ -170,42 +170,42 @@ export default class Player extends Vue {
             this.pickPreviousTune(indexOfPlayingTune);
           }
         } else {
-          this.moveToTune(0);
+          await this.moveToTune(0);
         }
       }
     }
   }
 
-  private pickNextTune(indexOfPlayingTune: number) {
+  private async pickNextTune(indexOfPlayingTune: number) {
     if (indexOfPlayingTune === -1) {
       // If not found, the list has changed so start from beginning
       if (this.currentTunes.length > 0) {
-        this.moveToTune(0);
+        await this.moveToTune(0);
       }
     } else {
       if (indexOfPlayingTune<this.currentTunes.length-1) {
         // More songs to play, so just pick next
-        this.moveToTune(indexOfPlayingTune+1);
+        await this.moveToTune(indexOfPlayingTune+1);
       } else {
         // At last song, restart from beginning
-        this.moveToTune(0);
+        await this.moveToTune(0);
       }
     }
   }
 
-  private pickPreviousTune(indexOfPlayingTune: number) {
+  private async pickPreviousTune(indexOfPlayingTune: number) {
     if (indexOfPlayingTune === -1) {
       // If not found, the list has changed so play last tune
       if (this.currentTunes.length > 0) {
-        this.moveToTune(this.currentTunes.length-1);
+        await this.moveToTune(this.currentTunes.length-1);
       }
     } else {
       if (indexOfPlayingTune > 0) {
         // More songs to play, so just pick previous
-        this.moveToTune(indexOfPlayingTune-1);
+        await this.moveToTune(indexOfPlayingTune-1);
       } else {
         // At first tune so move to end of list
-        this.moveToTune(this.currentTunes.length-1);
+        await this.moveToTune(this.currentTunes.length-1);
       }
     }
   }
@@ -246,10 +246,10 @@ export default class Player extends Vue {
 
   // :click from TuneList
   // Expects a tune to be selected
-  public async loadSelectedTuneAndPlay() {
-    await fadeOut();
-    this.loadSelectedTune();
-    this.playSelectedTune();
+  public loadSelectedTuneAndPlay() {
+    fadeOut().then(() => 
+      this.loadSelectedTune().then(() =>
+        this.playSelectedTune()));
   }
 
   // Hotkeys
@@ -309,32 +309,24 @@ export default class Player extends Vue {
   private async moveToTune(nextIndexToPlay: number) {
     // Assumes the index is valid
     const wasPlaying = this.playing;
-    if (this.playing) await fadeOut();
-    this.timePlayed = 0;
+    if (this.playing)
+      await fadeOut();
     this.$store.commit('SELECT_TUNE', this.currentTunes[nextIndexToPlay]);
     await this.loadSelectedTune();
-    if (wasPlaying) await this.playSelectedTune();
+    this.timePlayed = 0;
+    if (wasPlaying)
+      await this.playSelectedTune();
     this.playTimeoutInhibited = false;
-    scrollIntoView(document.getElementById(this.currentTunes[nextIndexToPlay].file)!, {scrollMode: "if-needed"});
+    scrollIntoView(document.getElementById(this.currentTunes[nextIndexToPlay].file)!,
+      { scrollMode: "if-needed" });
   }
 
   // TODO: should we send in the index? We set the Vuex:selectedTune...
   // because we don't need the index in this function...
   // If not, this should be called loadSelectedSong()...
   private async loadSelectedTune() {
-    let uri;
-    try {
-      uri = await (window as any).api.sendSync('convertSongToUri',
-        this.selectedTune.file);
-      console.log(uri);
-    } catch (error) {
-      console.error("Could not convert filename to URI");
-    }
-    // Old code
-    //const uri = (window as any).api.sendSync(
-    //  "convertSongToUri",
-    //  this.selectedTune.file
-    //);
+    const uri = await window.api.sendSync('convertSongToUri',
+      this.selectedTune.file);
     audio.src = uri;
     audio.load();
     this.playing = false;

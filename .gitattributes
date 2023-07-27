@@ -1,0 +1,8 @@
+* text=auto
+
+*.js text
+*.ts text
+*.vue text
+*.json text
+
+*.png binary

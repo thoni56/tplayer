@@ -62,8 +62,7 @@ async function readMetadataForAllFiles(
       // tslint:disable-next-line: no-console
       console.log('*** Could not read metadata from ', files[index]);
     }
-    (window as any).webContents.send(
-      'channel',
+    window.webContents.send(
       'progress',
       Math.round((actualProgress / totalProgress) * 100)
     );

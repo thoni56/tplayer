@@ -46,7 +46,7 @@
     "@vue/cli-plugin-e2e-cypress": "~5.0.8",
     "@vue/cli-plugin-typescript": "~5.0.8",
     "@vue/cli-service": "~5.0.8",
-    "cypress": "^3.8.3",
+    "cypress": "^12.17.2",
     "electron": "^18.3.7",
     "electron-builder": "^24.6.3",
     "electron-devtools-installer": "^3.2.0",

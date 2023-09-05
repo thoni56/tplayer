@@ -4,36 +4,47 @@
       <div>
         <v-tooltip right>
           <template v-slot:activator="{ on, attrs }">
-            <img v-bind="attrs" v-on="on"
+            <img
+              v-bind="attrs"
+              v-on="on"
               v-if="cover"
               :src="cover"
-              style="object-fit:cover;height:40vh;width:40vh;border-radius:5%;"
+              style="
+                object-fit: cover;
+                height: 40vh;
+                width: 40vh;
+                border-radius: 5%;
+              "
             />
-            <div v-else style="object-fit:cover;height:40vh;width:40vh;"></div>
+            <div
+              v-else
+              style="object-fit: cover; height: 40vh; width: 40vh"
+            ></div>
           </template>
           {{ file }}
         </v-tooltip>
       </div>
-      <div style="margin-left:1%;width:100%;">
-        <div style="font-size:8vh;" class="overflow">{{ title }}</div>
-        <div style="float:left;">
-          <div style="font-size:4vh;" class="overflow">{{ artist }}</div>
-          <div style="font-size:2vh;" class="overflow">{{ album + (track?" - #"+track:"") }}</div>
-          <div style="font-size:2vh;">{{ totaltime }}</div>
+      <div style="margin-left: 1%; width: 100%">
+        <div style="font-size: 8vh" class="overflow">{{ title }}</div>
+        <div style="float: left">
+          <div style="font-size: 4vh" class="overflow">{{ artist }}</div>
+          <div style="font-size: 2vh" class="overflow">
+            {{ album + (track ? ' - #' + track : '') }}
+          </div>
+          <div style="font-size: 2vh">{{ totaltime }}</div>
         </div>
-        <div style="font-size:9vh;text-align:right;">{{ bpm }}</div>
+        <div style="font-size: 9vh; text-align: right">{{ bpm }}</div>
       </div>
     </v-layout>
   </v-container>
 </template>
 
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
-import { formatTime } from "@/models/timeFormatter";
+import { Vue, Component } from 'vue-property-decorator';
+import { formatTime } from '@/models/timeFormatter';
 
 @Component
 export default class TuneDisplay extends Vue {
-
   get selectedTune() {
     return this.$store.state.selectedTune;
   }
@@ -70,7 +81,6 @@ export default class TuneDisplay extends Vue {
     return formatTime(this.selectedTune.duration!);
   }
 }
-
 </script>
 
 <style>

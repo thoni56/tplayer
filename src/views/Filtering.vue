@@ -3,10 +3,12 @@
     <v-layout>
       <v-flex
         shrink
-        style="font-size:3vh;padding-right:3vh;"
+        style="font-size: 3vh; padding-right: 3vh"
         class="col-3 pl-0 pr-0 pb-0 pt-0 text-left"
       >
-        <v-btn color="primary" @click="initiateDiscoveringFiles()">Filtered:</v-btn>
+        <v-btn color="primary" @click="initiateDiscoveringFiles()"
+          >Filtered:</v-btn
+        >
         {{ currentCount }}({{ totalCount }})
       </v-flex>
       <v-layout wrap justify-start>
@@ -20,35 +22,44 @@
           >
         </v-btn-toggle>
       </v-layout>
-      <v-text-field dense v-model="searchString" placeholder="Search" 
-        clearable clear-icon="fa-sort-amount-up" dark @keyup="keypress($event)" hide-details="auto" @focus="startSearch"
-        @click:clear="finishSearch"></v-text-field>
+      <v-text-field
+        dense
+        v-model="searchString"
+        placeholder="Search"
+        clearable
+        clear-icon="fa-sort-amount-up"
+        dark
+        @keyup="keypress($event)"
+        hide-details="auto"
+        @focus="startSearch"
+        @click:clear="finishSearch"
+      ></v-text-field>
       <v-flex>
         <h2 class="float-right">{{ currentTime }}</h2>
       </v-flex>
     </v-layout>
-    <v-layout style="margin-top:-2vh;">
+    <v-layout style="margin-top: -2vh">
       <v-flex
         align-self-center
         shrink
-        style="font-size:2vh;padding-right:0.5vw;"
+        style="font-size: 2vh; padding-right: 0.5vw"
         >BPM:</v-flex
       >
-      <v-flex align-self-center grow style="margin-top:2vh;">
-          <div @keydown.capture="onKeyDown">
-            <v-slider
-              @keypress.prevent
-              grow
-              :hide-details="true"
-              v-model="bpm"
-              :max="300"
-            />
-            </div>
+      <v-flex align-self-center grow style="margin-top: 2vh">
+        <div @keydown.capture="onKeyDown">
+          <v-slider
+            @keypress.prevent
+            grow
+            :hide-details="true"
+            v-model="bpm"
+            :max="300"
+          />
+        </div>
       </v-flex>
       <v-flex
         shrink
         align-self-center
-        style="font-size:5vh;padding-left:0.3vw;padding-right:0;"
+        style="font-size: 5vh; padding-left: 0.3vw; padding-right: 0"
         >{{ bpm }} +</v-flex
       >
       <v-flex shrink align-self-center>
@@ -57,7 +68,12 @@
           v-model="bpmRange"
           :min="0"
           @change="changeBpmRange()"
-          style="font-size:3.5vh;width:3em;margin-right:1vw;padding-right:1vw;"
+          style="
+            font-size: 3.5vh;
+            width: 3em;
+            margin-right: 1vw;
+            padding-right: 1vw;
+          "
         />
       </v-flex>
       <v-flex align-self-center shrink>
@@ -76,7 +92,7 @@ import VueNumericInput from 'vue-numeric-input';
 import { UsedGenres } from '../genres';
 
 @Component({
-  components: { VueNumericInput }
+  components: { VueNumericInput },
 })
 export default class Filtering extends Vue {
   // Store
@@ -98,28 +114,28 @@ export default class Filtering extends Vue {
   }
 
   // Text searching
-  public searchString = "";
+  public searchString = '';
 
   public keypress(e: any) {
-    if (e.key === "Backspace" || e.key === "Delete") {
+    if (e.key === 'Backspace' || e.key === 'Delete') {
       this.$store.commit('START_SEARCH', this.searchString);
     } else {
       this.$store.commit('START_SEARCH', this.searchString);
     }
   }
 
-  public onKeyDown(e : any) {
+  public onKeyDown(e: any) {
     // Don't do anything on keypresses with the bpm-slider in focus
   }
-  
+
   public startSearch() {
-    this.$emit("got-focus");
+    this.$emit('got-focus');
   }
 
   private finishSearch() {
-    this.searchString = "";
+    this.searchString = '';
     this.$store.commit('FINISHED_SEARCH');
-    this.$emit("lost-focus");
+    this.$emit('lost-focus');
   }
 
   // Sorting
@@ -129,14 +145,17 @@ export default class Filtering extends Vue {
 
   // Clock
   private date = new Date();
-  public currentTime = "";
+  public currentTime = '';
 
   private tickTime = 333;
   private tick() {
     this.date = new Date();
-    this.currentTime = ('0' + this.date.getHours()).slice(-2) + ':' +
-                       ('0' + this.date.getMinutes()).slice(-2) + ':' +
-                       ('0' + this.date.getSeconds()).slice(-2);
+    this.currentTime =
+      ('0' + this.date.getHours()).slice(-2) +
+      ':' +
+      ('0' + this.date.getMinutes()).slice(-2) +
+      ':' +
+      ('0' + this.date.getSeconds()).slice(-2);
     setTimeout(() => {
       this.tick();
     }, this.tickTime);
@@ -164,8 +183,12 @@ export default class Filtering extends Vue {
   }
 
   // Tempo bpm & range
-  get bpm(){ return this.$store.state.selectedBpm; }
-  set bpm(val) { this.$store.commit('CHANGE_BPM', val); }
+  get bpm() {
+    return this.$store.state.selectedBpm;
+  }
+  set bpm(val) {
+    this.$store.commit('CHANGE_BPM', val);
+  }
 
   public bpmRange: number = this.$store.state.selectedBpmRange;
 

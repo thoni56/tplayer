@@ -27,7 +27,7 @@
         v-model="searchString"
         placeholder="Search"
         clearable
-        clear-icon="fa-sort-amount-up"
+        clear-icon="fa-times"
         dark
         @keyup="keypress($event)"
         hide-details="auto"
@@ -46,15 +46,13 @@
         >BPM:</v-flex
       >
       <v-flex align-self-center grow style="margin-top: 2vh">
-        <div @keydown.capture="onKeyDown">
-          <v-slider
-            @keypress.prevent
-            grow
-            :hide-details="true"
-            v-model="bpm"
-            :max="300"
-          />
-        </div>
+        <v-slider
+          @keydown.capture="onKeyDown"
+          grow
+          :hide-details="true"
+          v-model="bpm"
+          :max="300"
+        />
       </v-flex>
       <v-flex
         shrink

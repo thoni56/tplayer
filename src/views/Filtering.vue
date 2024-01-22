@@ -38,40 +38,23 @@
         <h2 class="float-right">{{ currentTime }}</h2>
       </v-flex>
     </v-layout>
-    <v-layout style="margin-top: -2vh">
+    <v-layout style="margin-top: -2vh; margin-bottom: -2.5vh">
       <v-flex
+        id="bpm-label"
         align-self-center
         shrink
         style="font-size: 2vh; padding-right: 0.5vw"
         >BPM:</v-flex
       >
-      <v-flex align-self-center grow style="margin-top: 2vh">
-        <v-slider
+      <v-flex align-self-center grow style="margin-top: 5vh">
+        <v-range-slider
           @keydown.capture="onKeyDown"
-          grow
-          :hide-details="true"
-          v-model="bpm"
-          :max="300"
-        />
-      </v-flex>
-      <v-flex
-        shrink
-        align-self-center
-        style="font-size: 5vh; padding-left: 0.3vw; padding-right: 0"
-        >{{ bpm }} +</v-flex
-      >
-      <v-flex shrink align-self-center>
-        <vue-numeric-input
-          controls-type="updown"
+          strict
+          thumb-label="always"
+          show-ticks="always"
           v-model="bpmRange"
-          :min="0"
-          @change="changeBpmRange()"
-          style="
-            font-size: 3.5vh;
-            width: 3em;
-            margin-right: 1vw;
-            padding-right: 1vw;
-          "
+          :max="250"
+          :min="50"
         />
       </v-flex>
       <v-flex align-self-center shrink>
@@ -130,7 +113,7 @@ export default class Filtering extends Vue {
     this.$emit('got-focus');
   }
 
-  private finishSearch() {
+  public finishSearch() {
     this.searchString = '';
     this.$store.commit('FINISHED_SEARCH');
     this.$emit('lost-focus');
@@ -181,17 +164,19 @@ export default class Filtering extends Vue {
   }
 
   // Tempo bpm & range
-  get bpm() {
-    return this.$store.state.selectedBpm;
-  }
-  set bpm(val) {
-    this.$store.commit('CHANGE_BPM', val);
+  get bpmRange() {
+    return [
+      this.$store.state.selectedBpm,
+      this.$store.state.selectedBpm + this.$store.state.selectedBpmRange,
+    ];
   }
 
-  public bpmRange: number = this.$store.state.selectedBpmRange;
-
-  public changeBpmRange() {
-    this.$store.commit('CHANGE_BPM_RANGE', this.bpmRange);
+  set bpmRange(val) {
+    if (val[0] != this.$store.state.selectedBpm) {
+      this.$store.commit('CHANGE_BPM', val[0]);
+    } else {
+      this.$store.commit('CHANGE_BPM_RANGE', val[1] - val[0]);
+    }
   }
 
   // Discover tunes over IPC
@@ -201,18 +186,11 @@ export default class Filtering extends Vue {
 }
 </script>
 <style>
-div.vue-numeric-input.updown {
-  background: var(--v-primary-base);
-  border-radius: 3px;
+.v-slider--horizontal .v-slider__track-container {
+  height: 1.2vh;
 }
-div.vue-numeric-input.updown input.numeric-input {
-  border: 0;
-  color: white;
-}
-div.vue-numeric-input.updown button.btn.btn-increment i.btn-icon {
-  border-bottom-color: white;
-}
-div.vue-numeric-input.updown button.btn.btn-decrement i.btn-icon {
-  border-top-color: white;
+
+#bpm-label {
+  margin-top: 2.5vh;
 }
 </style>

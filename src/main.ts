@@ -48,7 +48,7 @@ const store = new Vuex.Store({
     allTunes: [] as Array<TuneInfo>,
     selectedTune: new TuneInfo(''),
     selectedGenres: [] as Array<string>,
-    selectedBpm: 0,
+    selectedBpm: 120,
     selectedBpmRange: 5,
     sortingUp: true,
     searchString: '',

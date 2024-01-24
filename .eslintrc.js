@@ -8,12 +8,16 @@ module.exports = {
         "Atomics": "readonly",
         "SharedArrayBuffer": "readonly"
     },
+    "parser": "vue-eslint-parser",
     "parserOptions": {
         "ecmaVersion": 2018
     },
     "plugins": [
-        "vue"
+        "vue",
+        "vuetify"
     ],
     "rules": {
+        "vuetify/no-deprecated-classes": "warn",
+        "vuetify/grid-usage": "warn"
     }
 };

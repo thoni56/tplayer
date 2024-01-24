@@ -19,7 +19,7 @@
                 <span class="tune-artist">{{ tune.artist }}</span>
                 <span class="tune-album">{{ tune.album }}</span>
                 <span class="tune-track">{{
-                  tune.track ? "#" + tune.track : ""
+                  tune.track ? '#' + tune.track : ''
                 }}</span>
               </v-list-item-title>
             </v-list-item-content>
@@ -40,20 +40,19 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import { TuneInfo } from "@/models/TuneInfo";
-import { formatTime } from "@/models/timeFormatter";
+import { Component, Vue } from 'vue-property-decorator';
+import { TuneInfo } from '@/models/TuneInfo';
+import { formatTime } from '@/models/timeFormatter';
 
 const ft = formatTime; // To ensure a reference exists
 
 @Component
 export default class TuneList extends Vue {
-
   public tunes(): TuneInfo[] {
     return this.$store.getters.filteredTunes;
   }
 
-  private selectedTune() {
+  public selectedTune() {
     return this.$store.state.selectedTune;
   }
 
@@ -67,7 +66,7 @@ export default class TuneList extends Vue {
   }
 
   public genres(tune: TuneInfo) {
-    return tune.genre ? tune.genre.toString() : "";
+    return tune.genre ? tune.genre.toString() : '';
   }
 }
 </script>
@@ -87,7 +86,7 @@ export default class TuneList extends Vue {
 }
 
 .tune-title:after {
-  content: " - ";
+  content: ' - ';
 }
 
 .tune-artist {
@@ -96,7 +95,7 @@ export default class TuneList extends Vue {
 }
 
 .tune-artist:after {
-  content: " - ";
+  content: ' - ';
 }
 
 .tune-album {
@@ -104,7 +103,7 @@ export default class TuneList extends Vue {
 }
 
 .tune-album:after {
-  content: " - ";
+  content: ' - ';
 }
 
 .tune-track {

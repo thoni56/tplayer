@@ -7,9 +7,8 @@
     "name": "Thomas Nilefalk",
     "email": "thomas@nilefalk.se"
   },
-
-    "appId": "se.nilefalk.tplayer",
-    "icon": "public/tplayer.png",
+  "appId": "se.nilefalk.tplayer",
+  "icon": "public/tplayer.png",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",

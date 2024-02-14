@@ -71,14 +71,14 @@ Player:
     ☐ Shortcuts
         ✔ Space for Play/Pause @done(20-01-01 14:52)
         ✔ N/P for Next/Previous @done(20-01-01 14:52)
-        ☐ F/S (PageUp/PageDown?) for Faster/Slower
+        ✔ F/S (PageUp/PageDown?) for Faster/Slower @done(24-02-14 22:56)
     ☐ Remote control
         ✔ Play and pause using remote control @done(20-01-30 09:48)
         ✔ Next and previous using remote control @done(20-01-30 09:49)
-        ☐ Change tempo using remote control
+        ✔ Change tempo using remote control @done(24-02-14 22:56)
     ✔ If playing, <Next> (manual and auto) should pick a song and play even if selection has changed @done(20-02-02 20:09)
     ✔ Center playlist so that playing song is visible @done(22-01-30 15:23)
-    ☐ Scroll overflowed text (title, album, etc) horizontally
+    ✔ Scroll overflowed text (title, album, etc) horizontally @done(24-02-14 22:56)
     ☐ Formatting of TuneDisplay is wonky if any(?) field (except BPM) is empty or too long
     ☐ Normalize volume (is the volume info from iTunes available?)
 

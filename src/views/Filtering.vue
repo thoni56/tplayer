@@ -69,12 +69,9 @@
 <script lang="ts">
 import Vue from 'vue';
 import { Component } from 'vue-property-decorator';
-import VueNumericInput from 'vue-numeric-input';
 import { UsedGenres } from '../genres';
 
-@Component({
-  components: { VueNumericInput },
-})
+@Component({})
 export default class Filtering extends Vue {
   // Store
   get totalCount() {

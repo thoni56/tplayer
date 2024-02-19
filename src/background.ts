@@ -118,10 +118,12 @@ if (isDevelopment) {
 
 import { readTunesFromCache } from './tuneCache';
 ipcMain.on('renderer-ready', () => {
-  ('renderer-ready');
+  console.log('renderer-ready');
   if (fs.existsSync(tuneCache)) {
+    console.time('readTunesFromCache'); // Start timing
     readTunesFromCache(tuneCache).then((tunes) => {
       window!.webContents.send('discovered-tunes', tunes);
+      console.timeEnd('readTunesFromCache'); // End timing
     });
   } else if (autoloadDirectory) {
     discoverTunes(window!, autoloadDirectory, UsedGenres, tuneCache);

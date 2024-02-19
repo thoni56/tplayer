@@ -52,7 +52,7 @@
             strict
             thumb-label="always"
             show-ticks="always"
-            v-model="bpmRange"
+            v-model="bpmSlider"
             :max="250"
             :min="50"
           />
@@ -71,6 +71,7 @@
 import Vue from 'vue';
 import { Component } from 'vue-property-decorator';
 import { UsedGenres } from '../genres';
+import { debounce } from 'lodash';
 
 @Component({})
 export default class Filtering extends Vue {
@@ -163,6 +164,22 @@ export default class Filtering extends Vue {
   }
 
   // Tempo bpm & range
+  public bpmSliderValues: number[] = [120, 128];
+
+  get bpmSlider() {
+    return this.bpmSliderValues;
+  }
+
+  set bpmSlider(val) {
+    if (val[0] != this.bpmSliderValues[0]) {
+      val[1] += val[0] - this.bpmSliderValues[0];
+      this.bpmSliderValues = val;
+    } else {
+      this.bpmSliderValues[1] = val[1];
+    }
+    this.bpmRange = this.bpmSliderValues;
+  }
+
   get bpmRange() {
     return [
       this.$store.state.selectedBpm,
@@ -170,11 +187,16 @@ export default class Filtering extends Vue {
     ];
   }
 
+  // debounce BPM range changes
+  commitChange = debounce((type: string, payload: any) => {
+    this.$store.commit(type, payload);
+  }, 300);
+
   set bpmRange(val) {
     if (val[0] != this.$store.state.selectedBpm) {
-      this.$store.commit('CHANGE_BPM', val[0]);
+      this.commitChange('CHANGE_BPM', val[0]);
     } else {
-      this.$store.commit('CHANGE_BPM_RANGE', val[1] - val[0]);
+      this.commitChange('CHANGE_BPM_RANGE', val[1] - val[0]);
     }
   }
 

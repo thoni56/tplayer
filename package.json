@@ -19,13 +19,13 @@
     "postinstall": "electron-builder install-app-deps",
     "postuninstall": "electron-builder install-app-deps"
   },
-  "main": "background.js",
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.13.1",
     "@types/stream-json": "^1.7.3",
     "@vue/cli": "^4.5.15",
     "file-to-datauri": "^1.0.1",
     "jsonfile": "^6.1.0",
+    "lodash": "^4.17.21",
     "music-metadata": "^7.11.6",
     "scroll-into-view-if-needed": "^2.2.28",
     "stream-json": "^1.8.0",
@@ -40,6 +40,7 @@
   "devDependencies": {
     "@mdi/font": "^7.0.96",
     "@types/jsonfile": "^6.1.1",
+    "@types/lodash": "^4.14.202",
     "@types/node": "12.12.22",
     "@typescript-eslint/parser": "^5.9.0",
     "@vue/cli-plugin-e2e-cypress": "~5.0.8",

@@ -14,11 +14,10 @@
     "baseUrl": ".",
     "types": [
       "node",
-      "webpack-env",
-      "jest"
+      "webpack-env"
     ],
     "typeRoots": [
-      "./node_modules/@types", 
+      "./node_modules/@types",
       "./node_modules/vuetify/types",
       "./src/types"
     ],

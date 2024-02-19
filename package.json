@@ -1,6 +1,6 @@
 {
   "name": "tplayer",
-  "version": "0.11.0",
+  "version": "0.12.0",
   "private": true,
   "description": "A music player for dance classes with appropriate filtering",
   "author": {
@@ -9,6 +9,7 @@
   },
   "appId": "se.nilefalk.tplayer",
   "icon": "public/tplayer.png",
+  "main": "background.js",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",

@@ -12,7 +12,7 @@ Filtering & Sorting:
     Genres:
         ✔ Push to filter on genre @done(19-04-03 11:26)
         ✔ Keep selected genres in sync with filters by resetting both at mount-time @done(19-04-07 14:20)
-        ☐ Let found genres in the tunes create buttons for filtering
+        ☐ Let found genres in the tunes create buttons for filtering?
     BPM:
         ✔ BPM slider @done(19-10-29 21:05)
         ✔ Display range of BPM @done(19-10-29 21:43)
@@ -93,15 +93,19 @@ Layout:
 Refactoring:
     ☐ Move components up to App, maybe?
     ☐ App is almost empty now, elevate Player?
+    ☐ Move Filtering to components/
+    ☐ Move tuneFinder.ts to some other directory (helpers?)
 
 System:
     ✔ Give progress feedback when loading tunes (load a batch of tunes at a time? progress bar?) @done(20-11-01 16:13)
+    ✔ Unlock @types/node@12.12.22 depending on https://github.com/DefinitelyTyped/DefinitelyTyped/issues/41224 @done(22-01-11 19:41)
+    ✔ Only load tunes which have a genre that is used @done(22-01-30 12:50)
+    ☐ Sign the app
+        ☐ Windows
+        ☐ Mac
+        ☐ Linux
     ☐ Speed up load of tunes, especially if it is the same directory as before
     ☐ Prevent screen lock (https://ourcodeworld.com/articles/read/539/how-to-prevent-that-the-system-enters-in-suspension-sleep-mode-in-electron-framework)
-    ✔ Unlock @types/node@12.12.22 depending on https://github.com/DefinitelyTyped/DefinitelyTyped/issues/41224 @done(22-01-11 19:41)
-    ☐ Move Filtering to components/
-    ☐ Move tuneFinder.ts to some other directory (helpers?)
-    ✔ Only load tunes which have a genre that is used @done(22-01-30 12:50)
         
 Bugs:
     ✔ Is loading of cover art from tunes broken? @done(19-03-21 09:18)
@@ -110,3 +114,5 @@ Bugs:
     ✔ When tune is finished it does not always continue with next song, seems it only plays one second or so @done(19-04-15 22:50)
     ✔ Forward skipping with tune reload and play only works once @done(19-04-15 22:50)
     ☐ Pushing forward or play/pause quickly causes player to come out of sync? Haven't seen this for a while...
+    ☐ Need to push play twice first time to get it to play?
+    ☐ Sometimes forward+play+... puts player in unexpected pause, possibly caused by overrun audio.play()?

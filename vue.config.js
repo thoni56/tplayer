@@ -14,6 +14,12 @@ module.exports = {
             'AppImage',
             'deb',
           ]
+        },
+        win: {
+          target: 'nsis',
+          icon: './public/tplayer.ico',
+          certificateFile: process.env.CERTIFICATE_WINPATH,
+          certificatePassword: process.env.CERTIFICATE_PASSWORD,
         }
       }
     }

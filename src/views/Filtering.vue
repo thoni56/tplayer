@@ -53,8 +53,8 @@
             thumb-label="always"
             show-ticks="always"
             v-model="bpmSlider"
-            :max="250"
-            :min="50"
+            :max="maxBpm"
+            :min="minBpm"
           />
         </div>
       </v-flex>
@@ -71,7 +71,8 @@
 import Vue from 'vue';
 import { Component } from 'vue-property-decorator';
 import { UsedGenres } from '../genres';
-import { debounce } from 'lodash';
+import { debounce, map, min } from 'lodash';
+import { TuneInfo } from '@/models/TuneInfo';
 
 @Component({})
 export default class Filtering extends Vue {
@@ -91,6 +92,22 @@ export default class Filtering extends Vue {
   get sortIcon() {
     if (this.sortingUp) return 'fas fa-sort-amount-up';
     else return 'fas fa-sort-amount-down';
+  }
+
+  get minBpm() {
+    return 33;
+    // return this.$store.state.allTunes.reduce((min: number, track: TuneInfo) => {
+    //   if (track.bpm === undefined) return min;
+    //   return min === null || track.bpm < min ? track.bpm : min;
+    // }, null as number | null);
+  }
+
+  get maxBpm() {
+    return 250;
+    // return this.$store.state.allTunes.reduce((max: number, track: TuneInfo) => {
+    //   if (track.bpm === undefined) return max;
+    //   return max === null || track.bpm > max ? track.bpm : max;
+    // }, null as number | null);
   }
 
   // Text searching

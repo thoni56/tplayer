@@ -50,6 +50,7 @@ const store = new Vuex.Store({
     selectedGenres: [] as Array<string>,
     selectedBpm: 120,
     selectedBpmRange: 5,
+    tunesBpmRange: [] as Array<number>,
     sortingUp: true,
     searchString: '',
     progress: 0,

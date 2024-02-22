@@ -10,10 +10,11 @@ module.exports = {
       builderOptions: {
         linux: {
           target: [
-            'deb',
+            'snap',
             'AppImage',
             'deb',
-          ]
+          ],
+          icon: './public/tplayer.png',
         },
         win: {
           target: 'nsis',

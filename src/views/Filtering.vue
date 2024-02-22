@@ -95,19 +95,17 @@ export default class Filtering extends Vue {
   }
 
   get minBpm() {
-    return 33;
-    // return this.$store.state.allTunes.reduce((min: number, track: TuneInfo) => {
-    //   if (track.bpm === undefined) return min;
-    //   return min === null || track.bpm < min ? track.bpm : min;
-    // }, null as number | null);
+    return this.$store.state.allTunes.reduce((min: number, track: TuneInfo) => {
+      if (track.bpm === undefined) return min;
+      return min === null || track.bpm < min ? track.bpm : min;
+    }, null as number | null);
   }
 
   get maxBpm() {
-    return 250;
-    // return this.$store.state.allTunes.reduce((max: number, track: TuneInfo) => {
-    //   if (track.bpm === undefined) return max;
-    //   return max === null || track.bpm > max ? track.bpm : max;
-    // }, null as number | null);
+    return this.$store.state.allTunes.reduce((max: number, track: TuneInfo) => {
+      if (track.bpm === undefined) return max;
+      return max === null || track.bpm > max ? track.bpm : max;
+    }, null as number | null);
   }
 
   // Text searching

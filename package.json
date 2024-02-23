@@ -44,7 +44,6 @@
     "@types/lodash": "^4.14.202",
     "@types/node": "12.12.22",
     "@typescript-eslint/parser": "^5.9.0",
-    "@vue/cli-plugin-e2e-cypress": "~5.0.8",
     "@vue/cli-plugin-typescript": "~4.5.15",
     "@vue/cli-service": "~4.5.15",
     "electron": "^22.3.25",

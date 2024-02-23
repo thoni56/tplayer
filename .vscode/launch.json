@@ -8,7 +8,7 @@
       "name": "Electron: Main",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "${workspaceRoot}/start-electron-using-nvm.sh",
+      "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron",
       "windows": {
         "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron.cmd"
       },

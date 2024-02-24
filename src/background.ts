@@ -43,11 +43,17 @@ async function createWindow() {
             preload: path.join(__dirname, 'preload.js'),
         },
     });
+    console.log('Window created!');
     window.setMenu(null);
 
     if (process.env.WEBPACK_DEV_SERVER_URL) {
         // Load the url of the dev server if in development mode
-        window.loadURL(process.env.WEBPACK_DEV_SERVER_URL);
+        window
+            .loadURL(process.env.WEBPACK_DEV_SERVER_URL)
+            .then(() => {
+                console.log('Dev URL loaded!');
+            })
+            .catch((err) => console.error('Error loading dev URL', err));
         window.webContents.on('did-finish-load', () => {
             if (!process.env.IS_TEST) {
                 window!.webContents.openDevTools();
@@ -57,7 +63,12 @@ async function createWindow() {
         createProtocol('app');
         // Load the index.html when not in development
         window.setFullScreen(true);
-        window.loadURL('app://./index.html');
+        window
+            .loadURL('app://./index.html')
+            .then(() => {
+                console.log('URL loaded!');
+            })
+            .catch((err) => console.error('Error loading URL', err));
     }
 
     window.on('closed', () => {

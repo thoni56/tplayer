@@ -6,26 +6,20 @@
 </template>
 
 <script lang="ts">
-import {
-  Component,
-  Vue
-} from "vue-property-decorator";
-import Player from "@/views/Player.vue";
-import {
-  TuneInfo
-} from "@/models/TuneInfo";
-import LoadingProgress from "./views/LoadingProgress.vue";
+import { Component, Vue } from 'vue-property-decorator';
+import Player from '@/views/Player.vue';
+import { TuneInfo } from '@/models/TuneInfo';
+import LoadingProgress from './views/LoadingProgress.vue';
 
 Vue.config.productionTip = false;
 
 @Component({
   components: {
     Player,
-    LoadingProgress
-  }
+        LoadingProgress,
+    },
 })
 export default class App extends Vue {
-
   get filteredTunes() {
     return this.$store.getters.filteredTunes;
   }

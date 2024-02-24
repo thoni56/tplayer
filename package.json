@@ -9,7 +9,6 @@
   },
   "appId": "se.nilefalk.tplayer",
   "icon": "public/tplayer.png",
-  "main": "background.js",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",

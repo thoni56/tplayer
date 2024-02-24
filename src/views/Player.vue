@@ -1,41 +1,42 @@
 <template>
-  <v-container id="player" fluid style="padding-top:0;">
-    <v-row>
-      <v-col class="pt-0">
-        <Filtering @reset-hotkeys="setUpHotkeys"
-          @got-focus="removeKeylistner" @lost-focus="installKeylistner" />
-        <TuneDisplay />
-        <Playbar :secondsPlayed="timePlayed" :secondsTotal="timeTotal" />
-        <PlayerControls
-          :playing="playing"
-          @previous-tune="previousTune"
-          @skip-backward="skipBackward"
-          @play-pause="playOrPause"
-          @next-tune="nextTune"
-          @skip-forward="skipForward"
-          @play-timeout="setPlayTimeout"
-          @shuffle-tunes-toggle="toggleShuffle"
-        />
-        <TuneList
-          @click="loadSelectedTuneAndPlay"
-        />
-      </v-col>
-    </v-row>
-  </v-container>
+    <v-container id="player" fluid style="padding-top: 0">
+        <v-row>
+            <v-col class="pt-0">
+                <Filtering
+                    @reset-hotkeys="setUpHotkeys"
+                    @got-focus="removeKeylistner"
+                    @lost-focus="installKeylistner"
+                />
+                <TuneDisplay />
+                <Playbar :secondsPlayed="timePlayed" :secondsTotal="timeTotal" />
+                <PlayerControls
+                    :playing="playing"
+                    @previous-tune="previousTune"
+                    @skip-backward="skipBackward"
+                    @play-pause="playOrPause"
+                    @next-tune="nextTune"
+                    @skip-forward="skipForward"
+                    @play-timeout="setPlayTimeout"
+                    @shuffle-tunes-toggle="toggleShuffle"
+                />
+                <TuneList @click="loadSelectedTuneAndPlay" />
+            </v-col>
+        </v-row>
+    </v-container>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import { TuneInfo } from "@/models/TuneInfo";
-import Filtering from "@/views/Filtering.vue";
-import TuneList from "@/components/TuneList.vue";
-import TuneDisplay from "@/components/TuneDisplay.vue";
-import PlayerControls from "@/components/PlayerControls.vue";
-import Playbar from "@/components/Playbar.vue";
-import scrollIntoView from 'scroll-into-view-if-needed'
+import { Component, Vue } from 'vue-property-decorator';
+import { TuneInfo } from '@/models/TuneInfo';
+import Filtering from '@/views/Filtering.vue';
+import TuneList from '@/components/TuneList.vue';
+import TuneDisplay from '@/components/TuneDisplay.vue';
+import PlayerControls from '@/components/PlayerControls.vue';
+import Playbar from '@/components/Playbar.vue';
+import scrollIntoView from 'scroll-into-view-if-needed';
 
 function sleep(millis: number): Promise<any> {
-  return new Promise(resolve => setTimeout(resolve, millis));
+    return new Promise((resolve) => setTimeout(resolve, millis));
 }
 
 let self: Player;
@@ -43,332 +44,324 @@ let self: Player;
 const fadeStep = 0.1;
 const fadeTime = 100;
 async function fadeOut() {
-  while (audio.volume > fadeStep) {
-    audio.volume -= fadeStep;
-    await sleep(fadeTime);
-  }
-  audio.volume = 0;
-  audio.pause();
-  self.playing = false;
+    while (audio.volume > fadeStep) {
+        audio.volume -= fadeStep;
+        await sleep(fadeTime);
+    }
+    audio.volume = 0;
+    audio.pause();
+    self.playing = false;
 }
 
 async function fadeIn() {
-  await audio.play();
-  while (audio.volume < 1 - fadeStep) {
-    audio.volume += fadeStep;
-    await sleep(fadeTime);
-  }
-  audio.volume = 1;
-  self.playing = true;
+    await audio.play();
+    while (audio.volume < 1 - fadeStep) {
+        audio.volume += fadeStep;
+        await sleep(fadeTime);
+    }
+    audio.volume = 1;
+    self.playing = true;
 }
 
 function timerForPlayedTime() {
-  self.timePlayed = audio.currentTime;
-  setTimeout(timerForPlayedTime, 333);
+    self.timePlayed = audio.currentTime;
+    setTimeout(timerForPlayedTime, 333);
 }
 
 const audio = new Audio();
 
 @Component({
-  components: {
-    Filtering,
-    TuneDisplay,
-    PlayerControls,
-    Playbar,
-    TuneList
-  }
+    components: {
+        Filtering,
+        TuneDisplay,
+        PlayerControls,
+        Playbar,
+        TuneList,
+    },
 })
 export default class Player extends Vue {
-
-  get currentTunes(): TuneInfo[] {
-    return this.$store.getters.filteredTunes;
-  }
-
-  public playing = false;
-  public timePlayed = 0;
-  public timeTotal = 0;
-
-  private playTimeout: number = 0;
-  private playTimeoutInhibited: boolean = false;
-
-
-  private shuffle: boolean = false;
-  private currentShufflePartition: number = 0;
-  private shufflePartitionCount: number = 4;
-
-  get selectedTune() {
-    return this.$store.state.selectedTune;
-  }
-
-  public mounted() {
-    self = this;
-    audio.addEventListener("playing", () => {
-      self.timeTotal = audio.duration;
-    });
-    audio.addEventListener("ended", () => {
-      self.nextTune();
-    });
-
-    setTimeout(timerForPlayedTime, 300);
-    setTimeout(() => self.checkTimeout(), 400);
-
-    this.setUpHotkeys();
-  }
-
-  public beforeDestroyed() {
-    this.tearDownHotkeys();
-  }
-
-  // Public events
-  public async playOrPause() {
-    if (this.playing) {
-      await this.pauseTune();
-    } else {
-      await this.playSelectedTune();
+    get currentTunes(): TuneInfo[] {
+        return this.$store.getters.filteredTunes;
     }
-  }
 
-  public async nextTune() {
-    await this.advanceTune(+1);
-  }
+    public playing = false;
+    public timePlayed = 0;
+    public timeTotal = 0;
 
-  public async previousTune() {
-    await this.advanceTune(-1);
-  }
+    private playTimeout: number = 0;
+    private playTimeoutInhibited: boolean = false;
 
-  private async playSelectedTune() {
-    // Have to have an actual tune selected...
-    if (!this.anyTuneSelected())
-      this.nextTune();
-    await fadeIn(); // Start playing
-  }
+    private shuffle: boolean = false;
+    private currentShufflePartition: number = 0;
+    private shufflePartitionCount: number = 4;
 
-  private checkTimeout() {
-    if (!this.playTimeoutInhibited && this.playTimeout > 0 && this.timePlayed >= this.playTimeout) {
-      this.playTimeoutInhibited = true;
-      self.nextTune();
+    get selectedTune() {
+        return this.$store.state.selectedTune;
     }
-    setTimeout(() => self.checkTimeout(), 400);
-  }
 
-  private async pauseTune() {
-    await fadeOut();
-  }
+    public mounted() {
+        self = this;
+        audio.addEventListener('playing', () => {
+            self.timeTotal = audio.duration;
+        });
+        audio.addEventListener('ended', () => {
+            self.nextTune();
+        });
 
-  private async advanceTune(direction: number) {
-    if (this.currentTunes.length > 0) {
-      if (this.shuffle) {
-        await this.moveToTune(this.randomTune());
-      } else {
-        if (this.anyTuneSelected()) {
-          const indexOfPlayingTune = this.currentTunes.findIndex(
-            tune => tune === this.selectedTune
-          );
-          if (direction > 0) {
-            this.pickNextTune(indexOfPlayingTune);
-          } else {
-            this.pickPreviousTune(indexOfPlayingTune);
-          }
+        setTimeout(timerForPlayedTime, 300);
+        setTimeout(() => self.checkTimeout(), 400);
+
+        this.setUpHotkeys();
+    }
+
+    public beforeDestroyed() {
+        this.tearDownHotkeys();
+    }
+
+    // Public events
+    public async playOrPause() {
+        if (this.playing) {
+            await this.pauseTune();
         } else {
-          await this.moveToTune(0);
+            await this.playSelectedTune();
         }
-      }
     }
-  }
 
-  private async pickNextTune(indexOfPlayingTune: number) {
-    if (indexOfPlayingTune === -1) {
-      // If not found, the list has changed so start from beginning
-      if (this.currentTunes.length > 0) {
-        await this.moveToTune(0);
-      }
-    } else {
-      if (indexOfPlayingTune<this.currentTunes.length-1) {
-        // More songs to play, so just pick next
-        await this.moveToTune(indexOfPlayingTune+1);
-      } else {
-        // At last song, restart from beginning
-        await this.moveToTune(0);
-      }
+    public async nextTune() {
+        await this.advanceTune(+1);
     }
-  }
 
-  private async pickPreviousTune(indexOfPlayingTune: number) {
-    if (indexOfPlayingTune === -1) {
-      // If not found, the list has changed so play last tune
-      if (this.currentTunes.length > 0) {
-        await this.moveToTune(this.currentTunes.length-1);
-      }
-    } else {
-      if (indexOfPlayingTune > 0) {
-        // More songs to play, so just pick previous
-        await this.moveToTune(indexOfPlayingTune-1);
-      } else {
-        // At first tune so move to end of list
-        await this.moveToTune(this.currentTunes.length-1);
-      }
+    public async previousTune() {
+        await this.advanceTune(-1);
     }
-  }
 
-  // Events:
-
-  public skipBackward() {
-    if (this.playing) {
-      audio.currentTime = Math.max(0, audio.currentTime-10);
+    private async playSelectedTune() {
+        // Have to have an actual tune selected...
+        if (!this.anyTuneSelected()) this.nextTune();
+        await fadeIn(); // Start playing
     }
-  }
 
-  public skipForward() {
-    if (this.playing) {
-      audio.currentTime = Math.min(audio.currentTime+10, audio.duration-10);
+    private checkTimeout() {
+        if (
+            !this.playTimeoutInhibited &&
+            this.playTimeout > 0 &&
+            this.timePlayed >= this.playTimeout
+        ) {
+            this.playTimeoutInhibited = true;
+            self.nextTune();
+        }
+        setTimeout(() => self.checkTimeout(), 400);
     }
-  }
 
-// select shuffle from PlayerControls
-  public toggleShuffle() {
-    this.shuffle = !this.shuffle;
-  }
-
-  // select timeout from PlayerControls
-  public setPlayTimeout(seconds: number) {
-    this.playTimeout = seconds;
-  }
-
-  private faster() {
-    let bpm = this.$store.state.selectedBpm;
-    this.$store.commit('CHANGE_BPM', bpm+4);
-  }
-  
-  private slower() {
-    let bpm = this.$store.getters.currentBpm;
-    this.$store.commit('CHANGE_BPM', bpm-3);
-  }
-
-  // :click from TuneList
-  // Expects a tune to be selected
-  public loadSelectedTuneAndPlay() {
-    fadeOut().then(() => 
-      this.loadSelectedTune().then(() =>
-        this.playSelectedTune()));
-  }
-
-  // Hotkeys
-  private keyListener(e: KeyboardEvent) {
-    e.preventDefault();
-    switch (e.key) {
-      case "p": // Previous
-      case "ArrowLeft":
-      case "BrowserBack":
-        this.previousTune();
-        break;
-      case "n": // Next
-      case "ArrowRight":
-      case "BrowserForward":
-        this.nextTune();
-        break;
-      case " ": // Toogle Play/Pause
-      case "Enter":
-        this.playOrPause();
-        break;
-      // Don't know how to implement these, since bpm is inside Filtering...
-      case "f": // Faster
-      case "PageUp":
-        this.faster();
-        break;
-      case "s": // Slower
-      case "PageDown":
-        this.slower();
-        break;
-      case "Unidentified":
-      // Maybe "Menu" on Apple remote
+    private async pauseTune() {
+        await fadeOut();
     }
-  }
 
-  public setUpHotkeys() {
-    document.addEventListener("keyup", this.keyListener);
-  }
+    private async advanceTune(direction: number) {
+        if (this.currentTunes.length > 0) {
+            if (this.shuffle) {
+                await this.moveToTune(this.randomTune());
+            } else {
+                if (this.anyTuneSelected()) {
+                    const indexOfPlayingTune = this.currentTunes.findIndex(
+                        (tune) => tune === this.selectedTune
+                    );
+                    if (direction > 0) {
+                        this.pickNextTune(indexOfPlayingTune);
+                    } else {
+                        this.pickPreviousTune(indexOfPlayingTune);
+                    }
+                } else {
+                    await this.moveToTune(0);
+                }
+            }
+        }
+    }
 
-  private tearDownHotkeys() {
-    document.removeEventListener("keyup", this.keyListener);
-  }
+    private async pickNextTune(indexOfPlayingTune: number) {
+        if (indexOfPlayingTune === -1) {
+            // If not found, the list has changed so start from beginning
+            if (this.currentTunes.length > 0) {
+                await this.moveToTune(0);
+            }
+        } else {
+            if (indexOfPlayingTune < this.currentTunes.length - 1) {
+                // More songs to play, so just pick next
+                await this.moveToTune(indexOfPlayingTune + 1);
+            } else {
+                // At last song, restart from beginning
+                await this.moveToTune(0);
+            }
+        }
+    }
 
-  public installKeylistner() {
-    this.setUpHotkeys();
-  }
+    private async pickPreviousTune(indexOfPlayingTune: number) {
+        if (indexOfPlayingTune === -1) {
+            // If not found, the list has changed so play last tune
+            if (this.currentTunes.length > 0) {
+                await this.moveToTune(this.currentTunes.length - 1);
+            }
+        } else {
+            if (indexOfPlayingTune > 0) {
+                // More songs to play, so just pick previous
+                await this.moveToTune(indexOfPlayingTune - 1);
+            } else {
+                // At first tune so move to end of list
+                await this.moveToTune(this.currentTunes.length - 1);
+            }
+        }
+    }
 
-  public removeKeylistner() {
-    this.tearDownHotkeys();
-  }
+    // Events:
 
+    public skipBackward() {
+        if (this.playing) {
+            audio.currentTime = Math.max(0, audio.currentTime - 10);
+        }
+    }
 
+    public skipForward() {
+        if (this.playing) {
+            audio.currentTime = Math.min(audio.currentTime + 10, audio.duration - 10);
+        }
+    }
 
-  private anyTuneSelected(): boolean {
-    return this.selectedTune.file !== "";
-  }
+    // select shuffle from PlayerControls
+    public toggleShuffle() {
+        this.shuffle = !this.shuffle;
+    }
 
-  private async moveToTune(nextIndexToPlay: number) {
-    // Assumes the index is valid
-    const wasPlaying = this.playing;
-    if (this.playing)
-      await fadeOut();
-    this.$store.commit('SELECT_TUNE', this.currentTunes[nextIndexToPlay]);
-    await this.loadSelectedTune();
-    this.timePlayed = 0;
-    if (wasPlaying)
-      await this.playSelectedTune();
-    this.playTimeoutInhibited = false;
-    scrollIntoView(document.getElementById(this.currentTunes[nextIndexToPlay].file)!,
-      { scrollMode: "if-needed" });
-  }
+    // select timeout from PlayerControls
+    public setPlayTimeout(seconds: number) {
+        this.playTimeout = seconds;
+    }
 
-  // TODO: should we send in the index? We set the Vuex:selectedTune...
-  // because we don't need the index in this function...
-  // If not, this should be called loadSelectedSong()...
-  private async loadSelectedTune() {
-    const uri = await window.api.sendSync('convertSongToUri',
-      this.selectedTune.file);
-    audio.src = uri;
-    audio.load();
-    this.playing = false;
-    this.timePlayed = 0;
-    this.timeTotal = audio.duration;
-  }
+    private faster() {
+        let bpm = this.$store.state.selectedBpm;
+        this.$store.commit('CHANGE_BPM', bpm + 4);
+    }
 
-  private randomBetween(min: number, max: number): number {
-    return min + Math.floor(Math.random() * Math.floor(max));
-  }
+    private slower() {
+        let bpm = this.$store.getters.currentBpm;
+        this.$store.commit('CHANGE_BPM', bpm - 3);
+    }
 
-  private randomTune(): number {
-    // Round-robin over partitions
-    const currentPartition: number = this.currentShufflePartition++;
-    this.currentShufflePartition =
-      this.currentShufflePartition % this.shufflePartitionCount;
+    // :click from TuneList
+    // Expects a tune to be selected
+    public loadSelectedTuneAndPlay() {
+        fadeOut().then(() => this.loadSelectedTune().then(() => this.playSelectedTune()));
+    }
 
-    // Partition list of tunes into four sets of evenly distributed BPMs
-    const tmin: TuneInfo = this.currentTunes.reduce(
-      (t1: TuneInfo, t2: TuneInfo) => (t1.bpm! < t2.bpm! ? t1 : t2)
-    );
-    const tmax: TuneInfo = this.currentTunes.reduce(
-      (t1: TuneInfo, t2: TuneInfo) => (t1.bpm! > t2.bpm! ? t1 : t2)
-    );
+    // Hotkeys
+    private keyListener(e: KeyboardEvent) {
+        e.preventDefault();
+        switch (e.key) {
+            case 'p': // Previous
+            case 'ArrowLeft':
+            case 'BrowserBack':
+                this.previousTune();
+                break;
+            case 'n': // Next
+            case 'ArrowRight':
+            case 'BrowserForward':
+                this.nextTune();
+                break;
+            case ' ': // Toogle Play/Pause
+            case 'Enter':
+                this.playOrPause();
+                break;
+            // Don't know how to implement these, since bpm is inside Filtering...
+            case 'f': // Faster
+            case 'PageUp':
+                this.faster();
+                break;
+            case 's': // Slower
+            case 'PageDown':
+                this.slower();
+                break;
+            case 'Unidentified':
+            // Maybe "Menu" on Apple remote
+        }
+    }
 
-    const bpmMin: number = tmin.bpm!;
-    const bpmMax: number = tmax.bpm!;
-    const bpmRange: number = bpmMax - bpmMin;
-    const partitionSize: number = Math.floor(
-      bpmRange / this.shufflePartitionCount
-    );
+    public setUpHotkeys() {
+        document.addEventListener('keyup', this.keyListener);
+    }
 
-    const partitionMin: number = bpmMin + currentPartition * partitionSize;
-    const partitionMax: number = partitionMin + partitionSize;
+    private tearDownHotkeys() {
+        document.removeEventListener('keyup', this.keyListener);
+    }
 
-    // Select a random tune in that partition
-    const partition = this.currentTunes.filter(
-      (t: TuneInfo) => t.bpm! >= partitionMin && t.bpm! <= partitionMax
-    );
-    const randomTune = partition[this.randomBetween(0, partition.length)];
+    public installKeylistner() {
+        this.setUpHotkeys();
+    }
 
-    return this.currentTunes.findIndex(tune => tune.file === randomTune.file);
-  }
+    public removeKeylistner() {
+        this.tearDownHotkeys();
+    }
+
+    private anyTuneSelected(): boolean {
+        return this.selectedTune.file !== '';
+    }
+
+    private async moveToTune(nextIndexToPlay: number) {
+        // Assumes the index is valid
+        const wasPlaying = this.playing;
+        if (this.playing) await fadeOut();
+        this.$store.commit('SELECT_TUNE', this.currentTunes[nextIndexToPlay]);
+        await this.loadSelectedTune();
+        this.timePlayed = 0;
+        if (wasPlaying) await this.playSelectedTune();
+        this.playTimeoutInhibited = false;
+        scrollIntoView(document.getElementById(this.currentTunes[nextIndexToPlay].file)!, {
+            scrollMode: 'if-needed',
+        });
+    }
+
+    // TODO: should we send in the index? We set the Vuex:selectedTune...
+    // because we don't need the index in this function...
+    // If not, this should be called loadSelectedSong()...
+    private async loadSelectedTune() {
+        const uri = await window.api.sendSync('convertSongToUri', this.selectedTune.file);
+        audio.src = uri;
+        audio.load();
+        this.playing = false;
+        this.timePlayed = 0;
+        this.timeTotal = audio.duration;
+    }
+
+    private randomBetween(min: number, max: number): number {
+        return min + Math.floor(Math.random() * Math.floor(max));
+    }
+
+    private randomTune(): number {
+        // Round-robin over partitions
+        const currentPartition: number = this.currentShufflePartition++;
+        this.currentShufflePartition = this.currentShufflePartition % this.shufflePartitionCount;
+
+        // Partition list of tunes into four sets of evenly distributed BPMs
+        const tmin: TuneInfo = this.currentTunes.reduce((t1: TuneInfo, t2: TuneInfo) =>
+            t1.bpm! < t2.bpm! ? t1 : t2
+        );
+        const tmax: TuneInfo = this.currentTunes.reduce((t1: TuneInfo, t2: TuneInfo) =>
+            t1.bpm! > t2.bpm! ? t1 : t2
+        );
+
+        const bpmMin: number = tmin.bpm!;
+        const bpmMax: number = tmax.bpm!;
+        const bpmRange: number = bpmMax - bpmMin;
+        const partitionSize: number = Math.floor(bpmRange / this.shufflePartitionCount);
+
+        const partitionMin: number = bpmMin + currentPartition * partitionSize;
+        const partitionMax: number = partitionMin + partitionSize;
+
+        // Select a random tune in that partition
+        const partition = this.currentTunes.filter(
+            (t: TuneInfo) => t.bpm! >= partitionMin && t.bpm! <= partitionMax
+        );
+        const randomTune = partition[this.randomBetween(0, partition.length)];
+
+        return this.currentTunes.findIndex((tune) => tune.file === randomTune.file);
+    }
 }
 </script>

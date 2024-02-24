@@ -14,9 +14,7 @@ function getBPM(tune: TuneInfo) {
 }
 
 function genreFilter(t: TuneInfo): boolean {
-  return t.genre
-    ? t.genre.some((g) => store.state.selectedGenres.includes(g))
-    : false;
+    return t.genre ? t.genre.some((g) => store.state.selectedGenres.includes(g)) : false;
 }
 
 function bpmFilter(t: TuneInfo): boolean {
@@ -29,9 +27,7 @@ function bpmFilter(t: TuneInfo): boolean {
 function searchMatch(whole: string | undefined) {
   return (
     store.state.searchString == '' ||
-    (whole
-      ? whole.toUpperCase().includes(store.state.searchString.toUpperCase())
-      : false)
+        (whole ? whole.toUpperCase().includes(store.state.searchString.toUpperCase()) : false)
   );
 }
 function textFilter(t: TuneInfo): boolean {

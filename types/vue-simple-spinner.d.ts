@@ -1,4 +1,4 @@
 declare module 'vue-simple-spinner' {
-  const Spinner: any;
-  export default Spinner;
- }
+    const Spinner: any;
+    export default Spinner;
+}

@@ -1,3 +1,3 @@
 declare module 'vue-spinners' {
-  export const PulseLoader: any;
+    export const PulseLoader: any;
 }

@@ -1,42 +1,34 @@
 <template>
-  <v-container fluid>
-    <v-layout align-start>
-      <div>
-        <v-tooltip right>
-          <template v-slot:activator="{ on, attrs }">
-            <img
-              v-bind="attrs"
-              v-on="on"
-              v-if="cover"
-              :src="cover"
-              style="
-                object-fit: cover;
-                height: 40vh;
-                width: 40vh;
-                border-radius: 5%;
-              "
-            />
-            <div
-              v-else
-              style="object-fit: cover; height: 40vh; width: 40vh"
-            ></div>
-          </template>
-          {{ file }}
-        </v-tooltip>
-      </div>
-      <div style="margin-left: 1%; width: 100%">
-        <div style="font-size: 8vh" class="overflow">{{ title }}</div>
-        <div style="float: left">
-          <div style="font-size: 4vh" class="overflow">{{ artist }}</div>
-          <div style="font-size: 2vh" class="overflow">
-            {{ album + (track ? ' - #' + track : '') }}
-          </div>
-          <div style="font-size: 2vh">{{ totaltime }}</div>
-        </div>
-        <div style="font-size: 9vh; text-align: right">{{ bpm }}</div>
-      </div>
-    </v-layout>
-  </v-container>
+    <v-container fluid>
+        <v-layout align-start>
+            <div>
+                <v-tooltip right>
+                    <template v-slot:activator="{ on, attrs }">
+                        <img
+                            v-bind="attrs"
+                            v-on="on"
+                            v-if="cover"
+                            :src="cover"
+                            style="object-fit: cover; height: 40vh; width: 40vh; border-radius: 5%"
+                        />
+                        <div v-else style="object-fit: cover; height: 40vh; width: 40vh"></div>
+                    </template>
+                    {{ file }}
+                </v-tooltip>
+            </div>
+            <div style="margin-left: 1%; width: 100%">
+                <div style="font-size: 8vh" class="overflow">{{ title }}</div>
+                <div style="float: left">
+                    <div style="font-size: 4vh" class="overflow">{{ artist }}</div>
+                    <div style="font-size: 2vh" class="overflow">
+                        {{ album + (track ? ' - #' + track : '') }}
+                    </div>
+                    <div style="font-size: 2vh">{{ totaltime }}</div>
+                </div>
+                <div style="font-size: 9vh; text-align: right">{{ bpm }}</div>
+            </div>
+        </v-layout>
+    </v-container>
 </template>
 
 <script lang="ts">
@@ -45,67 +37,67 @@ import { formatTime } from '@/models/timeFormatter';
 
 @Component
 export default class TuneDisplay extends Vue {
-  get selectedTune() {
-    return this.$store.state.selectedTune;
-  }
+    get selectedTune() {
+        return this.$store.state.selectedTune;
+    }
 
-  get cover() {
-    return this.selectedTune.cover;
-  }
+    get cover() {
+        return this.selectedTune.cover;
+    }
 
-  get title() {
-    return this.selectedTune.title;
-  }
+    get title() {
+        return this.selectedTune.title;
+    }
 
-  get file() {
-    return this.selectedTune.file;
-  }
+    get file() {
+        return this.selectedTune.file;
+    }
 
-  get artist() {
-    return this.selectedTune.artist;
-  }
+    get artist() {
+        return this.selectedTune.artist;
+    }
 
-  get album() {
-    return this.selectedTune.album;
-  }
+    get album() {
+        return this.selectedTune.album;
+    }
 
-  get track() {
-    return this.selectedTune.track;
-  }
+    get track() {
+        return this.selectedTune.track;
+    }
 
-  get bpm() {
-    return this.selectedTune.bpm;
-  }
+    get bpm() {
+        return this.selectedTune.bpm;
+    }
 
-  get totaltime() {
-    return formatTime(this.selectedTune.duration!);
-  }
+    get totaltime() {
+        return formatTime(this.selectedTune.duration!);
+    }
 }
 </script>
 
 <style>
 .overflow {
-  white-space: nowrap;
-  overflow-x: hidden;
-  text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
 }
 
 .overflow-scroll {
-  white-space: nowrap;
-  overflow-x: hidden;
-  text-overflow: clip;
-  /*animation: scrolling 20s linear infinite;*/
+    white-space: nowrap;
+    overflow-x: hidden;
+    text-overflow: clip;
+    /*animation: scrolling 20s linear infinite;*/
 }
 
 @keyframes scrolling {
-  0% {
-    transform: translateX(0%);
-  }
-  50% {
-    transform: translateX(0%);
-  }
-  100% {
-    transform: translateX(-100%);
-  }
+    0% {
+        transform: translateX(0%);
+    }
+    50% {
+        transform: translateX(0%);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
 }
 </style>

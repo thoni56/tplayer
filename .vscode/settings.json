@@ -7,5 +7,6 @@
     "editor.formatOnType": true,
     "editor.formatOnSaveMode": "file",
     "editor.formatOnPaste": true,
-    "editor.formatOnSave": true
+    "editor.formatOnSave": true,
+    "editor.detectIndentation": false
 }

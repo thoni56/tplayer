@@ -8,12 +8,15 @@
             "name": "Electron: Main",
             "type": "node",
             "request": "launch",
-            "runtimeExecutable": "${workspaceRoot}/start-electron-using-nvm.sh",
+            "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron",
             "windows": {
                 "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron.cmd"
             },
             "preLaunchTask": "electron-debug",
-            "args": ["--remote-debugging-port=9223", "./dist_electron"]
+            "args": [
+                "--remote-debugging-port=9223",
+                "./dist_electron"
+            ]
         },
         {
             "name": "Electron: Renderer",
@@ -23,12 +26,10 @@
             "urlFilter": "http://localhost:*",
             "timeout": 30000,
             "webRoot": "${workspaceFolder}/src",
+            "sourceMaps": true,
+            "trace": true,
             "sourceMapPathOverrides": {
-                "webpack:/*": "${webRoot}/*",
-                "/./*": "${webRoot}/*",
-                "/src/*": "${webRoot}/*",
-                "/*": "*",
-                "/./~/*": "${webRoot}/node_modules/*"
+                "webpack:///./src/*": "${webRoot}/*",
             }
         },
         {
@@ -36,7 +37,13 @@
             "request": "launch",
             "name": "Read Music Metadata for file",
             "program": "${workspaceFolder}/read-music-metadata.js",
-            "args": ["--no-timeouts", "--colors", "${file}", "--require", "ts-node/register"],
+            "args": [
+                "--no-timeouts",
+                "--colors",
+                "${file}",
+                "--require",
+                "ts-node/register"
+            ],
             "console": "integratedTerminal",
             "sourceMaps": true,
             "internalConsoleOptions": "neverOpen"
@@ -45,7 +52,10 @@
     "compounds": [
         {
             "name": "Electron: All",
-            "configurations": ["Electron: Main", "Electron: Renderer"]
+            "configurations": [
+                "Electron: Main",
+                "Electron: Renderer"
+            ]
         }
     ]
 }

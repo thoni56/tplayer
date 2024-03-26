@@ -163,29 +163,6 @@ export default class Filtering extends Vue {
     }
 
     // Tempo bpm & range
-    public bpmSliderValues: number[] = [120, 128];
-
-    get bpmSlider() {
-        return this.bpmSliderValues;
-    }
-
-    set bpmSlider(val) {
-        if (val[0] != this.bpmSliderValues[0]) {
-            val[1] += val[0] - this.bpmSliderValues[0];
-            this.bpmSliderValues = val;
-        } else {
-            this.bpmSliderValues[1] = val[1];
-        }
-        this.bpmRange = this.bpmSliderValues;
-    }
-
-    get bpmRange() {
-        return [
-            this.$store.state.selectedBpm,
-            this.$store.state.selectedBpm + this.$store.state.selectedBpmRange,
-        ];
-    }
-
     get minBpm() {
         try {
             let m = this.$store.state.allTunes.reduce((min: number, track: TuneInfo) => {
@@ -211,6 +188,31 @@ export default class Filtering extends Vue {
             return 1000;
         }
     }
+
+    // Slider model
+    public bpmSliderValues: number[] = [120, 128];
+
+    get bpmSlider() {
+        return this.bpmSliderValues;
+    }
+
+    set bpmSlider(val) {
+        if (val[0] != this.bpmSliderValues[0]) {
+            val[1] += val[0] - this.bpmSliderValues[0];
+            this.bpmSliderValues = val;
+        } else {
+            this.bpmSliderValues[1] = val[1];
+        }
+        this.bpmRange = this.bpmSliderValues;
+    }
+
+    get bpmRange() {
+        return [
+            this.$store.state.selectedBpm,
+            this.$store.state.selectedBpm + this.$store.state.selectedBpmRange,
+        ];
+    }
+
     // debounce BPM range changes
     commitChange = debounce((type: string, payload: any) => {
         this.$store.commit(type, payload);
@@ -222,6 +224,13 @@ export default class Filtering extends Vue {
         } else {
             this.commitChange('CHANGE_BPM_RANGE', val[1] - val[0]);
         }
+    }
+
+    // Handle FASTER event from user
+    public changeBpm(n: number) {
+        this.$set(this.bpmSliderValues, 0, this.bpmSliderValues[0] + n);
+        this.$set(this.bpmSliderValues, 1, this.bpmSliderValues[1] + n);
+        this.commitChange('CHANGE_BPM', this.bpmSliderValues[0]);
     }
 
     // Discover tunes over IPC

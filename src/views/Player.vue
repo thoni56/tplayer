@@ -3,6 +3,7 @@
         <v-row>
             <v-col class="pt-0">
                 <Filtering
+                    ref="filtering"
                     @reset-hotkeys="setUpHotkeys"
                     @got-focus="removeKeylistner"
                     @lost-focus="installKeylistner"
@@ -69,6 +70,10 @@ function timerForPlayedTime() {
 }
 
 const audio = new Audio();
+
+export interface FilteringInterface extends Vue {
+    changeBpm(n: number): void;
+}
 
 @Component({
     components: {
@@ -237,13 +242,13 @@ export default class Player extends Vue {
     }
 
     private faster() {
-        let bpm = this.$store.state.selectedBpm;
-        this.$store.commit('CHANGE_BPM', bpm + 4);
+        const filtering = this.$refs.filtering as FilteringInterface;
+        filtering.changeBpm(4);
     }
 
     private slower() {
-        let bpm = this.$store.getters.currentBpm;
-        this.$store.commit('CHANGE_BPM', bpm - 3);
+        const filtering = this.$refs.filtering as FilteringInterface;
+        filtering!.changeBpm(-3);
     }
 
     // :click from TuneList
@@ -293,10 +298,12 @@ export default class Player extends Vue {
 
     public installKeylistner() {
         this.setUpHotkeys();
+        console.log('Key listener installed!');
     }
 
     public removeKeylistner() {
         this.tearDownHotkeys();
+        console.log('Key listener removed!');
     }
 
     private anyTuneSelected(): boolean {

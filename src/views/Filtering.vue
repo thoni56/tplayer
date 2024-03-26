@@ -20,18 +20,21 @@
                     >
                 </v-btn-toggle>
             </v-layout>
-            <v-text-field
-                dense
-                v-model="searchString"
-                placeholder="Search"
-                clearable
-                clear-icon="fa-times"
-                dark
-                @keyup="keypress($event)"
-                hide-details="auto"
-                @focus="startSearch"
-                @click:clear="finishSearch"
-            ></v-text-field>
+            <div tabindex="-1" ref="searchFieldWrapper">
+                <v-text-field
+                    ref="searchField"
+                    dense
+                    v-model="searchString"
+                    placeholder="Search"
+                    clearable
+                    clear-icon="fa-times"
+                    dark
+                    @keyup="keypress($event)"
+                    hide-details="auto"
+                    @focus="startSearch"
+                    @click:clear="finishSearch"
+                ></v-text-field>
+            </div>
             <v-flex>
                 <h2 class="float-right">{{ currentTime }}</h2>
             </v-flex>
@@ -45,7 +48,7 @@
                 >BPM:</v-flex
             >
             <v-flex align-self-center grow style="margin-top: 5vh">
-                <div @keydown.capture="ignoreKeyDown($event)">
+                <div @keydown.capture="ignoreKeyDownForBpmSlider($event)">
                     <v-range-slider
                         strict
                         thumb-label="always"
@@ -103,7 +106,7 @@ export default class Filtering extends Vue {
         }
     }
 
-    public ignoreKeyDown(e: any) {
+    public ignoreKeyDownForBpmSlider(e: any) {
         // Prevent keypresses with the bpm-slider in focus to be handled by slider
         e.stopPropagation(); // do not propagate the keydown event
     }
@@ -114,6 +117,7 @@ export default class Filtering extends Vue {
 
     public finishSearch() {
         this.searchString = '';
+        (this.$refs.searchFieldWrapper as HTMLElement).focus(); // Actually - blur the search field
         this.$store.commit('FINISHED_SEARCH');
         this.$emit('lost-focus');
     }

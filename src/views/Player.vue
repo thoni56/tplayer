@@ -4,7 +4,6 @@
             <v-col class="pt-0">
                 <Filtering
                     ref="filtering"
-                    @reset-hotkeys="setUpHotkeys"
                     @got-focus="removeKeylistner"
                     @lost-focus="installKeylistner"
                 />

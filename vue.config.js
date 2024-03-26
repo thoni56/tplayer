@@ -15,8 +15,7 @@ module.exports = {
                 win: {
                     target: 'nsis',
                     icon: './public/tplayer.ico',
-                    certificateFile: process.env.CERTIFICATE_WINPATH,
-                    certificatePassword: process.env.CERTIFICATE_PASSWORD,
+                    certificateSubjectName: "Open Source Developer, Thomas Nilefalk"
                 },
             },
         },

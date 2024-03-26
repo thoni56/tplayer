@@ -103,7 +103,7 @@ System:
     ☐ Sign the app
         ☐ Windows
         ☐ Mac
-        ☐ Linux
+        ✘ Linux @cancelled(24-03-26 20:35)
     ☐ Speed up load of tunes, especially if it is the same directory as before
     ☐ Prevent screen lock (https://ourcodeworld.com/articles/read/539/how-to-prevent-that-the-system-enters-in-suspension-sleep-mode-in-electron-framework)
         
@@ -113,6 +113,7 @@ Bugs:
     ✔ When continuing to next tune play icon is wrong @done(19-04-15 22:50)
     ✔ When tune is finished it does not always continue with next song, seems it only plays one second or so @done(19-04-15 22:50)
     ✔ Forward skipping with tune reload and play only works once @done(19-04-15 22:50)
+    ✔ Debouncing BPM sliding caused hotkeys for tempo change to not change slider @done(24-03-26 20:37)
     ☐ Pushing forward or play/pause quickly causes player to come out of sync? Haven't seen this for a while...
     ☐ Need to push play twice first time to get it to play?
     ☐ Sometimes forward+play+... puts player in unexpected pause, possibly caused by overrun audio.play()?

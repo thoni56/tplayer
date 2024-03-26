@@ -69,7 +69,7 @@
 import Vue from 'vue';
 import { Component } from 'vue-property-decorator';
 import { UsedGenres } from '../genres';
-import { debounce, map, min } from 'lodash';
+import { debounce } from 'lodash';
 import { TuneInfo } from '@/models/TuneInfo';
 
 @Component({})

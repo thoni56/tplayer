@@ -270,7 +270,6 @@ export default class Player extends Vue {
             case 'Enter':
                 this.playOrPause();
                 break;
-            // Don't know how to implement these, since bpm is inside Filtering...
             case 'f': // Faster
             case 'PageUp':
                 this.faster();

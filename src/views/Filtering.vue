@@ -20,21 +20,20 @@
                     >
                 </v-btn-toggle>
             </v-layout>
-            <div tabindex="-1" ref="searchFieldWrapper">
-                <v-text-field
-                    ref="searchField"
-                    dense
-                    v-model="searchString"
-                    placeholder="Search"
-                    clearable
-                    clear-icon="fa-times"
-                    dark
-                    @keyup="keypress($event)"
-                    hide-details="auto"
-                    @focus="startSearch"
-                    @click:clear="finishSearch"
-                ></v-text-field>
-            </div>
+            <v-text-field
+                ref="searchField"
+                dense
+                v-model="searchString"
+                placeholder="Search"
+                clearable
+                clear-icon="fa-times"
+                dark
+                @keyup="keypress($event)"
+                hide-details="auto"
+                @focus="removeHotKeyListener"
+                @blur="installHotKeyListener"
+                @click:clear="finishSearch"
+            ></v-text-field>
             <v-flex>
                 <h2 class="float-right">{{ currentTime }}</h2>
             </v-flex>
@@ -99,11 +98,7 @@ export default class Filtering extends Vue {
     public searchString = '';
 
     public keypress(e: any) {
-        if (e.key === 'Backspace' || e.key === 'Delete') {
-            this.$store.commit('START_SEARCH', this.searchString);
-        } else {
-            this.$store.commit('START_SEARCH', this.searchString);
-        }
+        this.$store.commit('START_SEARCH', this.searchString);
     }
 
     public ignoreKeyDownForBpmSlider(e: any) {
@@ -111,15 +106,19 @@ export default class Filtering extends Vue {
         e.stopPropagation(); // do not propagate the keydown event
     }
 
-    public startSearch() {
-        this.$emit('got-focus');
+    public removeHotKeyListener() {
+        this.$emit('remove-hotkey-listener');
+    }
+
+    public installHotKeyListener() {
+        this.$emit('install-hotkey-listener');
     }
 
     public finishSearch() {
         this.searchString = '';
-        (this.$refs.searchFieldWrapper as HTMLElement).focus(); // Actually - blur the search field
+        (this.$refs.searchField as HTMLInputElement).blur();
         this.$store.commit('FINISHED_SEARCH');
-        this.$emit('lost-focus');
+        this.installHotKeyListener();
     }
 
     // Sorting

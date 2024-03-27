@@ -4,8 +4,8 @@
             <v-col class="pt-0">
                 <Filtering
                     ref="filtering"
-                    @got-focus="removeKeylistner"
-                    @lost-focus="installKeylistner"
+                    @remove-hotkey-listener="removeKeylistener"
+                    @install-hotkey-listener="installKeylistener"
                 />
                 <TuneDisplay />
                 <Playbar :secondsPlayed="timePlayed" :secondsTotal="timeTotal" />
@@ -295,12 +295,12 @@ export default class Player extends Vue {
         document.removeEventListener('keyup', this.keyListener);
     }
 
-    public installKeylistner() {
+    public installKeylistener() {
         this.setUpHotkeys();
         console.log('Key listener installed!');
     }
 
-    public removeKeylistner() {
+    public removeKeylistener() {
         this.tearDownHotkeys();
         console.log('Key listener removed!');
     }

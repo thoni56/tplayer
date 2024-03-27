@@ -8,6 +8,11 @@ module.exports = {
         electronBuilder: {
             preload: 'src/preload.js',
             builderOptions: {
+                publish: [{
+                    provider: 'github',
+                    owner: 'thoni56',
+                    repo: 'tplayer'
+                }],
                 linux: {
                     target: ['snap', 'AppImage', 'deb'],
                     icon: './public/tplayer.png',

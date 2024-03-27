@@ -20,6 +20,10 @@ const isDevelopment = process.env.NODE_ENV !== 'production';
 // be closed automatically when the JavaScript object is garbage collected.
 let window: BrowserWindow | null;
 
+import { autoUpdater } from 'electron-updater';
+
+// Enable auto-updates for open-source apps hosted on GitHub
+
 // Standard scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
     {
@@ -32,6 +36,10 @@ protocol.registerSchemesAsPrivileged([
 ]);
 
 const title = 'Tplayer - ' + app.getVersion();
+
+autoUpdater.on('update-available', (info) => {
+    console.log('update-available', info);
+});
 
 async function createWindow() {
     // Create the browser window.
@@ -47,6 +55,7 @@ async function createWindow() {
     window.setMenu(null);
 
     if (process.env.WEBPACK_DEV_SERVER_URL) {
+        autoUpdater.checkForUpdates();
         // Load the url of the dev server if in development mode
         window
             .loadURL(process.env.WEBPACK_DEV_SERVER_URL)
@@ -60,6 +69,7 @@ async function createWindow() {
             }
         });
     } else {
+        autoUpdater.checkForUpdatesAndNotify();
         createProtocol('app');
         // Load the index.html when not in development
         window.setFullScreen(true);

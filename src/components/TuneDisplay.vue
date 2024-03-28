@@ -13,7 +13,7 @@
                         />
                         <div v-else style="object-fit: cover; height: 40vh; width: 40vh"></div>
                     </template>
-                    {{ file }}
+                    <span v-html="tuneHoverText"></span>
                 </v-tooltip>
             </div>
             <div style="margin-left: 1%; width: 100%">
@@ -35,8 +35,21 @@
 import { Vue, Component } from 'vue-property-decorator';
 import { formatTime } from '@/models/timeFormatter';
 
+type PackageJson = {
+    version: string;
+    // no other fields at this time...
+};
+
+const packageJson: PackageJson = require('../../package.json');
+
 @Component
 export default class TuneDisplay extends Vue {
+    get tuneHoverText() {
+        return (
+            'tplayer ' + packageJson.version + ' playing: ' + this.title + '<br>From: ' + this.file
+        );
+    }
+
     get selectedTune() {
         return this.$store.state.selectedTune;
     }

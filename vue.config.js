@@ -8,6 +8,7 @@ module.exports = {
         electronBuilder: {
             preload: 'src/preload.js',
             builderOptions: {
+                artifactName: "${name}-Setup-${version}.${ext}",
                 publish: [{
                     provider: 'github',
                     owner: 'thoni56',

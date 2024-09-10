@@ -1,6 +1,6 @@
 {
     "name": "tplayer",
-    "version": "0.17.0",
+    "version": "0.18.0",
     "private": true,
     "description": "A music player for dance classes with appropriate filtering",
     "author": {
@@ -31,6 +31,7 @@
         "music-metadata": "^7.11.6",
         "scroll-into-view-if-needed": "^2.2.28",
         "stream-json": "^1.8.0",
+        "tplayer": "file:",
         "update-electron-app": "^3.0.0",
         "user-settings": "^0.2.0",
         "vue": "^2.6.14",

@@ -1,1 +1,1 @@
-export const UsedGenres = ['Bugg', 'Boogie', 'Lindy', 'WCS', 'Foxtrot'];
+export const UsedGenres = ['Bugg', 'Boogie', 'WRRC', 'Lindy', 'WCS', 'Foxtrot'];

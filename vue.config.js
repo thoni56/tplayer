@@ -12,7 +12,8 @@ module.exports = {
                 publish: [{
                     provider: 'github',
                     owner: 'thoni56',
-                    repo: 'tplayer'
+                    repo: 'tplayer',
+                    releaseType: 'release'
                 }],
                 linux: {
                     target: ['snap', 'AppImage', 'deb'],

@@ -71,6 +71,7 @@
         "vue-cli-plugin-vuetify": "~2.4.5",
         "vue-cli-plugin-vuetify-preset-crane": "^1.0.3",
         "vue-template-compiler": "^2.6.11",
-        "vuetify-loader": "^1.5.0"
+        "vuetify-loader": "^1.5.0",
+        "webpack-dev-server": "^4.15.2"
     }
 }

@@ -58,7 +58,11 @@ async function readMetadataForAllFiles(window: BrowserWindow, files: string[], g
             // tslint:disable-next-line: no-console
             console.log('*** Could not read metadata from ', files[index]);
         }
-        window.webContents.send('progress', Math.round((actualProgress / totalProgress) * 100));
+        const percent =
+            totalProgress === 0
+                ? 100
+                : Math.round((actualProgress / totalProgress) * 100);
+        window.webContents.send('progress', percent);
     }
     return all;
 }

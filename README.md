@@ -16,7 +16,7 @@ out for smooth listening.
 
 1. Tunes from your last visited directory are cached and will be autoloaded on start up.
 1. Optionally press "Filtering" to select another directory to load tunes from, recursively. This will scan all music files in the tree to get images, genres, bpm etc.
-1. Your files should be properly tagged with title, artist, album, album art, bpm and genre for `tplayer` to shine. NOTE: some audiofiles have wonky tagging, use Mp3Tag or some similar to fix it.
+1. Your files should be properly tagged with title, artist, album, album art, bpm and genre for `tplayer` to shine. NOTE: some audio files have wonky tagging, use Mp3Tag or some similar to fix it.
 1. Press the genre button(s) and/ adjust bpm and bpm range for filtering
 1. Select how much of a tune to play (all or some part), will automatically advance to next tune.
 1. Optionally press shuffle to semi-randomly select tunes (will divide current list in sections based on tempo and circulate between them, effectively creating a good mix).

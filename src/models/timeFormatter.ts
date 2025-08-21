@@ -1,7 +1,7 @@
 export function formatTime(seconds: number): string {
     // Hours, minutes and seconds
     if (!seconds) return '0:00';
-    const hrs = Math.round(seconds / 3600);
+    const hrs = Math.floor(seconds / 3600);
     const mins = Math.floor((seconds % 3600) / 60);
     const secs = Math.round(seconds % 60);
 

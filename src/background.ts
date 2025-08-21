@@ -164,7 +164,7 @@ function convertToUri(filePath: string) {
     return uri;
 }
 
-// Synchronous IPC call to convert to file path to URI
+// Asynchronous IPC handler to convert file path to URI
 ipcMain.handle('convertSongToUri', async (event: any, filePath: string) => {
     const uri: string = convertToUri(filePath);
     return uri;

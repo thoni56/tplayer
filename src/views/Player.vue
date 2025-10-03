@@ -100,7 +100,7 @@ export default class Player extends Vue {
     private shufflePartitionCount: number = 4;
 
     get selectedTune() {
-        return this.$store.state.selectedTune;
+        return this.$store.state.tunes.selectedTune;
     }
 
     public mounted() {
@@ -313,7 +313,7 @@ export default class Player extends Vue {
         // Assumes the index is valid
         const wasPlaying = this.playing;
         if (this.playing) await fadeOut();
-        this.$store.commit('SELECT_TUNE', this.currentTunes[nextIndexToPlay]);
+        this.$store.commit('tunes/SELECT_TUNE', this.currentTunes[nextIndexToPlay]);
         await this.loadSelectedTune();
         this.timePlayed = 0;
         if (wasPlaying) await this.playSelectedTune();

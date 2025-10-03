@@ -51,7 +51,7 @@ export default class TuneDisplay extends Vue {
     }
 
     get selectedTune() {
-        return this.$store.state.selectedTune;
+        return this.$store.state.tunes.selectedTune;
     }
 
     get cover() {

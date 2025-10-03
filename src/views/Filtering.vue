@@ -78,15 +78,15 @@ import { TuneInfo } from '@/models/TuneInfo';
 export default class Filtering extends Vue {
     // Store
     get totalCount() {
-        return this.$store.state.allTunes.length;
+        return this.$store.getters['tunes/totalTunesCount'];
     }
 
     get currentCount() {
-        return this.$store.getters.filteredTunes.length;
+        return this.$store.getters['tunes/filteredTunesCount'];
     }
 
     get sortingUp() {
-        return this.$store.state.sortingUp;
+        return this.$store.state.filtering.sortingUp;
     }
 
     get sortIcon() {
@@ -98,7 +98,7 @@ export default class Filtering extends Vue {
     public searchString = '';
 
     public keypress(e: any) {
-        this.$store.commit('START_SEARCH', this.searchString);
+        this.$store.dispatch('filtering/startSearch', this.searchString);
     }
 
     public ignoreKeyDownForBpmSlider(e: any) {
@@ -117,13 +117,13 @@ export default class Filtering extends Vue {
     public finishSearch() {
         this.searchString = '';
         (this.$refs.searchField as HTMLInputElement).blur();
-        this.$store.commit('FINISHED_SEARCH');
+        this.$store.dispatch('filtering/clearSearch');
         this.installHotKeyListener();
     }
 
     // Sorting
     public flipSorting() {
-        this.$store.commit('FLIP_SORTING');
+        this.$store.dispatch('filtering/flipSorting');
     }
 
     // Clock
@@ -157,22 +157,18 @@ export default class Filtering extends Vue {
     public genresSelected: number[] = []; // Model
 
     get currentGenres() {
-        return this.$store.state.selectedGenres;
+        return this.$store.state.filtering.selectedGenres;
     }
 
-    public toggleGenre(genre: string) {
-        if (!this.currentGenres.includes(genre)) this.currentGenres.push(genre);
-        else this.currentGenres.splice(this.currentGenres.indexOf(genre), 1);
+    public async toggleGenre(genre: string) {
+        await this.$store.dispatch('filtering/toggleGenre', genre);
     }
 
     // Tempo bpm & range
     get minBpm() {
         try {
-            let m = this.$store.state.allTunes.reduce((min: number, track: TuneInfo) => {
-                if (track.bpm === undefined) return min;
-                return min === null || track.bpm < min ? track.bpm : min;
-            }, null as number | null);
-            return m ? m : 0;
+            const bpmRange = this.$store.getters['tunes/bpmRange'];
+            return bpmRange.min || 0;
         } catch (error) {
             console.error('Error calculating minBpm:', error);
             return 0;
@@ -181,11 +177,8 @@ export default class Filtering extends Vue {
 
     get maxBpm() {
         try {
-            let m = this.$store.state.allTunes.reduce((max: number, track: TuneInfo) => {
-                if (track.bpm === undefined) return max;
-                return max === null || track.bpm > max ? track.bpm : max;
-            }, null as number | null);
-            return m ? m : 1000;
+            const bpmRange = this.$store.getters['tunes/bpmRange'];
+            return bpmRange.max || 1000;
         } catch (error) {
             console.error('Error calculating maxBpm:', error);
             return 1000;
@@ -211,8 +204,8 @@ export default class Filtering extends Vue {
 
     get bpmRange() {
         return [
-            this.$store.state.selectedBpm,
-            this.$store.state.selectedBpm + this.$store.state.selectedBpmRange,
+            this.$store.state.filtering.selectedBpm,
+            this.$store.state.filtering.selectedBpm + this.$store.state.filtering.selectedBpmRange,
         ];
     }
 
@@ -222,10 +215,10 @@ export default class Filtering extends Vue {
     }, 300);
 
     set bpmRange(val) {
-        if (val[0] != this.$store.state.selectedBpm) {
-            this.commitChange('CHANGE_BPM', val[0]);
+        if (val[0] != this.$store.state.filtering.selectedBpm) {
+            this.commitChange('filtering/SET_BPM', val[0]);
         } else {
-            this.commitChange('CHANGE_BPM_RANGE', val[1] - val[0]);
+            this.commitChange('filtering/SET_BPM_RANGE', val[1] - val[0]);
         }
     }
 
@@ -233,7 +226,7 @@ export default class Filtering extends Vue {
     public changeBpm(n: number) {
         this.$set(this.bpmSliderValues, 0, this.bpmSliderValues[0] + n);
         this.$set(this.bpmSliderValues, 1, this.bpmSliderValues[1] + n);
-        this.commitChange('CHANGE_BPM', this.bpmSliderValues[0]);
+        this.commitChange('filtering/SET_BPM', this.bpmSliderValues[0]);
     }
 
     // Discover tunes over IPC

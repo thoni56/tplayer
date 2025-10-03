@@ -25,29 +25,29 @@ export default class App extends Vue {
     }
 
     public mounted() {
+        // Update IPC handlers to use new store structure
         window.api.on('clear-tunes', () => {
-            this.$store.commit('CLEAR_TUNES');
+            this.$store.commit('tunes/CLEAR_TUNES'); // Namespaced mutation
             console.log('clear-tunes');
         });
         window.api.on('start-loading', () => {
-            this.$store.commit('START_LOADING');
+            this.$store.commit('tunes/START_LOADING'); // Namespaced mutation
             console.log('start-loading');
         });
         window.api.on('discovered-tune', (newTune: TuneInfo) => {
-            this.$store.commit('ADD_TUNE', newTune);
+            this.$store.dispatch('handleDiscoveredTune', newTune); // Root action
             console.log('discovered-tune');
         });
         window.api.on('discovered-tunes', (newTunes: TuneInfo[]) => {
-            this.$store.commit('ADD_TUNES', newTunes);
-            this.$store.commit('FINISHED_LOADING');
+            this.$store.dispatch('handleDiscoveredTunes', newTunes); // Root action
             console.log('discovered-tunes');
         });
         window.api.on('progress', (progress: number) => {
-            this.$store.commit('PROGRESS', progress);
+            this.$store.dispatch('handleProgress', progress); // Root action
             console.log('progress:' + progress);
         });
         window.api.on('finished-loading', () => {
-            this.$store.commit('FINISHED_LOADING');
+            this.$store.commit('tunes/FINISHED_LOADING'); // Namespaced mutation
             console.log('finished-loading');
         });
         window.api.send('renderer-ready');

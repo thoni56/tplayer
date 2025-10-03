@@ -53,7 +53,7 @@ export default class TuneList extends Vue {
     }
 
     public selectedTune() {
-        return this.$store.state.selectedTune;
+        return this.$store.state.tunes.selectedTune;
     }
 
     public formattedDuration(tune: TuneInfo): string {
@@ -61,7 +61,7 @@ export default class TuneList extends Vue {
     }
 
     public clicked(file: string) {
-        this.$store.commit('SELECT_FILE', file);
+        this.$store.commit('tunes/SELECT_TUNE_BY_FILE', file);
         this.$emit('click');
     }
 

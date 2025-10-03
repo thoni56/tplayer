@@ -35,7 +35,7 @@ export default class Playbar extends Vue {
     @Prop() private secondsTotal!: number;
 
     private selectedTune() {
-        return this.$store.state.selectedTune;
+        return this.$store.state.tunes.selectedTune;
     }
 
     get playingTitle() {

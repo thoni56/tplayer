@@ -7,7 +7,7 @@
                         :key="tune.file"
                         :id="tune.file"
                         :class="{ highlighted: selectedTune().file == tune.file }"
-                        @click="clicked(tune.file)"
+                        @click="clicked(tune)"
                     >
                         <v-list-item-avatar tile size="20">
                             <img :src="tune.cover" alt="cover" style="border-radius: 10%" />
@@ -60,9 +60,9 @@ export default class TuneList extends Vue {
         return formatTime(tune.duration!);
     }
 
-    public clicked(file: string) {
-        this.$store.commit('tunes/SELECT_TUNE_BY_FILE', file);
-        this.$emit('click');
+    public async clicked(tune: TuneInfo) {
+        await this.$store.dispatch('tunes/selectTune', tune)
+        await this.$store.dispatch('player/loadSelectedTuneAndPlay')
     }
 
     public genres(tune: TuneInfo) {

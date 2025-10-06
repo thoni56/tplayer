@@ -26,40 +26,38 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator';
-import { formatTime } from '@/models/timeFormatter';
+import { Vue, Component } from 'vue-property-decorator'
+import { formatTime } from '@/models/timeFormatter'
 
 @Component
 export default class Playbar extends Vue {
-    @Prop() private secondsPlayed!: number;
-    @Prop() private secondsTotal!: number;
-
-    private selectedTune() {
-        return this.$store.state.tunes.selectedTune;
+    
+    // All data now comes from the store - no props needed!
+    get percent(): number {
+        return this.$store.getters['player/playbackProgress']
     }
 
-    get playingTitle() {
-        return this.selectedTune().title;
+    get timePlayed(): string {
+        const time = this.$store.getters['player/currentTime']
+        return formatTime(time)
     }
 
-    get playingArtist() {
-        return this.selectedTune().artist;
+    get timeTotal(): string {
+        const time = this.$store.getters['player/totalTime']
+        return formatTime(time)
     }
 
-    get timePlayed() {
-        return formatTime(this.secondsPlayed);
+    get timeRemaining(): string {
+        const time = this.$store.getters['player/remainingTime']
+        return '-' + formatTime(time)
     }
 
-    get timeTotal() {
-        return formatTime(this.secondsTotal);
+    get playingTitle(): string {
+        return this.$store.state.tunes.selectedTune.title || ''
     }
 
-    get timeRemaining() {
-        return '-' + formatTime(this.secondsTotal - this.secondsPlayed);
-    }
-
-    get percent() {
-        return (this.secondsPlayed / this.secondsTotal) * 100;
+    get playingArtist(): string {
+        return this.$store.state.tunes.selectedTune.artist || ''
     }
 }
 </script>

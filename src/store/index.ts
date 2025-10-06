@@ -2,6 +2,8 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import { filteringModule, FilteringState } from './modules/filtering'
 import { tunesModule, TunesState } from './modules/tunes'
+import { playerModule, PlayerState } from './modules/player'
+import { hotkeysModule, HotkeysState } from './modules/hotkeys'
 
 Vue.use(Vuex)
 
@@ -13,7 +15,9 @@ export interface RootState {
 export default new Vuex.Store<RootState>({
   modules: {
     filtering: filteringModule,
-    tunes: tunesModule
+    tunes: tunesModule,
+    player: playerModule,
+    hotkeys: hotkeysModule
   },
 
   // Root state (empty since we use modules)

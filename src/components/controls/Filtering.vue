@@ -70,7 +70,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { Component } from 'vue-property-decorator';
-import { UsedGenres } from '../genres';
+import { UsedGenres } from '@/genres';
 import { debounce } from 'lodash';
 import { TuneInfo } from '@/models/TuneInfo';
 

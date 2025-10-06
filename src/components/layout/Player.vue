@@ -17,11 +17,11 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import Filtering from '@/views/Filtering.vue'
-import TuneList from '@/components/TuneList.vue'
-import TuneDisplay from '@/components/TuneDisplay.vue'
-import PlayerControls from '@/components/PlayerControls.vue'
-import Playbar from '@/components/Playbar.vue'
+import Filtering from '@/components/controls/Filtering.vue'
+import TuneList from '@/components/display/TuneList.vue'
+import TuneDisplay from '@/components/display/TuneDisplay.vue'
+import PlayerControls from '@/components/controls/PlayerControls.vue'
+import Playbar from '@/components/display/Playbar.vue'
 
 @Component({
     components: {

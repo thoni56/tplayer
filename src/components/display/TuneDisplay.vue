@@ -40,7 +40,7 @@ type PackageJson = {
     // no other fields at this time...
 };
 
-const packageJson: PackageJson = require('../../package.json');
+const packageJson: PackageJson = require('../../../package.json');
 
 @Component
 export default class TuneDisplay extends Vue {

@@ -1,8 +1,15 @@
 const { listenerCount } = require('cluster');
+const { version } = require('./package.json');
+const webpack = require('webpack');
 
 module.exports = {
     configureWebpack: {
         devtool: 'source-map',
+        plugins: [
+            new webpack.DefinePlugin({
+                'process.env.VUE_APP_VERSION': JSON.stringify(version)
+            })
+        ]
     },
     pluginOptions: {
         electronBuilder: {

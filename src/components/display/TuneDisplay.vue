@@ -35,18 +35,14 @@
 import { Vue, Component } from 'vue-property-decorator';
 import { formatTime } from '@/models/timeFormatter';
 
-type PackageJson = {
-    version: string;
-    // no other fields at this time...
-};
-
-const packageJson: PackageJson = require('../../../package.json');
+// Version is injected at build time via webpack DefinePlugin
+const APP_VERSION = process.env.VUE_APP_VERSION || 'dev';
 
 @Component
 export default class TuneDisplay extends Vue {
     get tuneHoverText() {
         return (
-            'tplayer ' + packageJson.version + ' playing: ' + this.title + '<br>From: ' + this.file
+            'tplayer ' + APP_VERSION + ' playing: ' + this.title + '<br>From: ' + this.file
         );
     }
 

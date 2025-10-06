@@ -204,8 +204,8 @@ export default class Filtering extends Vue {
 
     get bpmRange() {
         return [
-            this.$store.state.filtering.selectedBpm,
-            this.$store.state.filtering.selectedBpm + this.$store.state.filtering.selectedBpmRange,
+            this.$store.getters.selectedBpm,
+            this.$store.getters.selectedBpm + this.$store.getters.selectedBpmRange,
         ];
     }
 
@@ -215,7 +215,7 @@ export default class Filtering extends Vue {
     }, 300);
 
     set bpmRange(val) {
-        if (val[0] != this.$store.state.filtering.selectedBpm) {
+        if (val[0] != this.$store.getters.selectedBpm) {
             this.commitChange('filtering/SET_BPM', val[0]);
         } else {
             this.commitChange('filtering/SET_BPM_RANGE', val[1] - val[0]);

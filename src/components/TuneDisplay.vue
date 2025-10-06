@@ -50,40 +50,37 @@ export default class TuneDisplay extends Vue {
         );
     }
 
-    get selectedTune() {
-        return this.$store.state.tunes.selectedTune;
-    }
-
+    // Clean, Law of Demeter compliant getters
     get cover() {
-        return this.selectedTune.cover;
+        return this.$store.getters.currentCover;
     }
 
     get title() {
-        return this.selectedTune.title;
+        return this.$store.getters.currentTitle;
     }
 
     get file() {
-        return this.selectedTune.file;
+        return this.$store.getters.currentFile;
     }
 
     get artist() {
-        return this.selectedTune.artist;
+        return this.$store.getters.currentArtist;
     }
 
     get album() {
-        return this.selectedTune.album;
+        return this.$store.getters.currentAlbum;
     }
 
     get track() {
-        return this.selectedTune.track;
+        return this.$store.getters.currentTrack;
     }
 
     get bpm() {
-        return this.selectedTune.bpm;
+        return this.$store.getters.currentBpm;
     }
 
     get totaltime() {
-        return formatTime(this.selectedTune.duration!);
+        return formatTime(this.$store.getters.currentDuration);
     }
 }
 </script>

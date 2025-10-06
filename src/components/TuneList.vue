@@ -6,7 +6,7 @@
                     <v-list-item
                         :key="tune.file"
                         :id="tune.file"
-                        :class="{ highlighted: selectedTune().file == tune.file }"
+                        :class="{ highlighted: selectedTuneFile == tune.file }"
                         @click="clicked(tune)"
                     >
                         <v-list-item-avatar tile size="20">
@@ -52,8 +52,9 @@ export default class TuneList extends Vue {
         return this.$store.getters.filteredTunes;
     }
 
-    public selectedTune() {
-        return this.$store.state.tunes.selectedTune;
+    // Clean, Law of Demeter compliant access
+    get selectedTuneFile(): string {
+        return this.$store.getters.currentFile;
     }
 
     public formattedDuration(tune: TuneInfo): string {

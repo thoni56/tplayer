@@ -51,11 +51,11 @@ export default class PlayerControls extends Vue {
     }
     
     get isPlaying(): boolean {
-        return this.$store.getters['player/isPlaying']
+        return this.$store.getters.isPlaying
     }
     
     get isShuffling(): boolean {
-        return this.$store.getters['player/isShuffling']
+        return this.$store.getters.isShuffling
     }
 
     // All these methods are now one-liners!

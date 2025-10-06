@@ -32,32 +32,29 @@ import { formatTime } from '@/models/timeFormatter'
 @Component
 export default class Playbar extends Vue {
     
-    // All data now comes from the store - no props needed!
+    // Clean, Law of Demeter compliant getters
     get percent(): number {
-        return this.$store.getters['player/playbackProgress']
+        return this.$store.getters.playbackProgress
     }
 
     get timePlayed(): string {
-        const time = this.$store.getters['player/currentTime']
-        return formatTime(time)
+        return formatTime(this.$store.getters.currentTime)
     }
 
     get timeTotal(): string {
-        const time = this.$store.getters['player/totalTime']
-        return formatTime(time)
+        return formatTime(this.$store.getters.totalTime)
     }
 
     get timeRemaining(): string {
-        const time = this.$store.getters['player/remainingTime']
-        return '-' + formatTime(time)
+        return '-' + formatTime(this.$store.getters.remainingTime)
     }
 
     get playingTitle(): string {
-        return this.$store.state.tunes.selectedTune.title || ''
+        return this.$store.getters.currentTitle
     }
 
     get playingArtist(): string {
-        return this.$store.state.tunes.selectedTune.artist || ''
+        return this.$store.getters.currentArtist
     }
 }
 </script>

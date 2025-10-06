@@ -9,7 +9,10 @@ Vue.use(Vuex)
 
 // Define the root state interface
 export interface RootState {
-  // Root state is empty since we use modules
+  filtering: FilteringState
+  tunes: TunesState
+  player: PlayerState
+  hotkeys: HotkeysState
 }
 
 export default new Vuex.Store<RootState>({
@@ -20,48 +23,173 @@ export default new Vuex.Store<RootState>({
     hotkeys: hotkeysModule
   },
 
-  // Root state (empty since we use modules)
-  state: () => ({}),
+  // Root state (empty since we use modules - modules manage their own state)
+  state: {} as any,
 
-  // Root getters that combine data from multiple modules
+  // Root getters that provide clean, Law of Demeter compliant access
   getters: {
-    // Combined filtered tunes getter that uses both modules
+    // === PLAYER STATE GETTERS ===
+    
+    // Playback state
+    isPlaying: (state, getters, rootState, rootGetters) => {
+      return rootGetters['player/isPlaying']
+    },
+    
+    isShuffling: (state, getters, rootState, rootGetters) => {
+      return rootGetters['player/isShuffling']
+    },
+    
+    // Time information
+    currentTime: (state, getters, rootState, rootGetters) => {
+      return rootGetters['player/currentTime']
+    },
+    
+    totalTime: (state, getters, rootState, rootGetters) => {
+      return rootGetters['player/totalTime']
+    },
+    
+    remainingTime: (state, getters, rootState, rootGetters) => {
+      return rootGetters['player/remainingTime']
+    },
+    
+    playbackProgress: (state, getters, rootState, rootGetters) => {
+      return rootGetters['player/playbackProgress']
+    },
+    
+    // === CURRENT TUNE GETTERS ===
+    
+    currentTitle: (state, getters, rootState, rootGetters) => {
+      return rootState.tunes.selectedTune.title || ''
+    },
+    
+    currentArtist: (state, getters, rootState, rootGetters) => {
+      return rootState.tunes.selectedTune.artist || ''
+    },
+    
+    currentAlbum: (state, getters, rootState, rootGetters) => {
+      return rootState.tunes.selectedTune.album || ''
+    },
+    
+    currentBpm: (state, getters, rootState, rootGetters) => {
+      return rootState.tunes.selectedTune.bpm || 0
+    },
+    
+    currentCover: (state, getters, rootState, rootGetters) => {
+      return rootState.tunes.selectedTune.cover || '/vinyl.png'
+    },
+    
+    currentTrack: (state, getters, rootState, rootGetters) => {
+      return rootState.tunes.selectedTune.track
+    },
+    
+    currentFile: (state, getters, rootState, rootGetters) => {
+      return rootState.tunes.selectedTune.file || ''
+    },
+    
+    currentDuration: (state, getters, rootState, rootGetters) => {
+      return rootState.tunes.selectedTune.duration || 0
+    },
+    
+    // === TUNES COLLECTION GETTERS ===
+    
     filteredTunes: (state, getters, rootState, rootGetters) => {
       return rootGetters['tunes/filteredTunes']
     },
-
-    // Current BPM for backward compatibility
-    currentBpm: (state, getters, rootState, rootGetters) => {
-      return rootGetters['filtering/currentBpm']
+    
+    totalTunesCount: (state, getters, rootState, rootGetters) => {
+      return rootGetters['tunes/totalTunesCount']
     },
-
+    
+    filteredTunesCount: (state, getters, rootState, rootGetters) => {
+      return rootGetters['tunes/filteredTunesCount']
+    },
+    
+    hasTuneSelected: (state, getters, rootState, rootGetters) => {
+      return rootGetters['tunes/hasTuneSelected']
+    },
+    
+    // === FILTERING STATE GETTERS ===
+    
+    selectedBpm: (state, getters, rootState, rootGetters) => {
+      return rootState.filtering.selectedBpm
+    },
+    
+    selectedBpmRange: (state, getters, rootState, rootGetters) => {
+      return rootState.filtering.selectedBpmRange
+    },
+    
+    selectedGenres: (state, getters, rootState, rootGetters) => {
+      return rootState.filtering.selectedGenres
+    },
+    
+    searchString: (state, getters, rootState, rootGetters) => {
+      return rootState.filtering.searchString
+    },
+    
+    sortingUp: (state, getters, rootState, rootGetters) => {
+      return rootState.filtering.sortingUp
+    },
+    
+    isSearching: (state, getters, rootState, rootGetters) => {
+      return rootGetters['filtering/isSearching']
+    },
+    
+    hasSelectedGenres: (state, getters, rootState, rootGetters) => {
+      return rootGetters['filtering/hasSelectedGenres']
+    },
+    
+    // === LOADING STATE GETTERS ===
+    
+    isLoading: (state, getters, rootState, rootGetters) => {
+      return rootGetters['tunes/isLoading']
+    },
+    
+    loadingProgress: (state, getters, rootState, rootGetters) => {
+      return rootGetters['tunes/loadingProgress']
+    },
+    
+    // === HOTKEYS STATE GETTERS ===
+    
+    hotkeysEnabled: (state, getters, rootState, rootGetters) => {
+      return rootGetters['hotkeys/isEnabled']
+    },
+    
+    // === COMPOSITE GETTERS ===
+    
     // Check if app is ready (has tunes and not loading)
     isAppReady: (state, getters, rootState, rootGetters) => {
-      return !rootGetters['tunes/isLoading'] && rootGetters['tunes/totalTunesCount'] > 0
+      return !getters.isLoading && getters.totalTunesCount > 0
     },
-
+    
     // Get current status message
     statusMessage: (state, getters, rootState, rootGetters) => {
-      const isLoading = rootGetters['tunes/isLoading']
-      const totalTunes = rootGetters['tunes/totalTunesCount']
-      const filteredTunes = rootGetters['tunes/filteredTunesCount']
-      const isSearching = rootGetters['filtering/isSearching']
-      const hasSelectedGenres = rootGetters['filtering/hasSelectedGenres']
-      
-      if (isLoading) {
-        const progress = rootGetters['tunes/loadingProgress']
-        return `Loading tunes... ${progress}%`
+      if (getters.isLoading) {
+        return `Loading tunes... ${getters.loadingProgress}%`
       }
       
-      if (totalTunes === 0) {
+      if (getters.totalTunesCount === 0) {
         return 'No tunes loaded. Select a directory to scan for music.'
       }
       
-      if (isSearching || hasSelectedGenres) {
-        return `Showing ${filteredTunes} of ${totalTunes} tunes`
+      if (getters.isSearching || getters.hasSelectedGenres) {
+        return `Showing ${getters.filteredTunesCount} of ${getters.totalTunesCount} tunes`
       }
       
-      return `${totalTunes} tunes loaded`
+      return `${getters.totalTunesCount} tunes loaded`
+    },
+    
+    // Current tune display info for UI
+    currentTuneInfo: (state, getters) => {
+      return {
+        title: getters.currentTitle,
+        artist: getters.currentArtist,
+        album: getters.currentAlbum,
+        track: getters.currentTrack,
+        bpm: getters.currentBpm,
+        cover: getters.currentCover,
+        file: getters.currentFile,
+        duration: getters.currentDuration
+      }
     }
   },
 

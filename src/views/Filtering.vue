@@ -76,17 +76,17 @@ import { TuneInfo } from '@/models/TuneInfo';
 
 @Component({})
 export default class Filtering extends Vue {
-    // Store
+    // Clean, Law of Demeter compliant store access
     get totalCount() {
-        return this.$store.getters['tunes/totalTunesCount'];
+        return this.$store.getters.totalTunesCount;
     }
 
     get currentCount() {
-        return this.$store.getters['tunes/filteredTunesCount'];
+        return this.$store.getters.filteredTunesCount;
     }
 
     get sortingUp() {
-        return this.$store.state.filtering.sortingUp;
+        return this.$store.getters.sortingUp;
     }
 
     get sortIcon() {
@@ -157,7 +157,7 @@ export default class Filtering extends Vue {
     public genresSelected: number[] = []; // Model
 
     get currentGenres() {
-        return this.$store.state.filtering.selectedGenres;
+        return this.$store.getters.selectedGenres;
     }
 
     public async toggleGenre(genre: string) {

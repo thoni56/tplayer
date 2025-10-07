@@ -116,6 +116,38 @@ app.on('ready', async () => {
             console.error('Vue Devtools failed to install:', e.toString());
         }
     }
+
+    // Intercept app:// file requests to provide fallbacks for bare font URLs
+    // Some runtime paths may request app:///fa-... files (missing fonts/),
+    // which results in noisy ENOENT. Redirect those to the fonts/ folder.
+    try {
+        protocol.interceptFileProtocol('app', (request, callback) => {
+            try {
+                const url = new URL(request.url);
+                let pathname = url.pathname || '';
+                // Normalize leading slash
+                if (pathname.startsWith('/')) pathname = pathname.slice(1);
+
+                // If a bare Font Awesome file is requested without directory, serve from fonts/
+                if (/^fa-(brands|regular|solid)-\d{3}\.[a-f0-9]+\.(woff2|woff|ttf|eot)$/i.test(pathname)) {
+                    const filePath = path.join(__dirname, 'fonts', pathname);
+                    callback({ path: filePath });
+                    return;
+                }
+
+                // Default mapping: app://./ maps to __dirname
+                const normalized = pathname.replace(/^\.\//, '');
+                const filePath = path.join(__dirname, normalized);
+                callback({ path: filePath });
+            } catch (err) {
+                console.warn('app protocol intercept error:', err);
+                callback({ path: path.join(__dirname, 'index.html') });
+            }
+        });
+    } catch (e) {
+        console.warn('Failed to install app protocol fallback:', e);
+    }
+
     await createWindow();
 });
 

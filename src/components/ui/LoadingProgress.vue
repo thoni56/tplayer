@@ -17,11 +17,11 @@ import { Component, Vue } from 'vue-property-decorator';
 @Component({})
 export default class LoadingProgress extends Vue {
     get loading() {
-        return this.$store.state.loading;
+        return this.$store.getters.isLoading;
     }
 
     get progress() {
-        return this.$store.state.progress;
+        return this.$store.getters.loadingProgress;
     }
 }
 </script>

@@ -232,11 +232,25 @@ export const playerModule: Module<PlayerState, any> = {
     
     // Play the currently selected tune
     async play({ dispatch, rootGetters }) {
-      // If no tune selected, select first one
+      // If no tune selected, select one first, then continue to play
       const hasTuneSelected = rootGetters['tunes/hasTuneSelected']
       if (!hasTuneSelected) {
         await dispatch('nextTune')
-        return
+      }
+
+      // Ensure the audio element is ready enough to begin playback
+      if (audioInstance && audioInstance.readyState < 3) {
+        await new Promise<void>((resolve) => {
+          const onCanPlay = () => {
+            if (audioInstance) {
+              audioInstance.removeEventListener('canplay', onCanPlay)
+            }
+            resolve()
+          }
+          audioInstance?.addEventListener('canplay', onCanPlay)
+          // Safety timeout in case the event already fired or metadata is already present
+          setTimeout(resolve, 500)
+        })
       }
       
       await dispatch('fadeIn')

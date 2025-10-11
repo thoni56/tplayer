@@ -12,7 +12,8 @@ import { UsedGenres } from './genres';
 var settings = require('user-settings').file('.tplayerrc');
 var autoloadDirectory = settings.get('autoload') ? settings.get('autoload')[0] : undefined;
 const userHome = app.getPath('home');
-const tuneCache = userHome + '/.tplayer_cache.json';
+const metadataCache = userHome + '/.tplayer_metadata_cache.json';
+const legacyCache = userHome + '/.tplayer_cache.json';
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
@@ -169,14 +170,14 @@ if (isDevelopment) {
 import { readTunesFromCache } from './tuneCache';
 ipcMain.on('renderer-ready', () => {
     console.log('renderer-ready');
-    if (fs.existsSync(tuneCache)) {
+    if (fs.existsSync(metadataCache)) {
         console.time('readTunesFromCache'); // Start timing
-        readTunesFromCache(tuneCache).then((tunes) => {
+        readTunesFromCache(metadataCache).then((tunes) => {
             window!.webContents.send('discovered-tunes', tunes);
             console.timeEnd('readTunesFromCache'); // End timing
         });
     } else if (autoloadDirectory) {
-        discoverTunes(window!, autoloadDirectory, UsedGenres, tuneCache);
+        discoverTunes(window!, autoloadDirectory, UsedGenres, metadataCache);
     }
 });
 
@@ -186,7 +187,7 @@ ipcMain.on('discover-tunes', () => {
     });
     if (dir) {
         window?.webContents.send('clear-tunes', []);
-        discoverTunes(window!, dir[0], UsedGenres, tuneCache);
+        discoverTunes(window!, dir[0], UsedGenres, metadataCache);
         settings.set('autoload', dir);
     }
 });

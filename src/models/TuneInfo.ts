@@ -34,7 +34,7 @@ export class TuneInfo {
         this.album = album ? album : '';
         this.genre = genre ? this.genresToGenres(genre) : [];
         this.bpm = bpm ? Math.round(bpm) : undefined;
-        this.cover = cover ? pictureToHTML(cover) : defaultCover;
+        this.cover = defaultCover; // Always use default, covers loaded separately
     }
 
     public fillFromCommonTags(metadata: IAudioMetadata) {
@@ -45,9 +45,7 @@ export class TuneInfo {
         this.bpm = metadata.common.bpm ? Math.round(metadata.common.bpm) : undefined;
         this.genre = metadata.common.genre ? this.genresToGenres(metadata.common.genre) : undefined;
         this.duration = metadata.format.duration ? Math.round(metadata.format.duration) : undefined;
-        this.cover = metadata.common.picture
-            ? pictureToHTML(metadata.common.picture[0])
-            : defaultCover;
+        this.cover = defaultCover; // Always use default, covers loaded separately
     }
 
     private genresToGenres(genre: string[]) {

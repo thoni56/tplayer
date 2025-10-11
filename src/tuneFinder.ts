@@ -4,11 +4,15 @@ import * as musicMetaData from 'music-metadata';
 import { TuneInfo } from '../src/models/TuneInfo';
 import { writeTunesToCache } from './tuneCache';
 
+// Configuration for concurrent file processing
+const DEFAULT_CONCURRENCY = 10; // Process 10 files simultaneously by default
+
 export function discoverTunes(
     window: BrowserWindow,
     directory: string,
     genres: string[],
-    tuneCache: string
+    tuneCache: string,
+    concurrency: number = DEFAULT_CONCURRENCY
 ) {
     const files: string[] = [];
     const emitter = walk(directory, { follow_symlinks: true });
@@ -25,7 +29,15 @@ export function discoverTunes(
         }
     });
     emitter.on('end', () => {
-        readMetadataForAllFiles(window, files, genres).then(async (tunes) => {
+        console.log(`Starting metadata processing for ${files.length} files with concurrency: ${concurrency}`);
+        const startTime = Date.now();
+        
+        readMetadataForAllFiles(window, files, genres, concurrency).then(async (tunes) => {
+            const endTime = Date.now();
+            const processingTime = (endTime - startTime) / 1000;
+            console.log(`Metadata processing completed in ${processingTime.toFixed(2)} seconds`);
+            console.log(`Processed ${tunes.length} valid tunes from ${files.length} files`);
+            
             window.webContents.send('discovered-tunes', tunes);
             writeTunesToCache(tunes, tuneCache)
                 .then(() => window.webContents.send('finished-loading'))
@@ -38,31 +50,73 @@ export function discoverTunes(
     });
 }
 
-async function readMetadataForAllFiles(window: BrowserWindow, files: string[], genres: string[]) {
-    let all = [];
-    let totalProgress = files.length;
-    let actualProgress = 0;
-
-    for (let index = 0; index < files.length; index++) {
-        try {
-            const metadata = await musicMetaData.parseFile(files[index]);
-            const tuneInfo = new TuneInfo(files[index]);
-            tuneInfo.fillFromCommonTags(metadata);
-            if (genres.some((g) => tuneInfo.genre && tuneInfo.genre.includes(g))) {
-                all.push(tuneInfo);
-                actualProgress++;
-            } else {
-                totalProgress--;
-            }
-        } catch (e) {
-            // tslint:disable-next-line: no-console
-            console.log('*** Could not read metadata from ', files[index]);
+async function readMetadataForAllFiles(window: BrowserWindow, files: string[], genres: string[], concurrency: number = DEFAULT_CONCURRENCY) {
+    const allTunes: TuneInfo[] = [];
+    let processedCount = 0;
+    let validTunesCount = 0;
+    const totalFiles = files.length;
+    
+    // Progress reporting function with throttling to avoid UI spam
+    let lastProgressUpdate = 0;
+    const updateProgress = () => {
+        const now = Date.now();
+        if (now - lastProgressUpdate > 50) { // Throttle to max 20 updates per second
+            const percent = Math.round((processedCount / totalFiles) * 100);
+            window.webContents.send('progress', percent);
+            lastProgressUpdate = now;
         }
-        const percent =
-            totalProgress === 0
-                ? 100
-                : Math.round((actualProgress / totalProgress) * 100);
-        window.webContents.send('progress', percent);
+    };
+
+    // Process files in chunks to control concurrency
+    for (let i = 0; i < files.length; i += concurrency) {
+        const chunk = files.slice(i, i + concurrency);
+        
+        // Process this chunk concurrently
+        const promises = chunk.map(async (filePath) => {
+            try {
+                const metadata = await musicMetaData.parseFile(filePath);
+                const tuneInfo = new TuneInfo(filePath);
+                tuneInfo.fillFromCommonTags(metadata);
+                
+                // Check if this tune matches the genre filter
+                const isValidGenre = genres.some((g) => tuneInfo.genre && tuneInfo.genre.includes(g));
+                
+                processedCount++;
+                updateProgress();
+                
+                if (isValidGenre) {
+                    validTunesCount++;
+                    return tuneInfo;
+                }
+                return null;
+            } catch (e) {
+                // tslint:disable-next-line: no-console
+                console.log('*** Could not read metadata from ', filePath);
+                processedCount++;
+                updateProgress();
+                return null;
+            }
+        });
+        
+        // Wait for all files in this chunk to complete
+        const results = await Promise.all(promises);
+        
+        // Add valid results to our collection
+        results.forEach(result => {
+            if (result !== null) {
+                allTunes.push(result);
+            }
+        });
+        
+        // Optional: Add a small delay between chunks to prevent overwhelming the system
+        if (i + concurrency < files.length) {
+            await new Promise(resolve => setTimeout(resolve, 1));
+        }
     }
-    return all;
+    
+    // Ensure final progress update
+    window.webContents.send('progress', 100);
+    
+    console.log(`Processing completed: ${validTunesCount} valid tunes from ${totalFiles} files`);
+    return allTunes;
 }

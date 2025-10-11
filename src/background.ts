@@ -202,3 +202,62 @@ ipcMain.handle('convertSongToUri', async (event: any, filePath: string) => {
     const uri: string = convertToUri(filePath);
     return uri;
 });
+
+// Cover cache for on-demand loading
+let coverCache: { [key: string]: string } | null = null;
+
+// Load cover cache lazily when first requested
+async function loadCoverCache(): Promise<{ [key: string]: string }> {
+    if (coverCache !== null) {
+        return coverCache;
+    }
+    
+    const coverCachePath = userHome + '/.tplayer_covers_cache.json';
+    
+    try {
+        if (fs.existsSync(coverCachePath)) {
+            console.log('Loading cover cache for on-demand access...');
+            const startTime = Date.now();
+            const coverData = fs.readFileSync(coverCachePath, 'utf8');
+            coverCache = JSON.parse(coverData);
+            const loadTime = (Date.now() - startTime) / 1000;
+            const coverCount = Object.keys(coverCache!).length;
+            console.log(`Cover cache loaded in ${loadTime.toFixed(2)}s (${coverCount} covers available)`);
+            return coverCache!;
+        } else {
+            console.log('No cover cache found');
+            coverCache = {};
+            return coverCache;
+        }
+    } catch (error) {
+        console.error('Error loading cover cache:', error);
+        coverCache = {};
+        return coverCache;
+    }
+}
+
+// Helper function to get default cover as base64
+// TODO: Convert actual /vinyl.png to base64 data URI
+function getDefaultCoverBase64(): string {
+    // For now, return the path - this should be actual base64 data
+    return '/vinyl.png';
+}
+
+// IPC handler to get cover for a specific tune - always returns base64 data
+ipcMain.handle('getCoverForTune', async (event: any, filePath: string) => {
+    try {
+        const covers = await loadCoverCache();
+        const cover = covers[filePath];
+        
+        if (cover) {
+            console.log(`Real cover found for: ${filePath.split('\\').pop()}`);
+            return { cover: cover, isReal: true };
+        } else {
+            console.log(`No cover found for: ${filePath.split('\\').pop()}, returning default`);
+            return { cover: getDefaultCoverBase64(), isReal: false };
+        }
+    } catch (error) {
+        console.error('Error getting cover for tune:', error);
+        return { cover: getDefaultCoverBase64(), isReal: false };
+    }
+});

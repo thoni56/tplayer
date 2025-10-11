@@ -5,7 +5,16 @@ function pictureToHTML(picture: IPicture) {
     return 'data:' + picture.format + ';base64,' + picture.data.toString('base64');
 }
 
-const defaultCover: string = '/vinyl.png';
+// Function to get default cover as base64 data URI
+// TODO: In a real implementation, we'd convert /vinyl.png to base64
+// For now, we'll use the path as a placeholder
+function getDefaultCoverBase64(): string {
+    // This should eventually return the actual base64 data of vinyl.png
+    // For now, return the path (this will be improved)
+    return '/vinyl.png';
+}
+
+const defaultCover: string = getDefaultCoverBase64();
 
 export class TuneInfo {
     public file: string;
@@ -17,6 +26,7 @@ export class TuneInfo {
     public bpm?: number;
     public duration?: number;
     public cover?: string;
+    public coverLoaded?: boolean; // Flag to indicate if real cover has been loaded
 
     constructor(file: string);
     constructor(
@@ -34,7 +44,8 @@ export class TuneInfo {
         this.album = album ? album : '';
         this.genre = genre ? this.genresToGenres(genre) : [];
         this.bpm = bpm ? Math.round(bpm) : undefined;
-        this.cover = defaultCover; // Always use default, covers loaded separately
+        this.cover = defaultCover; // Always use default initially
+        this.coverLoaded = false; // Real cover not loaded yet
     }
 
     public fillFromCommonTags(metadata: IAudioMetadata) {
@@ -45,7 +56,8 @@ export class TuneInfo {
         this.bpm = metadata.common.bpm ? Math.round(metadata.common.bpm) : undefined;
         this.genre = metadata.common.genre ? this.genresToGenres(metadata.common.genre) : undefined;
         this.duration = metadata.format.duration ? Math.round(metadata.format.duration) : undefined;
-        this.cover = defaultCover; // Always use default, covers loaded separately
+        this.cover = defaultCover; // Always use default initially
+        this.coverLoaded = false; // Real cover not loaded yet
     }
 
     private genresToGenres(genre: string[]) {

@@ -190,8 +190,43 @@ export const playerModule: Module<PlayerState, any> = {
           audioInstance.load()
           commit('SET_AUDIO_SRC', uri)
         }
+        
+        // Load cover for the currently playing tune if not already loaded
+        if (!selectedTune.coverLoaded) {
+          dispatch('loadCoverForCurrentTune')
+        }
+        
       } catch (error) {
         console.error('Failed to load audio:', error)
+      }
+    },
+    
+    // Load cover for currently playing tune
+    async loadCoverForCurrentTune({ rootState, commit }) {
+      const selectedTune = rootState.tunes.selectedTune
+      if (!selectedTune || !selectedTune.file || selectedTune.coverLoaded) {
+        return
+      }
+      
+      try {
+        console.log('Loading cover for current tune:', selectedTune.file.split('\\').pop())
+        const result = await window.api.sendSync('getCoverForTune', selectedTune.file)
+        
+        if (result && result.cover) {
+          // Update the tune's cover in the store
+          commit('tunes/UPDATE_TUNE_COVER', { 
+            file: selectedTune.file, 
+            cover: result.cover 
+          }, { root: true })
+          
+          if (result.isReal) {
+            console.log('Real cover loaded for current tune')
+          } else {
+            console.log('Default cover loaded for current tune')
+          }
+        }
+      } catch (error) {
+        console.error('Failed to load cover for current tune:', error)
       }
     },
     

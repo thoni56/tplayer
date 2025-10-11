@@ -168,6 +168,14 @@ export const tunesModule: Module<TunesState, any> = {
       if (tune) {
         Object.assign(tune, metadata)
       }
+    },
+    
+    UPDATE_TUNE_COVER(state, { file, cover }: { file: string, cover: string }) {
+      const tune = state.allTunes.find(t => t.file === file)
+      if (tune) {
+        tune.cover = cover
+        tune.coverLoaded = true
+      }
     }
   },
 

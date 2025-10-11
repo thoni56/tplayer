@@ -2,7 +2,7 @@ import { BrowserWindow, app } from 'electron';
 import walk from 'walkdir';
 import * as musicMetaData from 'music-metadata';
 import { TuneInfo } from '../src/models/TuneInfo';
-import { writeTunesToCache } from './tuneCache';
+import { writeTunesToCache, writeCoverCache } from './tuneCache';
 
 // Configuration for concurrent file processing
 const DEFAULT_CONCURRENCY = 10; // Process 10 files simultaneously by default
@@ -52,8 +52,10 @@ export function discoverTunes(
 
 async function readMetadataForAllFiles(window: BrowserWindow, files: string[], genres: string[], concurrency: number = DEFAULT_CONCURRENCY) {
     const allTunes: TuneInfo[] = [];
+    const coverCache = new Map<string, string>(); // Store covers separately
     let processedCount = 0;
     let validTunesCount = 0;
+    let coversExtracted = 0;
     const totalFiles = files.length;
     
     // Progress reporting function with throttling to avoid UI spam
@@ -77,6 +79,14 @@ async function readMetadataForAllFiles(window: BrowserWindow, files: string[], g
                 const metadata = await musicMetaData.parseFile(filePath);
                 const tuneInfo = new TuneInfo(filePath);
                 tuneInfo.fillFromCommonTags(metadata);
+                
+                // Extract cover to separate cache if it exists
+                if (metadata.common.picture && metadata.common.picture.length > 0) {
+                    const picture = metadata.common.picture[0];
+                    const base64Cover = 'data:' + picture.format + ';base64,' + picture.data.toString('base64');
+                    coverCache.set(filePath, base64Cover);
+                    coversExtracted++;
+                }
                 
                 // Check if this tune matches the genre filter
                 const isValidGenre = genres.some((g) => tuneInfo.genre && tuneInfo.genre.includes(g));
@@ -117,6 +127,23 @@ async function readMetadataForAllFiles(window: BrowserWindow, files: string[], g
     // Ensure final progress update
     window.webContents.send('progress', 100);
     
+    // Write cover cache if any covers were extracted
+    if (coverCache.size > 0) {
+        try {
+            const userHome = app.getPath('home');
+            const coverCachePath = userHome + '/.tplayer_covers_cache.json';
+            console.log(`Writing cover cache with ${coverCache.size} covers...`);
+            await writeCoverCache(coverCache, coverCachePath);
+            console.log(`Cover cache successfully written: ${coverCache.size} covers saved`);
+        } catch (error) {
+            console.error('Failed to write cover cache:', error);
+            // Continue processing - cover cache failure shouldn't stop the app
+        }
+    } else {
+        console.log('No covers found to cache');
+    }
+    
     console.log(`Processing completed: ${validTunesCount} valid tunes from ${totalFiles} files`);
+    console.log(`Covers extracted: ${coversExtracted} (${(coversExtracted/totalFiles*100).toFixed(1)}% of files had covers)`);
     return allTunes;
 }

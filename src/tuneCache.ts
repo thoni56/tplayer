@@ -37,3 +37,46 @@ export async function writeTunesToCache(tunes: any[], tunesCache: string) {
     fileStream.write(']');
     fileStream.end();
 }
+
+export async function writeCoverCache(coverMap: Map<string, string>, coverCachePath: string) {
+    console.log(`Writing ${coverMap.size} covers to cache...`);
+    const startTime = Date.now();
+    
+    try {
+        // Use streaming write to avoid string length limits
+        const fileStream = fs.createWriteStream(coverCachePath, { encoding: 'utf8' });
+        
+        fileStream.write('{');
+        
+        let isFirst = true;
+        for (const [filePath, coverData] of coverMap) {
+            if (!isFirst) {
+                fileStream.write(',');
+            }
+            
+            // Write key-value pair as JSON
+            const key = JSON.stringify(filePath);
+            const value = JSON.stringify(coverData);
+            fileStream.write(`${key}:${value}`);
+            
+            isFirst = false;
+        }
+        
+        fileStream.write('}');
+        fileStream.end();
+        
+        // Wait for stream to finish
+        await new Promise((resolve, reject) => {
+            fileStream.on('finish', resolve);
+            fileStream.on('error', reject);
+        });
+        
+        const writeTime = (Date.now() - startTime) / 1000;
+        const fileSizeMB = Math.round(fs.statSync(coverCachePath).size / 1024 / 1024);
+        console.log(`Cover cache written in ${writeTime.toFixed(2)}s (${fileSizeMB}MB)`);
+        
+    } catch (error) {
+        console.error('Error writing cover cache:', error);
+        throw error;
+    }
+}

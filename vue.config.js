@@ -29,7 +29,7 @@ module.exports = {
                 win: {
                     target: 'nsis',
                     icon: './public/tplayer.ico',
-                    certificateSubjectName: "Open Source Developer, Thomas Nilefalk"
+                    // certificateSubjectName: "Open Source Developer, Thomas Nilefalk"
                 },
             },
         },

@@ -168,6 +168,9 @@ if (isDevelopment) {
 }
 
 import { readTunesFromCache } from './tuneCache';
+import { createReadStream } from 'fs';
+import { parser } from 'stream-json';
+import { streamObject } from 'stream-json/streamers/StreamObject';
 ipcMain.on('renderer-ready', () => {
     console.log('renderer-ready');
     if (fs.existsSync(metadataCache)) {
@@ -203,44 +206,183 @@ ipcMain.handle('convertSongToUri', async (event: any, filePath: string) => {
     return uri;
 });
 
-// Cover cache for on-demand loading
-let coverCache: { [key: string]: string } | null = null;
-
-// Load cover cache lazily when first requested
-async function loadCoverCache(): Promise<{ [key: string]: string }> {
-    if (coverCache !== null) {
-        return coverCache;
+// Cover cache singleton - ensures only one loading operation ever happens
+class CoverCacheManager {
+    private static instance: CoverCacheManager;
+    private cache: { [key: string]: string } | null = null;
+    private loadingPromise: Promise<{ [key: string]: string }> | null = null;
+    
+    private constructor() {}
+    
+    public static getInstance(): CoverCacheManager {
+        if (!CoverCacheManager.instance) {
+            CoverCacheManager.instance = new CoverCacheManager();
+        }
+        return CoverCacheManager.instance;
     }
     
-    const coverCachePath = userHome + '/.tplayer_covers_cache.json';
-    
-    try {
-        if (fs.existsSync(coverCachePath)) {
-            console.log('Loading cover cache for on-demand access...');
-            const startTime = Date.now();
-            const coverData = fs.readFileSync(coverCachePath, 'utf8');
-            coverCache = JSON.parse(coverData);
-            const loadTime = (Date.now() - startTime) / 1000;
-            const coverCount = Object.keys(coverCache!).length;
-            console.log(`Cover cache loaded in ${loadTime.toFixed(2)}s (${coverCount} covers available)`);
-            return coverCache!;
-        } else {
-            console.log('No cover cache found');
-            coverCache = {};
-            return coverCache;
+    public async getCache(): Promise<{ [key: string]: string }> {
+        // If already loaded, return cached result immediately
+        if (this.cache !== null) {
+            return this.cache;
         }
-    } catch (error) {
-        console.error('Error loading cover cache:', error);
-        coverCache = {};
-        return coverCache;
+        
+        // If currently loading, wait for existing promise
+        if (this.loadingPromise !== null) {
+            console.log('Cover cache already loading, waiting for completion...');
+            return this.loadingPromise;
+        }
+    
+        // Start loading process - create promise that will be shared by all concurrent requests
+        console.log('Starting cover cache loading...');
+        this.loadingPromise = this.performLoad();
+        
+        return this.loadingPromise;
+    }
+    
+    private async performLoad(): Promise<{ [key: string]: string }> {
+        const coverCachePath = userHome + '/.tplayer_covers_cache.json';
+        
+        try {
+            if (fs.existsSync(coverCachePath)) {
+                console.log('Loading cover cache for on-demand access...');
+                const startTime = Date.now();
+                
+                // Use streaming JSON parser to avoid V8 string length limits
+                const loadedCache = await streamParseJsonObjectUsingStreamJson(coverCachePath);
+                
+                const loadTime = (Date.now() - startTime) / 1000;
+                const coverCount = Object.keys(loadedCache).length;
+                console.log(`Cover cache loaded in ${loadTime.toFixed(2)}s (${coverCount} covers available)`);
+                
+                this.cache = loadedCache;
+                return this.cache;
+            } else {
+                console.log('No cover cache found');
+                this.cache = {};
+                return this.cache;
+            }
+        } catch (error) {
+            console.error('Error loading cover cache:', error);
+            this.cache = {};
+            return this.cache;
+        } finally {
+            // Clear loading promise when done (success or failure)
+            this.loadingPromise = null;
+        }
     }
 }
 
-// Helper function to get default cover as base64
-// TODO: Convert actual /vinyl.png to base64 data URI
-function getDefaultCoverBase64(): string {
-    // For now, return the path - this should be actual base64 data
-    return '/vinyl.png';
+// Global function to maintain compatibility
+async function loadCoverCache(): Promise<{ [key: string]: string }> {
+    return CoverCacheManager.getInstance().getCache();
+}
+
+// Helper function to stream parse a JSON object using stream-json library
+function streamParseJsonObjectUsingStreamJson(filePath: string): Promise<{ [key: string]: string }> {
+    return new Promise((resolve, reject) => {
+        const result: { [key: string]: string } = {};
+        let isResolved = false;
+        
+        try {
+            // For JSON objects, use streamObject to parse key-value pairs
+            const fileStream = createReadStream(filePath);
+            const pipeline = fileStream
+                .pipe(parser())
+                .pipe(streamObject());
+            
+            const cleanup = () => {
+                try {
+                    if (fileStream && !fileStream.destroyed) {
+                        fileStream.destroy();
+                    }
+                    if (pipeline && !pipeline.destroyed) {
+                        pipeline.destroy();
+                    }
+                } catch (cleanupError) {
+                    console.warn('Cleanup error in streamParseJsonObjectUsingStreamJson:', cleanupError);
+                }
+            };
+            
+            pipeline.on('data', (data) => {
+                try {
+                    // data.key is the object key (file path)
+                    // data.value is the cover base64 string
+                    if (data.key && typeof data.value === 'string') {
+                        result[data.key] = data.value;
+                    }
+                } catch (dataError) {
+                    console.error('Error processing data in stream parser:', dataError);
+                }
+            });
+            
+            pipeline.on('end', () => {
+                if (!isResolved) {
+                    isResolved = true;
+                    cleanup();
+                    resolve(result);
+                }
+            });
+            
+            pipeline.on('error', (error) => {
+                if (!isResolved) {
+                    isResolved = true;
+                    cleanup();
+                    reject(error);
+                }
+            });
+            
+            fileStream.on('error', (error) => {
+                if (!isResolved) {
+                    isResolved = true;
+                    cleanup();
+                    reject(error);
+                }
+            });
+            
+        } catch (error) {
+            if (!isResolved) {
+                isResolved = true;
+                reject(error);
+            }
+        }
+    });
+}
+
+// Default cover cache - loaded at startup
+let defaultCoverBase64: string | null = null;
+
+// Get default cover as base64 - initialize once, use many times
+export function getDefaultCover(): string {
+    if (defaultCoverBase64 !== null) {
+        return defaultCoverBase64;
+    }
+    
+    try {
+        // In development, assets are in bundled/ subdirectory
+        // In production, assets are directly in __dirname
+        const vinylPath = isDevelopment 
+            ? path.join(__dirname, 'bundled', 'vinyl.png')
+            : path.join(__dirname, 'vinyl.png');
+        if (fs.existsSync(vinylPath)) {
+            const imageBuffer = fs.readFileSync(vinylPath);
+            defaultCoverBase64 = 'data:image/png;base64,' + imageBuffer.toString('base64');
+            console.log(`Default cover loaded: ${Math.round(defaultCoverBase64.length / 1024)}KB`);
+        } else {
+            console.warn('vinyl.png not found, using fallback');
+            defaultCoverBase64 = 'data:image/svg+xml;base64,' + Buffer.from(
+                '<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="#ccc"/><text x="50" y="50" text-anchor="middle" dy=".3em">♪</text></svg>'
+            ).toString('base64');
+        }
+        return defaultCoverBase64;
+    } catch (error) {
+        console.error('Error loading default cover:', error);
+        // Fallback SVG if all else fails
+        defaultCoverBase64 = 'data:image/svg+xml;base64,' + Buffer.from(
+            '<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="#ddd"/><text x="50" y="50" text-anchor="middle" dy=".3em">?</text></svg>'
+        ).toString('base64');
+        return defaultCoverBase64;
+    }
 }
 
 // IPC handler to get cover for a specific tune - always returns base64 data
@@ -254,10 +396,15 @@ ipcMain.handle('getCoverForTune', async (event: any, filePath: string) => {
             return { cover: cover, isReal: true };
         } else {
             console.log(`No cover found for: ${filePath.split('\\').pop()}, returning default`);
-            return { cover: getDefaultCoverBase64(), isReal: false };
+            return { cover: getDefaultCover(), isReal: false };
         }
     } catch (error) {
         console.error('Error getting cover for tune:', error);
-        return { cover: getDefaultCoverBase64(), isReal: false };
+        return { cover: getDefaultCover(), isReal: false };
     }
+});
+
+// IPC handler to get default cover
+ipcMain.handle('getDefaultCover', async () => {
+    return getDefaultCover();
 });

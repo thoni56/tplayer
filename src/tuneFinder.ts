@@ -3,6 +3,7 @@ import walk from 'walkdir';
 import * as musicMetaData from 'music-metadata';
 import { TuneInfo } from '../src/models/TuneInfo';
 import { writeTunesToCache, writeCoverCache } from './tuneCache';
+import { getDefaultCover } from './background';
 
 // Configuration for concurrent file processing
 const DEFAULT_CONCURRENCY = 10; // Process 10 files simultaneously by default
@@ -78,6 +79,7 @@ async function readMetadataForAllFiles(window: BrowserWindow, files: string[], g
             try {
                 const metadata = await musicMetaData.parseFile(filePath);
                 const tuneInfo = new TuneInfo(filePath);
+                tuneInfo.cover = getDefaultCover(); // Set default cover after construction
                 tuneInfo.fillFromCommonTags(metadata);
                 
                 // Extract cover to separate cache if it exists

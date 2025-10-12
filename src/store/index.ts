@@ -4,6 +4,25 @@ import { filteringModule, FilteringState } from './modules/filtering'
 import { tunesModule, TunesState } from './modules/tunes'
 import { playerModule, PlayerState } from './modules/player'
 import { hotkeysModule, HotkeysState } from './modules/hotkeys'
+import { TuneInfo } from '@/models/TuneInfo'
+
+// Cache for default cover to avoid repeated IPC calls
+let defaultCoverCache: string = ''
+
+// Helper function to ensure TuneInfo has default cover
+async function ensureDefaultCover(tune: TuneInfo): Promise<void> {
+  if (!tune.cover) {
+    if (!defaultCoverCache) {
+      try {
+        defaultCoverCache = await window.api.sendSync('getDefaultCover', null)
+      } catch (error) {
+        console.error('Failed to get default cover:', error)
+        return
+      }
+    }
+    tune.cover = defaultCoverCache
+  }
+}
 
 Vue.use(Vuex)
 
@@ -75,7 +94,7 @@ export default new Vuex.Store<RootState>({
     },
     
     currentCover: (state, getters, rootState, rootGetters) => {
-      return rootState.tunes.selectedTune.cover || '/vinyl.png'
+      return rootState.tunes.selectedTune.cover || defaultCoverCache || '/vinyl.png'
     },
     
     currentTrack: (state, getters, rootState, rootGetters) => {
@@ -215,7 +234,10 @@ export default new Vuex.Store<RootState>({
     },
 
     // Handle discovered tunes from Electron main process
-    async handleDiscoveredTunes({ dispatch }, tunes) {
+    async handleDiscoveredTunes({ dispatch }, tunes: TuneInfo[]) {
+      // Ensure all tunes have default covers
+      await Promise.all(tunes.map((tune: TuneInfo) => ensureDefaultCover(tune)))
+      
       await dispatch('tunes/loadTunes', tunes)
       await dispatch('tunes/finishLoading')
     },
@@ -228,6 +250,12 @@ export default new Vuex.Store<RootState>({
     // Handle loading progress from Electron main process
     async handleProgress({ dispatch }, progress) {
       await dispatch('tunes/updateProgress', progress)
+    },
+    
+    // Helper action to ensure a TuneInfo instance has a default cover
+    async ensureTuneHasDefaultCover({ }, tune: TuneInfo) {
+      await ensureDefaultCover(tune)
+      return tune
     }
   }
 })

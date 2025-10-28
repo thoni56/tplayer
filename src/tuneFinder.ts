@@ -39,10 +39,20 @@ export function discoverTunes(
             console.log(`Metadata processing completed in ${processingTime.toFixed(2)} seconds`);
             console.log(`Processed ${tunes.length} valid tunes from ${files.length} files`);
             
-            window.webContents.send('discovered-tunes', tunes);
-            writeTunesToCache(tunes, tuneCache)
-                .then(() => window.webContents.send('finished-loading'))
-                .catch((error) => console.log('Error caching tunes:' + error));
+            // Send tunes in batches to avoid IPC size limits
+            const BATCH_SIZE = 100;
+            for (let i = 0; i < tunes.length; i += BATCH_SIZE) {
+                const batch = tunes.slice(i, i + BATCH_SIZE);
+                window.webContents.send('discovered-tunes', batch);
+            }
+            
+            try {
+                await writeTunesToCache(tunes, tuneCache);
+                window.webContents.send('finished-loading');
+            } catch (error) {
+                console.log('Error caching tunes:' + error);
+                window.webContents.send('finished-loading');
+            }
         });
     });
     emitter.on('error', (path: string) => {

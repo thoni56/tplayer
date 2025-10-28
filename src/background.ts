@@ -175,8 +175,15 @@ ipcMain.on('renderer-ready', () => {
     console.log('renderer-ready');
     if (fs.existsSync(metadataCache)) {
         console.time('readTunesFromCache'); // Start timing
-        readTunesFromCache(metadataCache).then((tunes) => {
-            window!.webContents.send('discovered-tunes', tunes);
+        readTunesFromCache(metadataCache).then((tunesData) => {
+            const tunes = tunesData as any[];
+            // Send tunes in batches to avoid IPC size limits
+            const BATCH_SIZE = 100;
+            for (let i = 0; i < tunes.length; i += BATCH_SIZE) {
+                const batch = tunes.slice(i, i + BATCH_SIZE);
+                window!.webContents.send('discovered-tunes', batch);
+            }
+            window!.webContents.send('finished-loading');
             console.timeEnd('readTunesFromCache'); // End timing
         });
     } else if (autoloadDirectory) {

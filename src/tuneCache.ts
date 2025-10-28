@@ -36,6 +36,12 @@ export async function writeTunesToCache(tunes: any[], tunesCache: string) {
     });
     fileStream.write(']');
     fileStream.end();
+    
+    // Wait for stream to finish writing
+    await new Promise((resolve, reject) => {
+        fileStream.on('finish', resolve);
+        fileStream.on('error', reject);
+    });
 }
 
 export async function writeCoverCache(coverMap: Map<string, string>, coverCachePath: string) {

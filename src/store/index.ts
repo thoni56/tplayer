@@ -234,12 +234,12 @@ export default new Vuex.Store<RootState>({
     },
 
     // Handle discovered tunes from Electron main process
-    async handleDiscoveredTunes({ dispatch }, tunes: TuneInfo[]) {
+    async handleDiscoveredTunes({ commit }, tunes: TuneInfo[]) {
       // Ensure all tunes have default covers
       await Promise.all(tunes.map((tune: TuneInfo) => ensureDefaultCover(tune)))
       
-      await dispatch('tunes/loadTunes', tunes)
-      await dispatch('tunes/finishLoading')
+      // Add tunes to existing collection (for batched loading)
+      commit('tunes/ADD_TUNES', tunes)
     },
 
     // Handle a single discovered tune from Electron main process  

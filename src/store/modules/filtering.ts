@@ -142,6 +142,13 @@ export const filteringModule: Module<FilteringState, any> = {
       const validBpm = Math.max(0, Math.min(300, bpm)) // Clamp between 0-300
       commit('SET_BPM', validBpm)
     },
+    
+    // Action to adjust BPM by a delta value (for hotkeys)
+    async adjustBpm({ state, commit }, delta: number) {
+      const newBpm = state.selectedBpm + delta
+      const validBpm = Math.max(0, Math.min(300, newBpm)) // Clamp between 0-300
+      commit('SET_BPM', validBpm)
+    },
 
     // Action to change BPM range with validation  
     async changeBpmRange({ commit }, range: number) {

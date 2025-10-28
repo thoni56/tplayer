@@ -39,13 +39,14 @@ export default class Player extends Vue {
         this.$store.dispatch('player/initialize')
         
         // Set up global hotkey listener
-        document.addEventListener('keyup', this.handleKeyPress)
+        // Use keydown with capture phase to handle keys before any child components
+        document.addEventListener('keydown', this.handleKeyPress, true)
     }
 
     public beforeDestroyed() {
         // Cleanup player module
         this.$store.dispatch('player/cleanup')
-        document.removeEventListener('keyup', this.handleKeyPress)
+        document.removeEventListener('keydown', this.handleKeyPress, true)
     }
 
     // Hotkey handling - delegates to store

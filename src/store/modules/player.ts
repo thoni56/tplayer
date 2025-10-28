@@ -30,9 +30,47 @@ let audioInstance: HTMLAudioElement | null = null
 let timeUpdateInterval: number | null = null
 let timeoutCheckInterval: number | null = null
 
+// Operation cancellation infrastructure
+let currentMoveOperation: AbortController | null = null
+let pendingMoveOperation: { controller: AbortController, tune: any, shouldPlay: boolean } | null = null
+let shouldResumePlayingAfterMove = false
+
 // Helper functions
 function sleep(millis: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, millis))
+}
+
+// Check if current operation should be cancelled
+function checkCancellation(signal?: AbortSignal): boolean {
+  return signal?.aborted || false
+}
+
+// Gracefully handle operation interruption
+async function handleGracefulInterruption(dispatch: any, newTune: any, wasPlaying: boolean): Promise<boolean> {
+  // If there's already a current operation, we need to interrupt it gracefully
+  if (currentMoveOperation && !currentMoveOperation.signal.aborted) {
+    console.log('Gracefully interrupting current tune operation...')
+    
+    // Preserve the playing intent - if we were playing or intended to play, keep that intent
+    const shouldPlay = wasPlaying || shouldResumePlayingAfterMove
+    
+    // Cancel the current operation
+    currentMoveOperation.abort()
+    
+    // Store the new operation as pending with playing intent preserved
+    pendingMoveOperation = {
+      controller: new AbortController(),
+      tune: newTune,
+      shouldPlay: shouldPlay
+    }
+    
+    // Update global playing intent
+    shouldResumePlayingAfterMove = shouldPlay
+    
+    return true // Indicates interruption occurred
+  }
+  
+  return false // No interruption needed
 }
 
 export const playerModule: Module<PlayerState, any> = {
@@ -243,17 +281,66 @@ export const playerModule: Module<PlayerState, any> = {
       commit('SET_PLAYING', false)
     },
     
+    // Fade out with cancellation support
+    async fadeOutWithCancellation({ commit, state }, { signal }) {
+      if (!audioInstance) return
+      
+      while (audioInstance.volume > state.fadeStep && !checkCancellation(signal)) {
+        audioInstance.volume -= state.fadeStep
+        await sleep(state.fadeTime)
+      }
+      
+      // Complete the fade out even if cancelled (for graceful audio)
+      audioInstance.volume = 0
+      audioInstance.pause()
+      commit('SET_PLAYING', false)
+    },
+    
     // Fade in with volume control
     async fadeIn({ commit, state }) {
       if (!audioInstance) return
       
-      await audioInstance.play()
-      while (audioInstance.volume < 1 - state.fadeStep) {
-        audioInstance.volume += state.fadeStep
-        await sleep(state.fadeTime)
+      try {
+        await audioInstance.play()
+        while (audioInstance.volume < 1 - state.fadeStep) {
+          audioInstance.volume += state.fadeStep
+          await sleep(state.fadeTime)
+        }
+        audioInstance.volume = 1
+        commit('SET_PLAYING', true)
+      } catch (error: any) {
+        if (error.name === 'AbortError' || error.message?.includes('interrupted')) {
+          console.log('Play request interrupted - operation may have been cancelled')
+          return
+        }
+        throw error
       }
-      audioInstance.volume = 1
-      commit('SET_PLAYING', true)
+    },
+    
+    // Fade in with cancellation support
+    async fadeInWithCancellation({ commit, state }, { signal }) {
+      if (!audioInstance || checkCancellation(signal)) return
+      
+      try {
+        await audioInstance.play()
+        if (checkCancellation(signal)) return
+        
+        while (audioInstance.volume < 1 - state.fadeStep && !checkCancellation(signal)) {
+          audioInstance.volume += state.fadeStep
+          await sleep(state.fadeTime)
+        }
+        
+        if (!checkCancellation(signal)) {
+          audioInstance.volume = 1
+          commit('SET_PLAYING', true)
+        }
+      } catch (error: any) {
+        if (error.name === 'AbortError' || error.message?.includes('interrupted')) {
+          console.log('Play request interrupted during fade in - likely due to cancellation')
+          return
+        }
+        throw error
+      }
     },
     
     // Play/pause toggle
@@ -384,35 +471,85 @@ export const playerModule: Module<PlayerState, any> = {
       }
     },
     
-    // Move to specific tune
+    // Move to specific tune with graceful cancellation
     async moveToTune({ dispatch, commit, state }, tune: TuneInfo) {
-      const wasPlaying = state.playing
+      const wasPlaying = state.playing || shouldResumePlayingAfterMove
       
-      if (wasPlaying) {
-        await dispatch('fadeOut')
+      // Handle graceful interruption of existing operations
+      const wasInterrupted = await handleGracefulInterruption(dispatch, tune, wasPlaying)
+      if (wasInterrupted) {
+        return // The interruption handler will queue this operation
       }
       
-      // Select the tune in the tunes module
-      await dispatch('tunes/selectTune', tune, { root: true })
+      // Start new operation with cancellation support
+      const controller = new AbortController()
+      currentMoveOperation = controller
+      const signal = controller.signal
       
-      // Load the new audio
-      await dispatch('loadSelectedTune')
-      
-      // Reset timeout state
-      commit('RESET_PLAYBACK_STATE')
-      
-      // Resume playing if we were playing before
-      if (wasPlaying) {
-        await dispatch('play')
-      }
-      
-      // Scroll tune into view
-      setTimeout(() => {
-        const element = document.getElementById(tune.file)
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+      try {
+        // Set playing intent for this operation
+        shouldResumePlayingAfterMove = wasPlaying
+        
+        // Graceful fade out if currently playing
+        if (state.playing) {
+          await dispatch('fadeOutWithCancellation', { signal })
+          if (checkCancellation(signal)) return
         }
-      }, 100)
+        
+        // Select the tune in the tunes module
+        if (checkCancellation(signal)) return
+        await dispatch('tunes/selectTune', tune, { root: true })
+        
+        // Load the new audio
+        if (checkCancellation(signal)) return
+        await dispatch('loadSelectedTune')
+        
+        // Reset timeout state
+        if (checkCancellation(signal)) return
+        commit('RESET_PLAYBACK_STATE')
+        
+        // Resume playing if we should be playing
+        if (shouldResumePlayingAfterMove && !checkCancellation(signal)) {
+          await dispatch('fadeInWithCancellation', { signal })
+        }
+        
+        // Clear playing intent after successful operation
+        if (!checkCancellation(signal)) {
+          shouldResumePlayingAfterMove = false
+        }
+        
+        // Scroll tune into view (if not cancelled)
+        if (!checkCancellation(signal)) {
+          setTimeout(() => {
+            const element = document.getElementById(tune.file)
+            if (element) {
+              element.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+            }
+          }, 100)
+        }
+        
+      } catch (error: any) {
+        if (error.name === 'AbortError') {
+          console.log('Move operation was cancelled')
+        } else {
+          console.error('Error in moveToTune:', error)
+        }
+      } finally {
+        // Clear current operation
+        if (currentMoveOperation === controller) {
+          currentMoveOperation = null
+        }
+        
+        // Start pending operation if there is one
+        if (pendingMoveOperation && !pendingMoveOperation.controller.signal.aborted) {
+          const pending = pendingMoveOperation
+          pendingMoveOperation = null
+          // Set the playing intent from the pending operation
+          shouldResumePlayingAfterMove = pending.shouldPlay
+          console.log(`Starting pending tune operation... (shouldPlay: ${pending.shouldPlay})`)
+          await dispatch('moveToTune', pending.tune)
+        }
+      }
     },
     
     // Load and play selected tune (for click events)
@@ -442,11 +579,11 @@ export const playerModule: Module<PlayerState, any> = {
     
     // BPM change actions (for hotkeys)
     async changeBpmFaster({ dispatch }) {
-      await dispatch('filtering/changeBpm', 4, { root: true })
+      await dispatch('filtering/adjustBpm', 4, { root: true })
     },
     
     async changeBpmSlower({ dispatch }) {
-      await dispatch('filtering/changeBpm', -3, { root: true })
+      await dispatch('filtering/adjustBpm', -3, { root: true })
     }
   }
 }

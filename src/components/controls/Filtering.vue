@@ -47,16 +47,14 @@
                 >BPM:</v-flex
             >
             <v-flex align-self-center grow style="margin-top: 5vh">
-                <div @keydown.capture="ignoreKeyDownForBpmSlider($event)">
-                    <v-range-slider
-                        strict
-                        thumb-label="always"
-                        show-ticks="always"
-                        v-model="bpmSlider"
-                        :max="maxBpm"
-                        :min="minBpm"
-                    />
-                </div>
+                <v-range-slider
+                    strict
+                    thumb-label="always"
+                    show-ticks="always"
+                    v-model="bpmSlider"
+                    :max="maxBpm"
+                    :min="minBpm"
+                />
             </v-flex>
             <v-flex align-self-center shrink>
                 <v-btn small color="primary" @click="flipSorting()">
@@ -101,11 +99,6 @@ export default class Filtering extends Vue {
         this.$store.dispatch('filtering/startSearch', this.searchString);
     }
 
-    public ignoreKeyDownForBpmSlider(e: any) {
-        // Prevent keypresses with the bpm-slider in focus to be handled by slider
-        e.stopPropagation(); // do not propagate the keydown event
-    }
-
     public removeHotKeyListener() {
         this.$emit('remove-hotkey-listener');
     }
@@ -148,6 +141,26 @@ export default class Filtering extends Vue {
         setTimeout(() => {
             this.tick();
         }, this.tickTime);
+        
+        // Initialize slider values from store
+        this.syncSliderWithStore();
+        
+        // Watch for BPM changes from store (e.g., from hotkeys)
+        this.$watch(
+            () => this.$store.getters.selectedBpm,
+            () => this.syncSliderWithStore()
+        );
+        this.$watch(
+            () => this.$store.getters.selectedBpmRange,
+            () => this.syncSliderWithStore()
+        );
+    }
+    
+    // Sync slider values with store (for hotkey updates)
+    private syncSliderWithStore() {
+        const storeBpm = this.$store.getters.selectedBpm;
+        const storeBpmRange = this.$store.getters.selectedBpmRange;
+        this.bpmSliderValues = [storeBpm, storeBpm + storeBpmRange];
     }
 
     // Genres

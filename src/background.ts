@@ -42,6 +42,10 @@ autoUpdater.on('update-available', (info) => {
     console.log('update-available', info);
 });
 
+autoUpdater.on('error', (error) => {
+    console.error('Auto-updater error:', error);
+});
+
 async function createWindow() {
     // Create the browser window.
     window = new BrowserWindow({
@@ -56,7 +60,11 @@ async function createWindow() {
     window.setMenu(null);
 
     if (process.env.WEBPACK_DEV_SERVER_URL) {
-        autoUpdater.checkForUpdates();
+        try {
+            autoUpdater.checkForUpdates();
+        } catch (error) {
+            console.error('Failed to check for updates:', error);
+        }
         // Load the url of the dev server if in development mode
         window
             .loadURL(process.env.WEBPACK_DEV_SERVER_URL)
@@ -70,7 +78,11 @@ async function createWindow() {
             }
         });
     } else {
-        autoUpdater.checkForUpdatesAndNotify();
+        try {
+            autoUpdater.checkForUpdatesAndNotify();
+        } catch (error) {
+            console.error('Failed to check for updates:', error);
+        }
         createProtocol('app');
         // Load the index.html when not in development
         window.setFullScreen(true);

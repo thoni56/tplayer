@@ -48,12 +48,15 @@
             >
             <v-flex align-self-center grow style="margin-top: 5vh">
                 <v-range-slider
+                    ref="bpmSlider"
                     strict
                     thumb-label="always"
                     show-ticks="always"
                     v-model="bpmSlider"
                     :max="maxBpm"
                     :min="minBpm"
+                    @end="blurSlider"
+                    @mouseup="blurSlider"
                 />
             </v-flex>
             <v-flex align-self-center shrink>
@@ -245,6 +248,18 @@ export default class Filtering extends Vue {
     // Discover tunes over IPC
     public initiateDiscoveringFiles() {
         window.api.send('discover-tunes');
+    }
+    
+    // Blur slider after user interaction to prevent PageUp/PageDown from affecting it
+    public blurSlider() {
+        const slider = this.$refs.bpmSlider as any;
+        if (slider && slider.$el) {
+            // Blur all focusable elements within the slider
+            const focusable = slider.$el.querySelectorAll('input, button, [tabindex]');
+            focusable.forEach((el: HTMLElement) => el.blur());
+            // Also blur the slider element itself
+            (slider.$el as HTMLElement).blur();
+        }
     }
 }
 </script>

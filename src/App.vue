@@ -52,11 +52,6 @@ export default class App extends Vue {
             console.log('progress:' + progress)
         })
 
-        window.api.on('finished-loading', () => {
-            this.$store.commit('tunes/FINISHED_LOADING')
-            console.log('finished-loading')
-        })
-
         window.api.send('renderer-ready')
     }
 }

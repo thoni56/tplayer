@@ -156,11 +156,10 @@ export const tunesModule: Module<TunesState, any> = {
 
     SET_PROGRESS(state, progress: number) {
       state.progress = Math.max(0, Math.min(100, progress))
-    },
-
-    FINISHED_LOADING(state) {
-      state.loading = false
-      state.progress = 100
+      // Auto-close overlay when progress reaches 100%
+      if (state.progress === 100) {
+        state.loading = false
+      }
     },
 
     UPDATE_TUNE_METADATA(state, { file, metadata }: { file: string, metadata: Partial<TuneInfo> }) {
@@ -232,11 +231,6 @@ export const tunesModule: Module<TunesState, any> = {
     // Action to update loading progress
     async updateProgress({ commit }, progress: number) {
       commit('SET_PROGRESS', progress)
-    },
-
-    // Action to finish loading
-    async finishLoading({ commit }) {
-      commit('FINISHED_LOADING')
     },
 
     // Action to clear all tunes

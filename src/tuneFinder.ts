@@ -46,12 +46,11 @@ export function discoverTunes(
                 window.webContents.send('discovered-tunes', batch);
             }
             
+            // Write cache in background
             try {
                 await writeTunesToCache(tunes, tuneCache);
-                window.webContents.send('finished-loading');
             } catch (error) {
                 console.log('Error caching tunes:' + error);
-                window.webContents.send('finished-loading');
             }
         });
     });

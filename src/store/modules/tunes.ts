@@ -4,32 +4,33 @@ import { TuneInfo } from '@/models/TuneInfo'
 // Define the tunes module state interface
 export interface TunesState {
   allTunes: TuneInfo[]
+  filteredTunes: TuneInfo[]
   selectedTune: TuneInfo
   discovering: boolean
   discoveryProgress: number
   tunesBpmRange: number[]
+  isFiltering: boolean
 }
+
+// Track current filtering operation for cancellation
+let currentFilteringId = 0
 
 export const tunesModule: Module<TunesState, any> = {
   namespaced: true,
   
   state: (): TunesState => ({
     allTunes: [],
+    filteredTunes: [],
     selectedTune: new TuneInfo(''),
     discovering: false,
     discoveryProgress: 0,
-    tunesBpmRange: []
+    tunesBpmRange: [],
+    isFiltering: false
   }),
 
   getters: {
-    // Get filtered tunes by applying all filters from filtering module
-    filteredTunes: (state, getters, rootState, rootGetters) => {
-      const filterFunction = rootGetters['filtering/tunePassesAllFilters']
-      const sortFunction = rootGetters['filtering/sortTunes']
-      
-      const filteredTunes = state.allTunes.filter(filterFunction)
-      return sortFunction(filteredTunes)
-    },
+    // Get filtered tunes from state (computed asynchronously)
+    filteredTunes: (state) => state.filteredTunes,
 
     // Get tune count
     totalTunesCount: (state): number => state.allTunes.length,
@@ -107,12 +108,23 @@ export const tunesModule: Module<TunesState, any> = {
     isDiscovering: (state): boolean => state.discovering,
 
     // Get discovery progress
-    discoveryProgress: (state): number => state.discoveryProgress
+    discoveryProgress: (state): number => state.discoveryProgress,
+
+    // Check if filtering
+    isFiltering: (state): boolean => state.isFiltering
   },
 
   mutations: {
     SET_ALL_TUNES(state, tunes: TuneInfo[]) {
       state.allTunes = tunes
+    },
+
+    SET_FILTERED_TUNES(state, tunes: TuneInfo[]) {
+      state.filteredTunes = tunes
+    },
+
+    SET_FILTERING(state, isFiltering: boolean) {
+      state.isFiltering = isFiltering
     },
 
     ADD_TUNE(state, tune: TuneInfo) {
@@ -179,9 +191,44 @@ export const tunesModule: Module<TunesState, any> = {
   },
 
   actions: {
+    // Apply filters with cancellation support
+    async applyFilters({ commit, state, rootGetters }) {
+      // Generate unique ID for this filtering operation
+      const myFilteringId = ++currentFilteringId
+      
+      commit('SET_FILTERING', true)
+      
+      // Yield to allow UI update before heavy computation
+      await new Promise<void>(resolve => {
+        setTimeout(() => {
+          // Check if we were cancelled before starting
+          if (myFilteringId !== currentFilteringId) {
+            resolve()
+            return
+          }
+          
+          const filterFunction = rootGetters['filtering/tunePassesAllFilters']
+          const sortFunction = rootGetters['filtering/sortTunes']
+          
+          // Filter and sort synchronously (fast for most collections)
+          const filtered = state.allTunes.filter(filterFunction)
+          const sorted = sortFunction(filtered)
+          
+          // Check again if we were cancelled during processing
+          if (myFilteringId === currentFilteringId) {
+            commit('SET_FILTERED_TUNES', sorted)
+            commit('SET_FILTERING', false)
+          }
+          
+          resolve()
+        }, 0)
+      })
+    },
+
     // Action to load tunes from an array
-    async loadTunes({ commit }, tunes: TuneInfo[]) {
+    async loadTunes({ commit, dispatch }, tunes: TuneInfo[]) {
       commit('SET_ALL_TUNES', tunes)
+      await dispatch('applyFilters')
     },
 
     // Action to select tune and handle validation

@@ -138,51 +138,59 @@ export const filteringModule: Module<FilteringState, any> = {
 
   actions: {
     // Action to change BPM with validation
-    async changeBpm({ commit }, bpm: number) {
+    async changeBpm({ commit, dispatch }, bpm: number) {
       const validBpm = Math.max(0, Math.min(300, bpm)) // Clamp between 0-300
       commit('SET_BPM', validBpm)
+      await dispatch('tunes/applyFilters', null, { root: true })
     },
     
     // Action to adjust BPM by a delta value (for hotkeys)
-    async adjustBpm({ state, commit }, delta: number) {
+    async adjustBpm({ state, commit, dispatch }, delta: number) {
       const newBpm = state.selectedBpm + delta
       const validBpm = Math.max(0, Math.min(300, newBpm)) // Clamp between 0-300
       commit('SET_BPM', validBpm)
+      await dispatch('tunes/applyFilters', null, { root: true })
     },
 
     // Action to change BPM range with validation  
-    async changeBpmRange({ commit }, range: number) {
+    async changeBpmRange({ commit, dispatch }, range: number) {
       const validRange = Math.max(0, Math.min(50, range)) // Clamp between 0-50
       commit('SET_BPM_RANGE', validRange)
+      await dispatch('tunes/applyFilters', null, { root: true })
     },
 
     // Action to toggle genre selection
-    async toggleGenre({ state, commit }, genre: string) {
+    async toggleGenre({ state, commit, dispatch }, genre: string) {
       if (state.selectedGenres.includes(genre)) {
         commit('REMOVE_SELECTED_GENRE', genre)
       } else {
         commit('ADD_SELECTED_GENRE', genre)
       }
+      await dispatch('tunes/applyFilters', null, { root: true })
     },
 
     // Action to start search
-    async startSearch({ commit }, searchString: string) {
+    async startSearch({ commit, dispatch }, searchString: string) {
       commit('SET_SEARCH_STRING', searchString.trim())
+      await dispatch('tunes/applyFilters', null, { root: true })
     },
 
     // Action to clear search
-    async clearSearch({ commit }) {
+    async clearSearch({ commit, dispatch }) {
       commit('CLEAR_SEARCH')
+      await dispatch('tunes/applyFilters', null, { root: true })
     },
 
     // Action to flip sorting direction
-    async flipSorting({ commit }) {
+    async flipSorting({ commit, dispatch }) {
       commit('TOGGLE_SORTING')
+      await dispatch('tunes/applyFilters', null, { root: true })
     },
 
     // Action to reset all filters
-    async resetFilters({ commit }) {
+    async resetFilters({ commit, dispatch }) {
       commit('RESET_ALL_FILTERS')
+      await dispatch('tunes/applyFilters', null, { root: true })
     }
   }
 }

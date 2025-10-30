@@ -98,8 +98,13 @@ export default class Filtering extends Vue {
     // Text searching
     public searchString = '';
 
+    // Debounced search handler
+    private searchDebounce = debounce((searchString: string) => {
+        this.$store.dispatch('filtering/startSearch', searchString);
+    }, 150);
+
     public keypress(e: any) {
-        this.$store.dispatch('filtering/startSearch', this.searchString);
+        this.searchDebounce(this.searchString);
     }
 
     public removeHotKeyListener() {
@@ -225,10 +230,14 @@ export default class Filtering extends Vue {
         ];
     }
 
-    // debounce BPM range changes
-    commitChange = debounce((type: string, payload: any) => {
-        this.$store.commit(type, payload);
-    }, 300);
+    // Debounce BPM range changes - dispatch action instead of commit
+    commitChange = debounce(async (type: string, payload: any) => {
+        if (type === 'filtering/SET_BPM') {
+            await this.$store.dispatch('filtering/changeBpm', payload);
+        } else if (type === 'filtering/SET_BPM_RANGE') {
+            await this.$store.dispatch('filtering/changeBpmRange', payload);
+        }
+    }, 200);
 
     set bpmRange(val) {
         if (val[0] != this.$store.getters.selectedBpm) {

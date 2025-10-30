@@ -17,8 +17,8 @@ export function discoverTunes(
 ) {
     const files: string[] = [];
     const emitter = walk(directory, { follow_symlinks: true });
-    window.webContents.send('progress', 0);
-    window.webContents.send('start-loading');
+    window.webContents.send('discovery-progress', 0);
+    window.webContents.send('start-discovery');
     emitter.on('file', (path: string) => {
         if (
             path.endsWith('.aac') ||
@@ -43,7 +43,7 @@ export function discoverTunes(
             const BATCH_SIZE = 100;
             for (let i = 0; i < tunes.length; i += BATCH_SIZE) {
                 const batch = tunes.slice(i, i + BATCH_SIZE);
-                window.webContents.send('discovered-tunes', batch);
+                window.webContents.send('tunes-available', batch);
             }
             
             // Write cache in background
@@ -74,7 +74,7 @@ async function readMetadataForAllFiles(window: BrowserWindow, files: string[], g
         const now = Date.now();
         if (now - lastProgressUpdate > 50) { // Throttle to max 20 updates per second
             const percent = Math.round((processedCount / totalFiles) * 100);
-            window.webContents.send('progress', percent);
+            window.webContents.send('discovery-progress', percent);
             lastProgressUpdate = now;
         }
     };
@@ -136,7 +136,7 @@ async function readMetadataForAllFiles(window: BrowserWindow, files: string[], g
     }
     
     // Ensure final progress update
-    window.webContents.send('progress', 100);
+    window.webContents.send('discovery-progress', 100);
     
     // Write cover cache if any covers were extracted
     if (coverCache.size > 0) {

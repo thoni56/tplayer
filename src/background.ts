@@ -186,17 +186,16 @@ import { streamObject } from 'stream-json/streamers/StreamObject';
 ipcMain.on('renderer-ready', () => {
     console.log('renderer-ready');
     if (fs.existsSync(metadataCache)) {
-        console.time('readTunesFromCache'); // Start timing
+        console.time('loadTunesFromCache'); // Start timing
         readTunesFromCache(metadataCache).then((tunesData) => {
             const tunes = tunesData as any[];
             // Send tunes in batches to avoid IPC size limits
             const BATCH_SIZE = 100;
             for (let i = 0; i < tunes.length; i += BATCH_SIZE) {
                 const batch = tunes.slice(i, i + BATCH_SIZE);
-                window!.webContents.send('discovered-tunes', batch);
+                window!.webContents.send('tunes-available', batch);
             }
-            window!.webContents.send('finished-loading');
-            console.timeEnd('readTunesFromCache'); // End timing
+            console.timeEnd('loadTunesFromCache'); // End timing
         });
     } else if (autoloadDirectory) {
         discoverTunes(window!, autoloadDirectory, UsedGenres, metadataCache);

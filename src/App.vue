@@ -1,6 +1,6 @@
 <template>
     <v-app id="Application" dark>
-        <LoadingProgress />
+        <DiscoveryProgress />
         <Player />
     </v-app>
 </template>
@@ -8,7 +8,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import Player from '@/components/layout/Player.vue'
-import LoadingProgress from '@/components/ui/LoadingProgress.vue'
+import DiscoveryProgress from '@/components/ui/DiscoveryProgress.vue'
 import { TuneInfo } from '@/models/TuneInfo'
 
 Vue.config.productionTip = false
@@ -16,7 +16,7 @@ Vue.config.productionTip = false
 @Component({
     components: {
         Player,
-        LoadingProgress,
+        DiscoveryProgress,
     },
 })
 export default class App extends Vue {
@@ -32,24 +32,24 @@ export default class App extends Vue {
             console.log('clear-tunes')
         })
 
-        window.api.on('start-loading', () => {
-            this.$store.commit('tunes/START_LOADING')
-            console.log('start-loading')
+        window.api.on('start-discovery', () => {
+            this.$store.commit('tunes/START_DISCOVERY')
+            console.log('start-discovery')
         })
 
-        window.api.on('discovered-tune', (newTune: TuneInfo) => {
-            this.$store.dispatch('handleDiscoveredTune', newTune)
-            console.log('discovered-tune')
+        window.api.on('tune-available', (newTune: TuneInfo) => {
+            this.$store.dispatch('handleAvailableTune', newTune)
+            console.log('tune-available')
         })
 
-        window.api.on('discovered-tunes', (newTunes: TuneInfo[]) => {
-            this.$store.dispatch('handleDiscoveredTunes', newTunes)
-            console.log('discovered-tunes')
+        window.api.on('tunes-available', (newTunes: TuneInfo[]) => {
+            this.$store.dispatch('handleAvailableTunes', newTunes)
+            console.log('tunes-available')
         })
 
-        window.api.on('progress', (progress: number) => {
-            this.$store.dispatch('handleProgress', progress)
-            console.log('progress:' + progress)
+        window.api.on('discovery-progress', (progress: number) => {
+            this.$store.dispatch('handleDiscoveryProgress', progress)
+            console.log('discovery-progress:' + progress)
         })
 
         window.api.send('renderer-ready')

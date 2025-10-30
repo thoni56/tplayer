@@ -1,8 +1,8 @@
 <template>
-    <div class="loading-overlay" v-if="loading">
+    <div class="discovery-overlay" v-if="discovering">
         <v-flex md2 />
         <v-flex class="display-4 red--text lighten-2">
-            Loading tunes...
+            Discovering tunes...
             <v-progress-linear v-model="progress" height="30">
                 <div class="body-2 font-weight-bold">{{ progress }}%</div>
             </v-progress-linear>
@@ -15,19 +15,19 @@
 import { Component, Vue } from 'vue-property-decorator';
 
 @Component({})
-export default class LoadingProgress extends Vue {
-    get loading() {
-        return this.$store.getters.isLoading;
+export default class DiscoveryProgress extends Vue {
+    get discovering() {
+        return this.$store.getters.isDiscovering;
     }
 
     get progress() {
-        return this.$store.getters.loadingProgress;
+        return this.$store.getters.discoveryProgress;
     }
 }
 </script>
 
 <style scoped>
-.loading-overlay {
+.discovery-overlay {
     position: fixed;
     top: 0;
     left: 0;

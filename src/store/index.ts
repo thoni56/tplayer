@@ -157,14 +157,14 @@ export default new Vuex.Store<RootState>({
       return rootGetters['filtering/hasSelectedGenres']
     },
     
-    // === LOADING STATE GETTERS ===
+    // === DISCOVERY STATE GETTERS ===
     
-    isLoading: (state, getters, rootState, rootGetters) => {
-      return rootGetters['tunes/isLoading']
+    isDiscovering: (state, getters, rootState, rootGetters) => {
+      return rootGetters['tunes/isDiscovering']
     },
     
-    loadingProgress: (state, getters, rootState, rootGetters) => {
-      return rootGetters['tunes/loadingProgress']
+    discoveryProgress: (state, getters, rootState, rootGetters) => {
+      return rootGetters['tunes/discoveryProgress']
     },
     
     // === HOTKEYS STATE GETTERS ===
@@ -175,15 +175,15 @@ export default new Vuex.Store<RootState>({
     
     // === COMPOSITE GETTERS ===
     
-    // Check if app is ready (has tunes and not loading)
+    // Check if app is ready (has tunes and not discovering)
     isAppReady: (state, getters, rootState, rootGetters) => {
-      return !getters.isLoading && getters.totalTunesCount > 0
+      return !getters.isDiscovering && getters.totalTunesCount > 0
     },
     
     // Get current status message
     statusMessage: (state, getters, rootState, rootGetters) => {
-      if (getters.isLoading) {
-        return `Loading tunes... ${getters.loadingProgress}%`
+      if (getters.isDiscovering) {
+        return `Discovering tunes... ${getters.discoveryProgress}%`
       }
       
       if (getters.totalTunesCount === 0) {
@@ -233,8 +233,8 @@ export default new Vuex.Store<RootState>({
       await dispatch('tunes/clearTunes')
     },
 
-    // Handle discovered tunes from Electron main process
-    async handleDiscoveredTunes({ commit }, tunes: TuneInfo[]) {
+    // Handle available tunes from Electron main process (discovery or cache)
+    async handleAvailableTunes({ commit }, tunes: TuneInfo[]) {
       // Ensure all tunes have default covers
       await Promise.all(tunes.map((tune: TuneInfo) => ensureDefaultCover(tune)))
       
@@ -242,14 +242,14 @@ export default new Vuex.Store<RootState>({
       commit('tunes/ADD_TUNES', tunes)
     },
 
-    // Handle a single discovered tune from Electron main process  
-    async handleDiscoveredTune({ commit }, tune) {
+    // Handle a single available tune from Electron main process  
+    async handleAvailableTune({ commit }, tune) {
       commit('tunes/ADD_TUNE', tune)
     },
 
-    // Handle loading progress from Electron main process
-    async handleProgress({ dispatch }, progress) {
-      await dispatch('tunes/updateProgress', progress)
+    // Handle discovery progress from Electron main process
+    async handleDiscoveryProgress({ dispatch }, progress) {
+      await dispatch('tunes/updateDiscoveryProgress', progress)
     },
     
     // Helper action to ensure a TuneInfo instance has a default cover

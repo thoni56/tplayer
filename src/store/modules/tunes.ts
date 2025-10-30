@@ -5,8 +5,8 @@ import { TuneInfo } from '@/models/TuneInfo'
 export interface TunesState {
   allTunes: TuneInfo[]
   selectedTune: TuneInfo
-  loading: boolean
-  progress: number
+  discovering: boolean
+  discoveryProgress: number
   tunesBpmRange: number[]
 }
 
@@ -16,8 +16,8 @@ export const tunesModule: Module<TunesState, any> = {
   state: (): TunesState => ({
     allTunes: [],
     selectedTune: new TuneInfo(''),
-    loading: false,
-    progress: 0,
+    discovering: false,
+    discoveryProgress: 0,
     tunesBpmRange: []
   }),
 
@@ -103,11 +103,11 @@ export const tunesModule: Module<TunesState, any> = {
       }
     },
 
-    // Check if loading
-    isLoading: (state): boolean => state.loading,
+    // Check if discovering
+    isDiscovering: (state): boolean => state.discovering,
 
-    // Get loading progress
-    loadingProgress: (state): number => state.progress
+    // Get discovery progress
+    discoveryProgress: (state): number => state.discoveryProgress
   },
 
   mutations: {
@@ -145,20 +145,20 @@ export const tunesModule: Module<TunesState, any> = {
       state.selectedTune = new TuneInfo('')
     },
 
-    SET_LOADING(state, loading: boolean) {
-      state.loading = loading
+    SET_DISCOVERING(state, discovering: boolean) {
+      state.discovering = discovering
     },
 
-    START_LOADING(state) {
-      state.loading = true
-      state.progress = 0
+    START_DISCOVERY(state) {
+      state.discovering = true
+      state.discoveryProgress = 0
     },
 
-    SET_PROGRESS(state, progress: number) {
-      state.progress = Math.max(0, Math.min(100, progress))
+    SET_DISCOVERY_PROGRESS(state, progress: number) {
+      state.discoveryProgress = Math.max(0, Math.min(100, progress))
       // Auto-close overlay when progress reaches 100%
-      if (state.progress === 100) {
-        state.loading = false
+      if (state.discoveryProgress === 100) {
+        state.discovering = false
       }
     },
 
@@ -223,14 +223,14 @@ export const tunesModule: Module<TunesState, any> = {
       return null
     },
 
-    // Action to start loading process
-    async startLoading({ commit }) {
-      commit('START_LOADING')
+    // Action to start discovery process
+    async startDiscovery({ commit }) {
+      commit('START_DISCOVERY')
     },
 
-    // Action to update loading progress
-    async updateProgress({ commit }, progress: number) {
-      commit('SET_PROGRESS', progress)
+    // Action to update discovery progress
+    async updateDiscoveryProgress({ commit }, progress: number) {
+      commit('SET_DISCOVERY_PROGRESS', progress)
     },
 
     // Action to clear all tunes

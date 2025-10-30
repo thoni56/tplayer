@@ -35,7 +35,7 @@
                 @click:clear="finishSearch"
             ></v-text-field>
             <v-flex>
-                <h2 class="float-right">{{ currentTime }}</h2>
+                <p class="float-right" style="font-size: 3vh;">{{ currentTime }}</p>
             </v-flex>
         </v-layout>
         <v-layout style="margin-top: -2vh; margin-bottom: -2.5vh">

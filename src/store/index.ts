@@ -67,6 +67,10 @@ export default new Vuex.Store<RootState>({
       return rootGetters['player/totalTime']
     },
     
+    tuneDuration: (state, getters, rootState, rootGetters) => {
+      return rootGetters['player/tuneDuration']
+    },
+    
     remainingTime: (state, getters, rootState, rootGetters) => {
       return rootGetters['player/remainingTime']
     },

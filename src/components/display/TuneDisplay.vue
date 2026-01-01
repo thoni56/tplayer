@@ -76,7 +76,7 @@ export default class TuneDisplay extends Vue {
     }
 
     get totaltime() {
-        return formatTime(this.$store.getters.currentDuration);
+        return formatTime(this.$store.getters.totalTime);
     }
 }
 </script>

@@ -100,7 +100,8 @@ export const playerModule: Module<PlayerState, any> = {
     
     // Progress percentage for progress bar
     playbackProgress: (state): number => {
-      return state.timeTotal > 0 ? (state.timePlayed / state.timeTotal) * 100 : 0
+      const effectiveTotal = state.playTimeout > 0 ? state.playTimeout : state.timeTotal
+      return effectiveTotal > 0 ? (state.timePlayed / effectiveTotal) * 100 : 0
     },
     
     // Timeout status
@@ -115,8 +116,12 @@ export const playerModule: Module<PlayerState, any> = {
     
     // Playback times for display
     currentTime: (state): number => state.timePlayed,
-    totalTime: (state): number => state.timeTotal,
-    remainingTime: (state): number => state.timeTotal - state.timePlayed
+    totalTime: (state): number => state.playTimeout > 0 ? state.playTimeout : state.timeTotal,
+    tuneDuration: (state): number => state.timeTotal,
+    remainingTime: (state): number => {
+      const effectiveTotal = state.playTimeout > 0 ? state.playTimeout : state.timeTotal
+      return effectiveTotal - state.timePlayed
+    }
   },
 
   mutations: {
@@ -186,7 +191,7 @@ export const playerModule: Module<PlayerState, any> = {
           if (audioInstance) {
             commit('SET_TIME_PLAYED', audioInstance.currentTime)
           }
-        }, 333)
+        }, 100)
       }
       
       // Start timeout checking

@@ -101,7 +101,7 @@ System:
     ✔ Unlock @types/node@12.12.22 depending on https://github.com/DefinitelyTyped/DefinitelyTyped/issues/41224 @done(22-01-11 19:41)
     ✔ Only load tunes which have a genre that is used @done(22-01-30 12:50)
     ☐ Sign the app
-        ☐ Windows
+        ✔ Windows @done(26-01-01 22:25)
         ☐ Mac
         ✘ Linux @cancelled(24-03-26 20:35)
     ☐ Speed up load of tunes, especially if it is the same directory as before

@@ -189,10 +189,16 @@ ipcMain.on('renderer-ready', () => {
         console.time('loadTunesFromCache'); // Start timing
         readTunesFromCache(metadataCache).then((tunesData) => {
             const tunes = tunesData as any[];
+            const defaultCover = getDefaultCover();
+            
             // Send tunes in batches to avoid IPC size limits
             const BATCH_SIZE = 100;
             for (let i = 0; i < tunes.length; i += BATCH_SIZE) {
-                const batch = tunes.slice(i, i + BATCH_SIZE);
+                const batch = tunes.slice(i, i + BATCH_SIZE).map(tune => ({
+                    ...tune,
+                    cover: defaultCover,
+                    coverLoaded: false
+                }));
                 window!.webContents.send('tunes-available', batch);
             }
             console.timeEnd('loadTunesFromCache'); // End timing

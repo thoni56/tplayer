@@ -28,7 +28,9 @@ export async function writeTunesToCache(tunes: any[], tunesCache: string) {
     const fileStream = fs.createWriteStream(tunesCache, { encoding: 'utf8' });
     fileStream.write('[');
     tunes.forEach((item, index) => {
-        const itemString = JSON.stringify(item);
+        // Create a copy without the cover property to keep cache size minimal
+        const { cover, coverLoaded, ...tuneWithoutCover } = item;
+        const itemString = JSON.stringify(tuneWithoutCover);
         if (index !== 0) {
             fileStream.write(',');
         }

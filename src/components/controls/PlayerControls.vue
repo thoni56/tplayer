@@ -43,7 +43,7 @@ import { Vue, Component } from 'vue-property-decorator'
 export default class PlayerControls extends Vue {
     
     // All control methods now just dispatch to store - no complex logic!
-    public playTimes: string[] = ['15s', '30s', '60s', '75s', '90s', '120s', 'All']
+    public playTimes: string[] = ['15s', '30s', '45s', '60s', '75s', '90s', '120s', 'All']
     public playTimeModel: number = this.playTimes.length - 1
     
     get playOrPauseIcon(): string {

@@ -15,8 +15,9 @@
         "build": "vue-cli-service build",
         "test:e2e": "vue-cli-service test:e2e",
         "lint": "vue-cli-service lint",
-        "electron:build": "vue-cli-service electron:build",
         "electron:serve": "vue-cli-service electron:serve",
+        "electron:build": "vue-cli-service electron:build",
+        "electron:publish": "vue-cli-service electron:build --publish always",
         "postinstall": "electron-builder install-app-deps",
         "postuninstall": "electron-builder install-app-deps"
     },
@@ -39,6 +40,13 @@
         "vuetify": "^2.6.10",
         "vuex": "^3.6.2",
         "walkdir": "^0.4.1"
+    },
+    "build": {
+        "publish": {
+            "provider": "github",
+            "owner": "thoni56",
+            "repo": "tplayer"
+        }
     },
     "devDependencies": {
         "@mdi/font": "^7.0.96",

@@ -5,6 +5,7 @@ import { tunesModule, TunesState } from './modules/tunes'
 import { playerModule, PlayerState } from './modules/player'
 import { hotkeysModule, HotkeysState } from './modules/hotkeys'
 import { TuneInfo } from '@/models/TuneInfo'
+import { startCoverPreloading } from '@/coverPreloader'
 
 // Cache for default cover to avoid repeated IPC calls
 let defaultCoverCache: string = ''
@@ -244,6 +245,10 @@ export default new Vuex.Store<RootState>({
       
       // Add tunes to existing collection (for batched loading)
       commit('tunes/ADD_TUNES', tunes)
+      
+      // Start background cover preloading (1 cover per second)
+      // This will progressively load real covers for all tunes
+      startCoverPreloading(this, 1000)
     },
 
     // Handle a single available tune from Electron main process  

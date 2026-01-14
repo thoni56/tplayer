@@ -250,9 +250,9 @@ export default new Vuex.Store<RootState>({
       // Add tunes to existing collection (for batched loading)
       commit('tunes/ADD_TUNES', tunes)
       
-      // Start background cover preloading (1 cover per second)
+      // Start background cover preloading
       // This will progressively load real covers for all tunes
-      startCoverPreloading(this, 1000)
+      startCoverPreloading(this, 200)
     },
 
     // Handle a single available tune from Electron main process  

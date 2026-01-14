@@ -161,6 +161,10 @@ export default new Vuex.Store<RootState>({
     hasSelectedGenres: (state, getters, rootState, rootGetters) => {
       return rootGetters['filtering/hasSelectedGenres']
     },
+
+    newMusicAvailable: (state, getters, rootState, rootGetters) => {
+      return rootGetters['filtering/newMusicAvailable']
+    },
     
     // === DISCOVERY STATE GETTERS ===
     

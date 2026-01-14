@@ -6,7 +6,18 @@
                 style="font-size: 3vh; padding-right: 3vh"
                 class="col-3 pl-0 pr-0 pb-0 pt-0 text-left"
             >
-                <v-btn color="primary" @click="initiateDiscoveringFiles()">Filtered:</v-btn>
+                <v-btn
+                    :color="newMusicAvailable ? 'green' : 'primary'"
+                    @click="initiateDiscoveringFiles()"
+                >
+                    <v-tooltip v-if="newMusicAvailable" bottom>
+                        <template v-slot:activator="{ on, attrs }">
+                            <span v-bind="attrs" v-on="on">New Music!</span>
+                        </template>
+                        <span>There is new music available, press to discover it</span>
+                    </v-tooltip>
+                    <span v-else>Filtered:</span>
+                </v-btn>
                 {{ currentCount }}({{ totalCount }})
             </v-flex>
             <v-layout wrap justify-start>
@@ -35,7 +46,7 @@
                 @click:clear="finishSearch"
             ></v-text-field>
             <v-flex>
-                <p class="float-right" style="font-size: 3vh;">{{ currentTime }}</p>
+                <p class="float-right" style="font-size: 3vh">{{ currentTime }}</p>
             </v-flex>
         </v-layout>
         <v-layout style="margin-top: -2vh; margin-bottom: -2.5vh">
@@ -95,6 +106,10 @@ export default class Filtering extends Vue {
         else return 'fas fa-sort-amount-down';
     }
 
+    get newMusicAvailable() {
+        return this.$store.getters.newMusicAvailable;
+    }
+
     // Text searching
     public searchString = '';
 
@@ -149,10 +164,10 @@ export default class Filtering extends Vue {
         setTimeout(() => {
             this.tick();
         }, this.tickTime);
-        
+
         // Initialize slider values from store
         this.syncSliderWithStore();
-        
+
         // Watch for BPM changes from store (e.g., from hotkeys)
         this.$watch(
             () => this.$store.getters.selectedBpm,
@@ -163,7 +178,7 @@ export default class Filtering extends Vue {
             () => this.syncSliderWithStore()
         );
     }
-    
+
     // Sync slider values with store (for hotkey updates)
     private syncSliderWithStore() {
         const storeBpm = this.$store.getters.selectedBpm;
@@ -258,7 +273,7 @@ export default class Filtering extends Vue {
     public initiateDiscoveringFiles() {
         window.api.send('discover-tunes');
     }
-    
+
     // Blur slider after user interaction to prevent PageUp/PageDown from affecting it
     public blurSlider() {
         const slider = this.$refs.bpmSlider as any;

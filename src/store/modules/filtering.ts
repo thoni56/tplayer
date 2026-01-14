@@ -8,6 +8,7 @@ export interface FilteringState {
   selectedBpmRange: number
   searchString: string
   sortingUp: boolean
+  newMusicAvailable: boolean
 }
 
 // Helper function to get BPM from tune
@@ -23,7 +24,8 @@ export const filteringModule: Module<FilteringState, any> = {
     selectedBpm: 120,
     selectedBpmRange: 5,
     searchString: '',
-    sortingUp: true
+    sortingUp: true,
+    newMusicAvailable: false
   }),
 
   getters: {
@@ -80,7 +82,10 @@ export const filteringModule: Module<FilteringState, any> = {
     hasSelectedGenres: (state): boolean => state.selectedGenres.length > 0,
 
     // Check if search is active
-    isSearching: (state): boolean => state.searchString.length > 0
+    isSearching: (state): boolean => state.searchString.length > 0,
+
+    // Check if new music is available
+    newMusicAvailable: (state): boolean => state.newMusicAvailable
   },
 
   mutations: {
@@ -133,6 +138,10 @@ export const filteringModule: Module<FilteringState, any> = {
       state.selectedBpmRange = 5
       state.searchString = ''
       state.sortingUp = true
+    },
+
+    SET_NEW_MUSIC_AVAILABLE(state, available: boolean) {
+      state.newMusicAvailable = available
     }
   },
 
@@ -191,6 +200,11 @@ export const filteringModule: Module<FilteringState, any> = {
     async resetFilters({ commit, dispatch }) {
       commit('RESET_ALL_FILTERS')
       await dispatch('tunes/applyFilters', null, { root: true })
+    },
+
+    // Action to set new music available flag
+    setNewMusicAvailable({ commit }, available: boolean) {
+      commit('SET_NEW_MUSIC_AVAILABLE', available)
     }
   }
 }

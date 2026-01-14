@@ -52,6 +52,11 @@ export default class App extends Vue {
             console.log('discovery-progress:' + progress)
         })
 
+        window.api.on('new-music-available', (available: boolean) => {
+            this.$store.dispatch('filtering/setNewMusicAvailable', available)
+            console.log('new-music-available:', available)
+        })
+
         window.api.send('renderer-ready')
     }
 }

@@ -14,6 +14,8 @@ var autoloadDirectory = settings.get('autoload') ? settings.get('autoload')[0] :
 const userHome = app.getPath('home');
 const metadataCache = userHome + '/.tplayer_metadata_cache.json';
 const legacyCache = userHome + '/.tplayer_cache.json';
+const MARKER_FILE_NAME = '.tplayer_sync_available';
+const MARKER_CHECK_INTERVAL = 5000; // Check every 5 seconds
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
@@ -45,6 +47,57 @@ autoUpdater.on('update-available', (info) => {
 autoUpdater.on('error', (error) => {
     console.error('Auto-updater error:', error);
 });
+
+// Marker file checking functionality
+let markerFileCheckInterval: NodeJS.Timeout | null = null;
+
+function startMarkerFileChecking() {
+    // Only start checking if autoloadDirectory is configured
+    if (!autoloadDirectory) {
+        return;
+    }
+
+    const markerFilePath = path.join(autoloadDirectory, MARKER_FILE_NAME);
+    
+    markerFileCheckInterval = setInterval(() => {
+        if (fs.existsSync(markerFilePath)) {
+            console.log('Marker file detected:', markerFilePath);
+            // Notify renderer process
+            if (window && window.webContents) {
+                window.webContents.send('new-music-available', true);
+            }
+            // Stop checking once found (will resume after discovery)
+            stopMarkerFileChecking();
+        }
+    }, MARKER_CHECK_INTERVAL);
+    
+    console.log('Started marker file checking:', markerFilePath);
+}
+
+function stopMarkerFileChecking() {
+    if (markerFileCheckInterval) {
+        clearInterval(markerFileCheckInterval);
+        markerFileCheckInterval = null;
+        console.log('Stopped marker file checking');
+    }
+}
+
+function deleteMarkerFile() {
+    if (!autoloadDirectory) {
+        return;
+    }
+    
+    const markerFilePath = path.join(autoloadDirectory, MARKER_FILE_NAME);
+    
+    if (fs.existsSync(markerFilePath)) {
+        try {
+            fs.unlinkSync(markerFilePath);
+            console.log('Marker file deleted:', markerFilePath);
+        } catch (error) {
+            console.error('Error deleting marker file:', error);
+        }
+    }
+}
 
 async function createWindow() {
     // Create the browser window.
@@ -97,6 +150,9 @@ async function createWindow() {
     window.on('closed', () => {
         window = null;
     });
+
+    // Start checking for marker file
+    startMarkerFileChecking();
 }
 
 // Quit when all windows are closed.
@@ -213,9 +269,20 @@ ipcMain.on('discover-tunes', () => {
         properties: ['openDirectory'],
     });
     if (dir) {
+        // Delete marker file if it exists
+        deleteMarkerFile();
+        
+        // Reset the new music available state
+        if (window && window.webContents) {
+            window.webContents.send('new-music-available', false);
+        }
+        
         window?.webContents.send('clear-tunes', []);
         discoverTunes(window!, dir[0], UsedGenres, metadataCache);
         settings.set('autoload', dir);
+        
+        // Restart marker file checking after discovery
+        startMarkerFileChecking();
     }
 });
 

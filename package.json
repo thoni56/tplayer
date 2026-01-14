@@ -42,13 +42,6 @@
         "vuex": "^3.6.2",
         "walkdir": "^0.4.1"
     },
-    "build": {
-        "publish": {
-            "provider": "github",
-            "owner": "thoni56",
-            "repo": "tplayer"
-        }
-    },
     "devDependencies": {
         "@mdi/font": "^7.0.96",
         "@types/jsonfile": "^6.1.1",

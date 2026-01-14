@@ -191,38 +191,56 @@ export const tunesModule: Module<TunesState, any> = {
   },
 
   actions: {
-    // Apply filters with cancellation support
+    // Apply filters with chunked processing for responsiveness
     async applyFilters({ commit, state, rootGetters }) {
       // Generate unique ID for this filtering operation
       const myFilteringId = ++currentFilteringId
       
       commit('SET_FILTERING', true)
       
-      // Yield to allow UI update before heavy computation
-      await new Promise<void>(resolve => {
-        setTimeout(() => {
-          // Check if we were cancelled before starting
-          if (myFilteringId !== currentFilteringId) {
-            resolve()
-            return
-          }
-          
-          const filterFunction = rootGetters['filtering/tunePassesAllFilters']
-          const sortFunction = rootGetters['filtering/sortTunes']
-          
-          // Filter and sort synchronously (fast for most collections)
-          const filtered = state.allTunes.filter(filterFunction)
-          const sorted = sortFunction(filtered)
-          
-          // Check again if we were cancelled during processing
-          if (myFilteringId === currentFilteringId) {
-            commit('SET_FILTERED_TUNES', sorted)
-            commit('SET_FILTERING', false)
-          }
-          
-          resolve()
-        }, 0)
-      })
+      // Yield once to allow UI to show "filtering" state
+      await new Promise<void>(resolve => setTimeout(resolve, 0))
+      
+      // Check cancellation
+      if (myFilteringId !== currentFilteringId) {
+        return
+      }
+      
+      const filterFunction = rootGetters['filtering/tunePassesAllFilters']
+      const CHUNK_SIZE = 250  // Smaller chunks = more responsive UI
+      const filtered: TuneInfo[] = []
+      
+      // Process in chunks
+      for (let i = 0; i < state.allTunes.length; i += CHUNK_SIZE) {
+        // Check if we've been superseded
+        if (myFilteringId !== currentFilteringId) {
+          return  // Abort this filtering operation
+        }
+        
+        const chunk = state.allTunes.slice(i, i + CHUNK_SIZE)
+        const chunkFiltered = chunk.filter(filterFunction)
+        filtered.push(...chunkFiltered)
+        
+        // Yield to browser (except on last chunk to avoid extra delay)
+        if (i + CHUNK_SIZE < state.allTunes.length) {
+          await new Promise<void>(resolve => setTimeout(resolve, 0))
+        }
+      }
+      
+      // Final cancellation check before expensive sort
+      if (myFilteringId !== currentFilteringId) {
+        return
+      }
+      
+      // Sort once at the end
+      const sortFunction = rootGetters['filtering/sortTunes']
+      const sorted = sortFunction(filtered)
+      
+      // Final check and commit
+      if (myFilteringId === currentFilteringId) {
+        commit('SET_FILTERED_TUNES', sorted)
+        commit('SET_FILTERING', false)
+      }
     },
 
     // Action to load tunes from an array

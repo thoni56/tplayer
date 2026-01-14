@@ -3,6 +3,10 @@ import App from './App.vue'
 import '@fortawesome/fontawesome-free/css/all.css'
 import vuetify from './plugins/vuetify'
 import store from './store' // Import the new modular store
+import VueVirtualScroller from 'vue-virtual-scroller'
+import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
+
+Vue.use(VueVirtualScroller)
 
 Vue.config.productionTip = false
 

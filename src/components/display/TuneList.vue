@@ -1,10 +1,15 @@
 <template>
     <v-layout scrollable style="height: 25vh">
         <v-flex>
-            <v-list dense>
-                <template v-for="(tune, index) in tunes()">
+            <RecycleScroller
+                class="scroller"
+                :items="tunes()"
+                :item-size="48"
+                key-field="file"
+                v-slot="{ item: tune }"
+            >
+                <v-list dense class="pa-0 ma-0">
                     <v-list-item
-                        :key="tune.file"
                         :id="tune.file"
                         :class="{ highlighted: selectedTuneFile == tune.file }"
                         @click="clicked(tune)"
@@ -31,10 +36,9 @@
                             <v-chip x-small>{{ tune.bpm }}</v-chip>
                         </v-list-item-action>
                     </v-list-item>
-
-                    <v-divider :key="index" />
-                </template>
-            </v-list>
+                    <v-divider />
+                </v-list>
+            </RecycleScroller>
         </v-flex>
     </v-layout>
 </template>
@@ -73,6 +77,10 @@ export default class TuneList extends Vue {
 </script>
 
 <style>
+.scroller {
+    height: 25vh;
+}
+
 .scrollable {
     overflow-y: scroll;
     height: calc(100vh - 250px);
